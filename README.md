@@ -42,6 +42,14 @@ correct role(s) or permission(s).
       "message": "Forbidden"
     }
     ```
+    ROUTERS FOR ENDPOINTS:
+    app.use('/users', require('/routes/users'))
+    app.use('/spots', require('/routes/spots'))
+    app.use('/reviews', require('/routes/reviews'))
+    app.use('/bookings', require('/routes/bookings))
+
+
+
 
 ### Get the Current User
 
@@ -49,8 +57,8 @@ Returns the information about the current user that is logged in.
 
 * Require Authentication: true
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: ? GET
+  * URL: ?  ('/current', async (req,res) => )
   * Body: none
 
 * Successful Response when there is a logged in user
@@ -90,8 +98,8 @@ information.
 
 * Require Authentication: false
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: ? JWT
+  * URL: ? ('/login', async (req, res) => )
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -156,8 +164,8 @@ user's information.
 
 * Require Authentication: false
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: ? POST
+  * URL: ? ('/signup', async (req, res) => )
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -246,8 +254,8 @@ Returns all the spots.
 
 * Require Authentication: false
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: ? GET
+  * URL: ? ('/', async (req, res) =>)
   * Body: none
 
 * Successful Response
@@ -286,8 +294,8 @@ Returns all the spots owned (created) by the current user.
 
 * Require Authentication: true
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: ? GET
+  * URL: ? ('/owned', async (req, res) => )
   * Body: none
 
 * Successful Response
@@ -326,8 +334,8 @@ Returns the details of a spot specified by its id.
 
 * Require Authentication: false
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: ? GET
+  * URL: ? ('/:id' , async (req, res) => )
   * Body: none
 
 * Successful Response
@@ -391,8 +399,8 @@ Creates and returns a new spot.
 
 * Require Authentication: true
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: ? POST
+  * URL: ? ('/', async (req, res) => )
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -465,8 +473,8 @@ Create and return a new image for a spot specified by id.
 * Require Authentication: true
 * Require proper authorization: Spot must belong to the current user
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: ? POST
+  * URL: ? ('/:id/images', async (req, res) => )
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -511,8 +519,8 @@ Updates and returns an existing spot.
 * Require Authentication: true
 * Require proper authorization: Spot must belong to the current user
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: ? PUT
+  * URL: ? ('/:id', async (req, res) => )
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -597,8 +605,8 @@ Deletes an existing spot.
 * Require Authentication: true
 * Require proper authorization: Spot must belong to the current user
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: ? DELETE
+  * URL: ? ('/:id', async (req, res) => )
   * Body: none
 
 * Successful Response
@@ -633,8 +641,8 @@ Returns all the reviews written by the current user.
 
 * Require Authentication: true
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: ? GET
+  * URL: ? ('/mine, async (req, res) => )
   * Body: none
 
 * Successful Response
@@ -689,8 +697,8 @@ Returns all the reviews that belong to a spot specified by id.
 
 * Require Authentication: false
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: ? GET -- Spot Router
+  * URL: ? ('/:id/reviews', async (req, res) => )
   * Body: none
 
 * Successful Response
@@ -744,8 +752,8 @@ Create and return a new review for a spot specified by id.
 
 * Require Authentication: true
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: ? POST  --Spot router
+  * URL: ? ('/:id/reviews', async (req, res) => )
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -822,8 +830,8 @@ Create and return a new image for a review specified by id.
 * Require Authentication: true
 * Require proper authorization: Review must belong to the current user
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: ? POST
+  * URL: ? ('/:id/images', async (req, res) => )
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -879,8 +887,8 @@ Update and return an existing review.
 * Require Authentication: true
 * Require proper authorization: Review must belong to the current user
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: ? PUT
+  * URL: ? ('/:id', async (req, res) => )
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -945,8 +953,8 @@ Delete an existing review.
 * Require Authentication: true
 * Require proper authorization: Review must belong to the current user
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: ? DELETE
+  * URL: ? ('/:id', async (req, res) => )
   * Body: none
 
 * Successful Response
@@ -981,8 +989,8 @@ Return all the bookings that the current user has made.
 
 * Require Authentication: true
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: ? GET
+  * URL: ? ('/mine', async (req, res) => )
   * Body: none
 
 * Successful Response
@@ -1026,8 +1034,8 @@ Return all the bookings for a spot specified by id.
 
 * Require Authentication: true
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: ? GET -- Spot router
+  * URL: ? ('/:id/bookings', async (req, res) => )
   * Body: none
 
 * Successful Response: If you ARE NOT the owner of the spot.
@@ -1094,8 +1102,8 @@ Create and return a new booking from a spot specified by id.
 * Require Authentication: true
 * Require proper authorization: Spot must NOT belong to the current user
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: ? POST -- Spot router
+  * URL: ? ('/:id/bookings', async (req, res) => )
   * Body:
 
     ```json
@@ -1173,8 +1181,8 @@ Update and return an existing booking.
 * Require Authentication: true
 * Require proper authorization: Booking must belong to the current user
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: ? PUT
+  * URL: ? ('/:id', async (req, res) => )
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -1267,8 +1275,8 @@ Delete an existing booking.
 * Require proper authorization: Booking must belong to the current user or the
   Spot must belong to the current user
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: ? DELETE
+  * URL: ? ('/:id', async (req, res) => )
   * Body: none
 
 * Successful Response
@@ -1316,8 +1324,8 @@ Delete an existing image for a Spot.
 * Require Authentication: true
 * Require proper authorization: Spot must belong to the current user
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: ? - DELETE, (Spot router)
+  * URL: ? ('/:id/images/:id', async (req, res) => )
   * Body: none
 
 * Successful Response
@@ -1351,8 +1359,8 @@ Delete an existing image for a Review.
 * Require Authentication: true
 * Require proper authorization: Review must belong to the current user
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: ? DELETE (Review router)
+  * URL: ? ('/:id/images/:id', async (req, res) => )
   * Body: none
 
 * Successful Response
