@@ -46,7 +46,7 @@ correct role(s) or permission(s).
     app.use('/users', require('/routes/users'))
     app.use('/spots', require('/routes/spots'))
     app.use('/reviews', require('/routes/reviews'))
-    app.use('/bookings', require('/routes/bookings))
+    app.use('/bookings', require('/routes/bookings'))
 
 
 
