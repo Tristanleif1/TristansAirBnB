@@ -42,7 +42,7 @@ correct role(s) or permission(s).
       "message": "Forbidden"
     }
     ```
-    ROUTERS FOR ENDPOINTS:
+ ROUTERS FOR ENDPOINTS:
     app.use('/users', require('/routes/users'))
     app.use('/spots', require('/routes/spots'))
     app.use('/reviews', require('/routes/reviews'))
@@ -254,7 +254,7 @@ Returns all the spots.
 
 * Require Authentication: false
 * Request
-  * Method: ? GET
+  * Method: ?  GET
   * URL: ? ('/', async (req, res) =>)
   * Body: none
 
