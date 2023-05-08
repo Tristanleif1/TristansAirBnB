@@ -2,7 +2,7 @@
 
 ## Database Schema Design
 
-`<insert database schema design here>`
+`<insert database schema design here>` ![Database Schema](/FILENAME)
 
 ## API Documentation
 
