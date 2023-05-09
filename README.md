@@ -59,7 +59,7 @@ Returns the information about the current user that is logged in.
 - Request
 
   - Method: ? GET
-  - URL: ? '/current'
+  - URL: ? ('/current')
   - Body: none
 
 - Successful Response when there is a logged in user
