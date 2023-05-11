@@ -2,7 +2,8 @@
 
 ## Database Schema Design
 
-`<insert database schema design here>` ![Database Schema](/Users)
+`<insert database schema design here>` ![Database Schema](./Tristan'sAirBnB_updated_schema.pdf)
+
 <!-- ![Database Schema](/FILENAME) -->
 
 ## API Documentation

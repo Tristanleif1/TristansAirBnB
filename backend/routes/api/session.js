@@ -11,6 +11,11 @@ const { User } = require("../../db/models");
 const router = express.Router();
 
 // backend/routes/api/session.js
+
+
+// ...
+
+
 const validateLogin = [
   check('credential')
     .exists({ checkFalsy: true })
@@ -22,11 +27,9 @@ const validateLogin = [
   handleValidationErrors
 ];
 
-// ...
-
-
 // Log in
-router.post("/", validateLogin, async (req, res, next) => {
+router.post("/",
+validateLogin, async (req, res, next) => {
   const { credential, password } = req.body;
 
   const user = await User.unscoped().findOne({
