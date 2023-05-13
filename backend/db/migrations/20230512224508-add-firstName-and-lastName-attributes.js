@@ -1,22 +1,20 @@
-'use strict';
- let options = {}
-   options.schema = tristan_airbnb
-   options.tableName = 'Users'
+"use strict";
+let options = {};
+options.schema = "tristan_airbnb";
+options.tableName = "Users";
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
-
-    await queryInterface.addColumn(options, 'firstName' , {
+  async up(queryInterface, Sequelize) {
+    await queryInterface.addColumn(options, "firstName", {
       type: Sequelize.STRING,
-      allowNull: false
+      allowNull: false,
     });
 
-
-    await queryInterface.addColumn(options, 'lastName', {
+    await queryInterface.addColumn(options, "lastName", {
       type: Sequelize.STRING,
-      allowNull: false
-    })
+      allowNull: false,
+    });
     /**
      * Add altering commands here.
      *
@@ -25,15 +23,14 @@ module.exports = {
      */
   },
 
-  async down (queryInterface, Sequelize) {
-
-    await queryInterface.removeColumn(options, 'firstName');
-    await queryInterface.removeColumn(options, 'lastName');
+  async down(queryInterface, Sequelize) {
+    await queryInterface.removeColumn(options, "firstName");
+    await queryInterface.removeColumn(options, "lastName");
     /**
      * Add reverting commands here.
      *
      * Example:
      * await queryInterface.dropTable('users');
      */
-  }
+  },
 };
