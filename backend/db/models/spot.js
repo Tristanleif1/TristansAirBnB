@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Spot extends Model {
     /**
@@ -12,23 +10,53 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       // Spot.hasMany(models.Booking, {foreignKey: 'userId'})
+      Spot.hasMany(models.Review, { foreignKey: "spotId" });
+      Spot.hasMany(models.Booking, { foreignKey: "spotId" });
+      Spot.belongsTo(models.User, { foreignKey: "ownerId" });
     }
   }
-  Spot.init({
-    ownerId: DataTypes.INTEGER,
-    address: DataTypes.STRING,
-    city: DataTypes.STRING,
-    state: DataTypes.STRING,
-    country: DataTypes.STRING,
-    lat: DataTypes.DECIMAL,
-    lng: DataTypes.DECIMAL,
-    name: DataTypes.STRING,
-    description: DataTypes.TEXT,
-    price: DataTypes.DECIMAL,
-    previewImg: DataTypes.TEXT
-  }, {
-    sequelize,
-    modelName: 'Spot',
-  });
+  Spot.init(
+    {
+      ownerId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      address: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      city: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      state: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      country: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      lat: {
+        type: DataTypes.DECIMAL,
+        allowNull: false,
+      },
+      lng: {
+        type: DataTypes.DECIMAL,
+        allowNull: false,
+      },
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      description: DataTypes.TEXT,
+      price: DataTypes.DECIMAL,
+      previewImg: DataTypes.TEXT,
+    },
+    {
+      sequelize,
+      modelName: "Spot",
+    }
+  );
   return Spot;
 };
