@@ -2,7 +2,7 @@
 
 ## Database Schema Design
 
-`<insert database schema design here>` ![Database Schema](./Tristan'sAirBnB_updated_schema.pdf)
+`<insert database schema design here>` ![Database Schema](./AirBNB-Schema-UPDATED-AGAIN.GIF)
 
 <!-- ![Database Schema](/FILENAME) -->
 
