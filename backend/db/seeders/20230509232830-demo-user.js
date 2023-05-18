@@ -11,7 +11,7 @@ const { User } = require("../models/user");
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     options.tableName = "Users";
-    return queryInterface.bulkInsert(
+    await queryInterface.bulkInsert(
       options.tableName,
       [
         {
@@ -20,20 +20,44 @@ module.exports = {
           hashedPassword: bcrypt.hashSync("password"),
           firstName: "Tristan",
           lastName: "Allaman",
+          createdAt: new Date(),
+          updatedAt: new Date(),
         },
         {
-          email: "user1@user.io",
-          username: "FakeUser1",
+          email: "brandwang@user.io",
+          username: "bwang234",
           hashedPassword: bcrypt.hashSync("password2"),
           firstName: "Brandon",
           lastName: "Wang",
+          createdAt: new Date(),
+          updatedAt: new Date(),
         },
         {
-          email: "user2@user.io",
-          username: "FakeUser2",
+          email: "jareds@user.io",
+          username: "js23212",
           hashedPassword: bcrypt.hashSync("password3"),
-          firstName: "Demo",
-          lastName: "Lition",
+          firstName: "Jared",
+          lastName: "Smailes",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          email: "tommy544@user.io",
+          username: "tman248",
+          hashedPassword: bcrypt.hashSync("password4"),
+          firstName: "Tommy",
+          lastName: "Kimble",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          email: "maclof@user.io",
+          username: "mlofquist321",
+          hashedPassword: bcrypt.hashSync("password5"),
+          firstName: "Mac",
+          lastName: "Lofquist",
+          createdAt: new Date(),
+          updatedAt: new Date(),
         },
       ],
       {}
@@ -41,12 +65,21 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
+    const options = {};
     options.tableName = "Users";
     const Op = Sequelize.Op;
-    return queryInterface.bulkDelete(
+    await queryInterface.bulkDelete(
       options.tableName,
       {
-        username: { [Op.in]: ["Demo-lition", "FakeUser1", "FakeUser2"] },
+        username: {
+          [Op.in]: [
+            "Demo-lition",
+            "bwang234",
+            "js23212",
+            "tman248",
+            "mlofquist321",
+          ],
+        },
       },
       {}
     );
