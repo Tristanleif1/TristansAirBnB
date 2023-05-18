@@ -7,6 +7,12 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
+    getImageable(options) {
+      if (!this.imageableType) return Promise.fulfill(null);
+      let type = `get${this.imageableType}`;
+      return this[type](options);
+    }
+
     static associate(models) {
       // define association here
       Image.belongsTo(models.Review, {
@@ -23,9 +29,18 @@ module.exports = (sequelize, DataTypes) => {
   }
   Image.init(
     {
-      imageableId: DataTypes.INTEGER,
-      imageableType: DataTypes.STRING,
-      url: DataTypes.STRING,
+      imageableId:{
+     type: DataTypes.INTEGER,
+     allowNull: false
+      },
+      imageableType: {
+        type: DataTypes.STRING,
+        allowNull:false
+      },
+      url: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
     },
     {
       sequelize,
