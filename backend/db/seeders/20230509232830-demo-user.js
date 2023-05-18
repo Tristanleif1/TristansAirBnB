@@ -6,11 +6,13 @@ if (process.env.NODE_ENV === "production") {
   options.schema = process.env.SCHEMA; // define your schema in options object
 }
 
+const { User } = require("../models/user");
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     options.tableName = "Users";
     return queryInterface.bulkInsert(
-      options,
+      options.tableName,
       [
         {
           email: "demo@user.io",
@@ -42,7 +44,7 @@ module.exports = {
     options.tableName = "Users";
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(
-      options,
+      options.tableName,
       {
         username: { [Op.in]: ["Demo-lition", "FakeUser1", "FakeUser2"] },
       },

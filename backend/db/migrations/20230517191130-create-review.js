@@ -36,10 +36,12 @@ module.exports = {
           onDelete: "CASCADE",
         },
         review: {
+          allowNull: false,
           type: Sequelize.TEXT,
         },
         stars: {
           type: Sequelize.INTEGER,
+          allowNull: false,
         },
         createdAt: {
           allowNull: false,
