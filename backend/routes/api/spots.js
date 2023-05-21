@@ -59,4 +59,30 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+router.post("/", requireAuth, async (req, res) => {
+  const { address, city, state, country, lat, lng, name, description, price } =
+    req.body;
+
+  const ownerId = req.user.id;
+
+  try {
+    const newSpot = await Spot.create({
+      address,
+      city,
+      state,
+      country,
+      lat,
+      lng,
+      name,
+      description,
+      price,
+      ownerId,
+    });
+    res.status(201).json(newSpot);
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ message: "Bad Request" });
+  }
+});
+
 module.exports = router;

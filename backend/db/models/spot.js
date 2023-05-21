@@ -14,12 +14,12 @@ module.exports = (sequelize, DataTypes) => {
       Spot.hasMany(models.Booking, { foreignKey: "spotId" });
       Spot.belongsTo(models.User, { foreignKey: "ownerId" });
       Spot.hasMany(models.Image, {
-            foreignKey: 'imageableId',
-            constraints: false,
-            scope: {
-              imageableType: 'Spot'
-            }
-      })
+        foreignKey: "imageableId",
+        constraints: false,
+        scope: {
+          imageableType: "Spot",
+        },
+      });
     }
   }
   Spot.init(
@@ -31,6 +31,7 @@ module.exports = (sequelize, DataTypes) => {
       address: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true,
       },
       city: {
         type: DataTypes.STRING,
@@ -55,14 +56,15 @@ module.exports = (sequelize, DataTypes) => {
       name: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true,
       },
       description: {
         type: DataTypes.TEXT,
-        allowNull: false
+        allowNull: false,
       },
       price: {
         type: DataTypes.DECIMAL,
-        allowNull: false
+        allowNull: false,
       },
       previewImg: DataTypes.TEXT,
     },
