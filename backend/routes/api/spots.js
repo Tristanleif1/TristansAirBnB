@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { Spot, User } = require("../../db/models");
+const { Spot, User, Image } = require("../../db/models");
 const { requireAuth } = require("../../utils/auth");
 const { json } = require("sequelize");
 
@@ -22,7 +22,7 @@ router.get("/", async (req, res) => {
     res.status(500).json({ error: "Spots could not be found" });
   }
 });
-
+//GET the current user's spots
 router.get("/mySpots", requireAuth, async (req, res) => {
   const { user } = req;
 
@@ -36,6 +36,7 @@ router.get("/mySpots", requireAuth, async (req, res) => {
   res.status(200).json(apiResponse);
 });
 
+//Get details about a spot
 router.get("/:id", async (req, res) => {
   const id = +req.params.id;
 
@@ -58,6 +59,8 @@ router.get("/:id", async (req, res) => {
     return res.status(404).json({ error: "Spot not found" });
   }
 });
+
+//Post a spot
 
 router.post("/", requireAuth, async (req, res) => {
   const { address, city, state, country, lat, lng, name, description, price } =
@@ -83,6 +86,84 @@ router.post("/", requireAuth, async (req, res) => {
     console.error(error);
     res.status(400).json({ message: "Bad Request" });
   }
+});
+
+//Post an image to a spot
+
+router.post("/:id/images", requireAuth, async (req, res) => {
+  const spotId = req.params.id;
+  const { url, preview } = req.body;
+  const userId = req.user.id;
+
+  try {
+    const spot = await Spot.findOne({ where: { id: spotId, ownerId: userId } });
+    if (!spot) {
+      return res.status(404).json({ message: "Spot couldn't be found" });
+    }
+
+    const newSpotImage = await Image.create({
+      url,
+      imageableId: spotId,
+      imageableType: "Spot",
+    });
+
+    const expectedImageResponse = {
+      id: newSpotImage.id,
+      url: newSpotImage.url,
+    };
+
+    res.status(200).json(expectedImageResponse);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+//Edit details of a spot
+
+router.put("/:id", requireAuth, async (req, res) => {
+  const spotId = req.params.id;
+  const { address, city, state, country, lat, lng, name, description, price } =
+    req.body;
+  const userId = req.user.id;
+
+  try {
+    const editedSpot = await Spot.findOne({ id: spotId, ownerId: userId });
+    if (!editedSpot) {
+      return res.status(404).json({ message: "Spot couldn't be found" });
+    }
+
+    await editedSpot.update({
+      address,
+      city,
+      state,
+      country,
+      lat,
+      lng,
+      name,
+      description,
+      price,
+    });
+
+    res.status(200).json(editedSpot);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error " });
+  }
+});
+
+//Delete a Spot
+
+router.delete("/:id", requireAuth, async (req, res) => {
+  const spotId = +req.params.id;
+  const deleteSpot = await Spot.findByPk(spotId);
+  if (deleteSpot) {
+    await deleteSpot.destroy();
+    res.status(200).json({ message: "Successfully deleted" });
+  } else
+    res.status(404).json({
+      message: "Spot couldn't be found",
+    });
 });
 
 module.exports = router;
