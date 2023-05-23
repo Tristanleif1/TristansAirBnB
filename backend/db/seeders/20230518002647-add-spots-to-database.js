@@ -8,11 +8,9 @@ if (process.env.NODE_ENV === "production") {
 
 const { Spot } = require("../models/spot");
 
-
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.bulkInsert('Spots',
-        [
+    await queryInterface.bulkInsert("Spots", [
       {
         ownerId: 1,
         address: "123 Swift Street",
@@ -116,9 +114,7 @@ module.exports = {
   down: async (queryInterface, Sequelize) => {
     // const options = {}
     // const Op = Sequelize.Op;
-    await queryInterface.bulkDelete(
-      'Spots', null,)
-
+    await queryInterface.bulkDelete("Spots");
   },
 };
 

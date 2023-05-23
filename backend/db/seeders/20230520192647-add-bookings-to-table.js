@@ -82,7 +82,7 @@ module.exports = {
 
   down: async (queryInterface, Sequelize) => {
     // const Op = Sequelize.Op;
-    await queryInterface.bulkDelete("Bookings", null);
+    await queryInterface.bulkDelete("Bookings");
   },
   /**
    * Add commands to revert seed here.
