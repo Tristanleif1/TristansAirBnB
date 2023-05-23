@@ -123,8 +123,8 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: "Description is required",
         },
         len: {
-          args: [1,200]
-        }
+          args: [1, 200],
+        },
       },
       price: {
         type: DataTypes.DECIMAL,
@@ -134,7 +134,7 @@ module.exports = (sequelize, DataTypes) => {
             msg: "Price per day is required",
           },
           max: 10000,
-          min: 5
+          min: 5,
         },
       },
       previewImg: DataTypes.TEXT,

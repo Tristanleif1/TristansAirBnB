@@ -87,7 +87,7 @@ router.get("/mySpots", requireAuth, async (req, res) => {
   res.status(200).json(apiResponse);
 });
 
-//Get details about a spot
+//Get details about a spot (how to add preview: true key value pair in response?)
 router.get("/:id", async (req, res) => {
   const id = +req.params.id;
 
@@ -139,7 +139,11 @@ router.get("/:id", async (req, res) => {
     numReviews: selectedSpot.dataValues.numReviews,
     avgStarRating: selectedSpot.dataValues.avgStarRating,
     SpotImages: selectedSpot.SpotImages,
-    Owner: selectedSpot.owner,
+    Owner: {
+      id: selectedSpot.Owner.id,
+      firstName: selectedSpot.Owner.firstName,
+      lastName: selectedSpot.Owner.lastName,
+    },
   };
   res.status(200).json(specificSpotDetails);
 });
@@ -194,6 +198,7 @@ router.post("/:id/images", requireAuth, async (req, res) => {
     const expectedImageResponse = {
       id: newSpotImage.id,
       url: newSpotImage.url,
+      preview: newSpotImage.preview
     };
 
     res.status(200).json(expectedImageResponse);
