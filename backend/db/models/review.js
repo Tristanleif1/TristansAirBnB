@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       Review.belongsTo(models.User, { foreignKey: "userId" });
       Review.belongsTo(models.Spot, { foreignKey: "spotId" });
       Review.hasMany(models.Image, {
-        as: "images",
+        as: "ReviewImages",
         foreignKey: "imageableId",
         constraints: false,
         scope: {
@@ -34,10 +34,23 @@ module.exports = (sequelize, DataTypes) => {
       review: {
         type: DataTypes.TEXT,
         allowNull: false,
+        validate: {
+          notNull: {
+            msg: "Review is required",
+          },
+          len: {
+            args: [10, 500],
+            msg: "Review must be between 10 and 500 characters",
+          },
+        },
       },
       stars: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        validate: {
+          max: 5,
+          min: 1,
+        },
       },
     },
     {

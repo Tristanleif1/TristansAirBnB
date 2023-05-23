@@ -33,39 +33,109 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
+        validate: {
+          notEmpty: {
+            msg: "Street address is required",
+          },
+          len: {
+            args: [1, 49],
+          },
+        },
       },
       city: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "City is required",
+          },
+          len: {
+            args: [1, 49],
+          },
+        },
       },
       state: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "State is required",
+          },
+          len: {
+            args: [1, 49],
+          },
+        },
       },
       country: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "Country is required",
+          },
+          len: {
+            args: [1, 49],
+          },
+        },
       },
       lat: {
         type: DataTypes.DECIMAL,
         allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "Latitude is not valid",
+          },
+          isDecimal: {
+            msg: "Latitude must be a valid decimal number",
+          },
+        },
       },
       lng: {
         type: DataTypes.DECIMAL,
         allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "Longitude is not valid",
+          },
+          isDecimal: {
+            msg: "Longtitude must be a valid decimal number",
+          },
+        },
       },
       name: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
+        validate: {
+          notEmpty: {
+            msg: "Name is required",
+          },
+          len: {
+            args: [1, 49],
+            msg: "Name must be less than 50 characters",
+          },
+        },
       },
       description: {
         type: DataTypes.TEXT,
         allowNull: false,
+        validate: {
+          notEmpty: "Description is required",
+        },
+        len: {
+          args: [1,200]
+        }
       },
       price: {
         type: DataTypes.DECIMAL,
         allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "Price per day is required",
+          },
+          max: 10000,
+          min: 5
+        },
       },
       previewImg: DataTypes.TEXT,
     },

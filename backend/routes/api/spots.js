@@ -2,8 +2,59 @@ const express = require("express");
 const router = express.Router();
 
 const { Spot, User, Image, Review, sequelize } = require("../../db/models");
+const { check } = require("express-validator");
 const { requireAuth } = require("../../utils/auth");
+const { handleValidationErrors } = require("../../utils/validation");
 // const { Op, json } = require("sequelize");
+
+const validPost = [
+  check("address")
+    .notEmpty()
+    .withMessage("Street address is required.")
+    .isLength({ max: 49 })
+    .withMessage("Address must be less than 50 characters."),
+  check("city")
+    .notEmpty()
+    .withMessage("City is required.")
+    .isLength({ max: 49 })
+    .withMessage("City must be less than 50 characters."),
+  check("state")
+    .notEmpty()
+    .withMessage("State is required.")
+    .isLength({ max: 49 })
+    .withMessage("State must be less than 50 characters."),
+  check("country")
+    .notEmpty()
+    .withMessage("Country is required.")
+    .isLength({ max: 49 })
+    .withMessage("Country must be less than 50 characters."),
+  check("lat")
+    .notEmpty()
+    .withMessage("Latitude is required.")
+    .isDecimal()
+    .withMessage("Latitude is not valid"),
+  check("lng")
+    .notEmpty()
+    .withMessage("Longitude is required.")
+    .isDecimal()
+    .withMessage("Longitude is not valid"),
+  check("name")
+    .notEmpty()
+    .withMessage("Name must be less than 50 characters.")
+    .isLength({ max: 49 })
+    .withMessage("Name must be less than 50 characters."),
+  check("description")
+    .notEmpty()
+    .withMessage("Description is required.")
+    .isLength({ max: 200 })
+    .withMessage("Description must be less than 200 characters."),
+  check("price")
+    .notEmpty()
+    .withMessage("Price per day is required.")
+    .isDecimal({ min: 5, max: 10000 })
+    .withMessage("Price per day is required."),
+  handleValidationErrors,
+];
 
 //Get all spots -- needs to be worked on
 
@@ -95,7 +146,7 @@ router.get("/:id", async (req, res) => {
 
 //Post a spot
 
-router.post("/", requireAuth, async (req, res) => {
+router.post("/", requireAuth, validPost, async (req, res) => {
   const { address, city, state, country, lat, lng, name, description, price } =
     req.body;
 

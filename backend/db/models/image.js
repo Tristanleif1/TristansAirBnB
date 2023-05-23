@@ -47,23 +47,23 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Image",
     }
   );
-  Image.addHook("afterFind", (findResult) => {
-    if (!Array.isArray(findResult)) findResult = [findResult];
+  // Image.addHook("afterFind", (findResult) => {
+  //   if (!Array.isArray(findResult)) findResult = [findResult];
 
-    for (const instance of findResult) {
-      if (instance.imageableType === "review" && instance.review !== undefined) {
-        instance.imageable = instance.review;
-      } else if (instance.imageableType === "spot" && instance.spot !== undefined) {
-        instance.imageable = instance.spot;
-      }
+  //   for (const instance of findResult) {
+  //     if (instance.imageableType === "review" && instance.review !== undefined) {
+  //       instance.imageable = instance.review;
+  //     } else if (instance.imageableType === "spot" && instance.spot !== undefined) {
+  //       instance.imageable = instance.spot;
+  //     }
 
-      // To prevent mistakes:
-      delete instance.review;
-      delete instance.dataValues.review;
-      delete instance.spot;
-      delete instance.dataValues.spot;
-    }
-  });
+  //     // To prevent mistakes:
+  //     delete instance.review;
+  //     delete instance.dataValues.review;
+  //     delete instance.spot;
+  //     delete instance.dataValues.spot;
+  //   }
+  // });
 
   return Image;
 };
