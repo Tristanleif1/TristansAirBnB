@@ -12,9 +12,9 @@ const { Review } = require("../models/review");
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    options.tableName = "Reviews";
+    // options.tableName = "Reviews";
     await queryInterface.bulkInsert(
-      options.tableName,
+      'Reviews',
       [
         {
           userId: 1,
@@ -98,9 +98,8 @@ module.exports = {
         },
 
 
-      ],
-      {}
-    );
+      ]);
+  },
     /**
      * Add seed commands here.
      *
@@ -110,19 +109,10 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
      */
-  },
 
   down: async (queryInterface, Sequelize) => {
-    const Op = Sequelize.Op;
     options.tableName = 'Reviews'
     await queryInterface.bulkDelete(
-      options.tableName,
-      {
-        spotId: {
-          [Op.in]: [1, 2, 3, 4, 5, 6, 7],
-        },
-      },
-      {}
-    );
+      'Reviews', null,)
   }
 }

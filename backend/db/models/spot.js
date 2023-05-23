@@ -10,11 +10,12 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       // Spot.hasMany(models.Booking, {foreignKey: 'userId'})
-      Spot.hasMany(models.Review, { foreignKey: "spotId" });
+      Spot.hasMany(models.Review, { foreignKey: "spotId", as: "Reviews" });
       Spot.hasMany(models.Booking, { foreignKey: "spotId" });
-      Spot.belongsTo(models.User, { foreignKey: "ownerId" });
+      Spot.belongsTo(models.User, { foreignKey: "ownerId", as: "Owner" });
       Spot.hasMany(models.Image, {
         foreignKey: "imageableId",
+        as: "SpotImages",
         constraints: false,
         scope: {
           imageableType: "Spot",

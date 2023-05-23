@@ -11,8 +11,7 @@ const { Spot } = require("../models/spot");
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    options.tableName = 'Spots'
-    await queryInterface.bulkInsert( options.tableName,
+    await queryInterface.bulkInsert('Spots',
         [
       {
         ownerId: 1,
@@ -115,24 +114,11 @@ module.exports = {
     ]);
   },
   down: async (queryInterface, Sequelize) => {
-    const options = {}
-    const Op = Sequelize.Op;
+    // const options = {}
+    // const Op = Sequelize.Op;
     await queryInterface.bulkDelete(
-      options.tableName,
-      {
-        name: {
-          [Op.in]: [
-            "Spot 1",
-            "Spot 2",
-            "Spot 3",
-            "Spot 4",
-            "Spot 5",
-            "Spot 6",
-            "Spot 7",
-          ],
-        },
-      },{}
-    );
+      'Spots', null,)
+
   },
 };
 
