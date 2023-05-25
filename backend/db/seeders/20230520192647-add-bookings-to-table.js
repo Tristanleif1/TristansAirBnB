@@ -11,7 +11,8 @@ const { Booking } = require("../models/booking");
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.bulkInsert("Bookings", [
+    options.tableName = 'Bookings'
+    await queryInterface.bulkInsert(options.tableName, [
       {
         userId: 1,
         spotId: 2,
@@ -81,13 +82,16 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    // const Op = Sequelize.Op;
-    await queryInterface.bulkDelete("Bookings");
+     const Op = Sequelize.Op;
+     options.tableName = 'Bookings'
+    await queryInterface.bulkDelete(options.tableName, {
+      id: { [Op.in]: [1,2,3,4,5,6,7]}
+    },{});
   },
+}
   /**
    * Add commands to revert seed here.
    *
    * Example:
    * await queryInterface.bulkDelete('People', null, {});
    */
-};

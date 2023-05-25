@@ -11,6 +11,7 @@ const { Spot, Review, Image } = require("../models");
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
+    options.tableName = "Images";
     const imageData = [
       {
         url: "https://images.app.goo.gl/hgPHqqCrXmTYfg6H8",
@@ -86,7 +87,7 @@ module.exports = {
       },
     ];
 
-    await queryInterface.bulkInsert("Images", imageData);
+    await queryInterface.bulkInsert(options.tableName, imageData);
 
     /**
      * Add seed commands here.
@@ -100,7 +101,16 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete("Images", null, {});
+    const Op = Sequelize.Op;
+    options.tableName = "Images";
+    await queryInterface.bulkDelete(
+      options.tableName,
+      {
+        id: { [Op.in]: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] },
+      },
+      {}
+    );
+
     /**.
      * Add commands to revert seed here.
      *
