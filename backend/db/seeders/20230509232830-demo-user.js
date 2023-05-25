@@ -12,7 +12,7 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     options.tableName = "Users";
     await queryInterface.bulkInsert(
-      options.tableName,
+      options,
       [
         {
           email: "demo@user.io",
@@ -69,7 +69,7 @@ module.exports = {
     options.tableName = "Users";
     const Op = Sequelize.Op;
     await queryInterface.bulkDelete(
-      options.tableName,
+      options,
       {
         username: {
           [Op.in]: [

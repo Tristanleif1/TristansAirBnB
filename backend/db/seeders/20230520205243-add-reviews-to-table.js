@@ -14,7 +14,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     options.tableName = "Reviews";
     await queryInterface.bulkInsert(
-      options.tableName,
+      options,
       [
         {
           userId: 1,
@@ -114,7 +114,7 @@ module.exports = {
     const Op = Sequelize.Op;
     options.tableName = 'Reviews'
     await queryInterface.bulkDelete(
-      options.tableName, {
+      options, {
         id: { [Op.in]: [1,2,3,4,5,6,7,8,9,10]}
       },{})
   }

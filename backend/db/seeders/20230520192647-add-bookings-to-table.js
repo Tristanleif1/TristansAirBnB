@@ -12,7 +12,7 @@ const { Booking } = require("../models/booking");
 module.exports = {
   async up(queryInterface, Sequelize) {
     options.tableName = 'Bookings'
-    await queryInterface.bulkInsert(options.tableName, [
+    await queryInterface.bulkInsert(options, [
       {
         userId: 1,
         spotId: 2,
@@ -84,7 +84,7 @@ module.exports = {
   down: async (queryInterface, Sequelize) => {
      const Op = Sequelize.Op;
      options.tableName = 'Bookings'
-    await queryInterface.bulkDelete(options.tableName, {
+    await queryInterface.bulkDelete(options, {
       id: { [Op.in]: [1,2,3,4,5,6,7]}
     },{});
   },
