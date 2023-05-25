@@ -62,7 +62,7 @@ module.exports = {
         type: Sequelize.DECIMAL(8, 2),
         allowNull: false,
       },
-      previewImg: {
+      previewImage: {
         type: Sequelize.TEXT,
       },
       createdAt: {

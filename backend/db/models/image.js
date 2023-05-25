@@ -29,17 +29,22 @@ module.exports = (sequelize, DataTypes) => {
   }
   Image.init(
     {
-      imageableId:{
-     type: DataTypes.INTEGER,
-     allowNull: false
+      imageableId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
       },
       imageableType: {
         type: DataTypes.STRING,
-        allowNull:false
+        allowNull: false,
       },
       url: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+      },
+      preview: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
       },
     },
     {

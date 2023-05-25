@@ -21,6 +21,14 @@ module.exports = (sequelize, DataTypes) => {
           imageableType: "Spot",
         },
       });
+      // Spot.hasMany(models.Image, {
+      //   foreignKey: "imageableId",
+      //   as: "previewImage",
+      //   constraints: false,
+      //   scope: {
+      //     imageableType: "Spot",
+      //   },
+      // });
     }
   }
   Spot.init(
@@ -137,7 +145,7 @@ module.exports = (sequelize, DataTypes) => {
           min: 5,
         },
       },
-      previewImg: DataTypes.TEXT,
+      previewImage: DataTypes.STRING,
     },
     {
       sequelize,
