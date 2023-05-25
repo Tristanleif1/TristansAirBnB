@@ -165,7 +165,7 @@ router.put("/:id", requireAuth, validBooking, async (req, res) => {
   }
 });
 
-//Delete a booking
+//Delete a booking (needs to be adjusted)
 
 router.delete("/:id", requireAuth, async (req, res) => {
   const bookingId = +req.params.id;
