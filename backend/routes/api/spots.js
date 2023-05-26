@@ -618,7 +618,7 @@ router.get("/", validQueryParameters, async (req, res) => {
   const { page, size, minLat, maxLat, maxLng, minPrice, maxPrice } = req.query;
 
   const limit = parseInt(size) || 20;
-  const offset =  (parseInt(page) - 1) * limit || 0;
+  const offset = (parseInt(page) - 1) * limit || 0;
 
   const queryFormat = {
     offset,
@@ -656,12 +656,12 @@ router.get("/", validQueryParameters, async (req, res) => {
     };
   }
   if (minLng && maxLng) {
-    queryOptions.where.lng = {
+    queryFormat.where.lng = {
       [Op.between]: [parseFloat(minLng), parseFloat(maxLng)],
     };
   }
   if (minPrice && maxPrice) {
-    queryOoptions.where.price = {
+    queryFormat.where.price = {
       [Op.between]: [parseFloat(minPrice), parseFloat(maxPrice)],
     };
   }
