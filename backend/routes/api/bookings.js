@@ -114,6 +114,12 @@ router.put("/:id", requireAuth, validBooking, async (req, res) => {
       where: { id: bookingId, userId: user.id },
     });
 
+    if (editBooking.userId !== user.id) {
+      return res
+        .status(403)
+        .json({ message: "Can't edit another user's booking" });
+    }
+
     if (!editBooking) {
       res.status(404).json({ message: "Booking couldn't be found" });
     }
@@ -173,13 +179,20 @@ router.delete("/:id", requireAuth, async (req, res) => {
 
   try {
     const deleteBooking = await Booking.findByPk(bookingId);
-    // , {
-    //   include: [{ model: Spot, where: { ownerId: user.id } }],
-    // });
 
     if (!deleteBooking) {
       return res.status(404).json({ message: "Booking couldn't be found" });
     }
+
+    if (deleteBooking.userId !== user.id) {
+      return res
+        .status(403)
+        .json({ message: "Can't delete another user's bookings" });
+    }
+
+    // if (!deleteBooking) {
+    //   return res.status(404).json({ message: "Booking couldn't be found" });
+    // }
 
     const currentDate = new Date();
     const bookingStartDate = new Date(deleteBooking.startDate);
@@ -198,8 +211,5 @@ router.delete("/:id", requireAuth, async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 });
-
-
-
 
 module.exports = router;
