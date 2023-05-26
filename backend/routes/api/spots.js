@@ -15,6 +15,7 @@ const { handleValidationErrors } = require("../../utils/validation");
 const { Op } = require("sequelize");
 // const booking = require("../../db/models/booking");
 const spot = require("../../db/models/spot");
+const e = require("express");
 // const { Op, json } = require("sequelize");
 
 const validPost = [
@@ -459,28 +460,32 @@ router.get("/:id/reviews", async (req, res) => {
       ],
     });
 
-    const properReviewFormat = spotReviews.map((review) => {
-      return {
-        id: review.id,
-        userId: review.userId,
-        spotId: review.spotId,
-        review: review.review,
-        stars: review.stars,
-        createdAt: review.createdAt,
-        updatedAt: review.updatedAt,
-        User: {
-          id: review.User.id,
-          firstName: review.User.firstName,
-          lastName: review.User.lastName,
-        },
-        ReviewImages: review.ReviewImages.map((image) => ({
-          id: image.id,
-          url: image.url,
-        })),
-      };
-    });
+    if (spotReviews.length === 0) {
+      res.status(404).json({ message: "Spot couldn't be found" });
+    } else {
+      const properReviewFormat = spotReviews.map((review) => {
+        return {
+          id: review.id,
+          userId: review.userId,
+          spotId: review.spotId,
+          review: review.review,
+          stars: review.stars,
+          createdAt: review.createdAt,
+          updatedAt: review.updatedAt,
+          User: {
+            id: review.User.id,
+            firstName: review.User.firstName,
+            lastName: review.User.lastName,
+          },
+          ReviewImages: review.ReviewImages.map((image) => ({
+            id: image.id,
+            url: image.url,
+          })),
+        };
+      });
 
-    res.status(200).json({ Reviews: properReviewFormat });
+      res.status(200).json({ Reviews: properReviewFormat });
+    }
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Failed to retrieve spot reviews" });
@@ -621,8 +626,6 @@ router.get("/", validQueryParameters, async (req, res) => {
   const offset = (parseInt(page) - 1) * limit || 0;
 
   const queryFormat = {
-    offset,
-    limit,
     include: [
       {
         model: Image,
@@ -648,6 +651,8 @@ router.get("/", validQueryParameters, async (req, res) => {
     ],
     where: {},
     group: ["Spot.id"],
+    limit,
+    offset,
   };
 
   if (minLat && maxLat) {
