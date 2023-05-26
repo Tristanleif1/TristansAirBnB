@@ -4,9 +4,14 @@
 
 `<insert database schema design here>` ![Database Schema](./AirBNB-Schema-UPDATED-AGAIN.GIF)
 
+
+ 
+
 <!-- ![Database Schema](/FILENAME) -->
 
 ## API Documentation
+
+ https://tristans-airbnb.onrender.com
 
 ## USER AUTHENTICATION/AUTHORIZATION
 
