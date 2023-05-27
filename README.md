@@ -4,14 +4,11 @@
 
 `<insert database schema design here>` ![Database Schema](./AirBNB-Schema-UPDATED-AGAIN.GIF)
 
-
- 
-
 <!-- ![Database Schema](/FILENAME) -->
 
 ## API Documentation
 
- https://tristans-airbnb.onrender.com
+https://tristans-airbnb.onrender.com
 
 ## USER AUTHENTICATION/AUTHORIZATION
 
@@ -317,7 +314,7 @@ Returns all the spots owned (created) by the current user.
 - Request
 
   - Method: ? GET
-  - URL: ? ('/mySpots')
+  - URL: ? ('/spots/mySpots')
   - Body: none
 
 - Successful Response
@@ -682,7 +679,7 @@ Returns all the reviews written by the current user.
 - Request
 
   - Method: ? GET
-  - URL: ? ('/myReviews)
+  - URL: ? ('/reviews/myReviews)
   - Body: none
 
 - Successful Response
@@ -1051,7 +1048,7 @@ Return all the bookings that the current user has made.
 - Request
 
   - Method: ? GET
-  - URL: ? ('/myBookings')
+  - URL: ? ('/bookings/myBookings')
   - Body: none
 
 - Successful Response
