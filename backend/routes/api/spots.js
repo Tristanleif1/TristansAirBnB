@@ -247,7 +247,23 @@ router.get("/", async (req, res) => {
         required: false,
         limit: 1,
       },
-      group: ["Spot.id", "SpotImages.id"],
+      group: [
+        "Spot.id",
+        "SpotImages.id",
+        "Spot.ownerId",
+        "Spot.address",
+        "Spot.city",
+        "Spot.state",
+        "Spot.country",
+        "Spot.lat",
+        "Spot.lng",
+        "Spot.name",
+        "Spot.description",
+        "Spot.price",
+        "Spot.createdAt",
+        "Spot.updatedAt",
+        "Spot.avgRating",
+      ],
     });
 
     const spotsWithImage = allSpots.map((spot) => ({
@@ -271,10 +287,6 @@ router.get("/", async (req, res) => {
     const properResponse = {
       Spots: spotsWithImage,
     };
-    //   res.json(allSpots);
-    // const properResponse = {
-    //   Spots: allSpots,
-    // };
 
     res.status(200).json(properResponse);
   } catch (error) {
