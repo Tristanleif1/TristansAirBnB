@@ -139,95 +139,95 @@ const validQueryParameters = [
     .withMessage("Maximum price must be greater than or equal to 0"),
   handleValidationErrors,
 ];
-router.get("/", validQueryParameters, async (req, res) => {
-  let { minLat, minLng, maxLat, maxLng, minPrice, maxPrice } = req.query;
+// router.get("/", validQueryParameters, async (req, res) => {
+//   let { minLat, minLng, maxLat, maxLng, minPrice, maxPrice } = req.query;
 
-  let page = parseInt(req.query.page) || 1;
-  let size = parseInt(req.query.size) || 20;
-  minLat = parseFloat(minLat) || -1000;
-  maxLat = parseFloat(maxLat) || 1000;
-  maxLng = parseFloat(maxLng) || 1000;
-  minLng = parseFloat(minLng) || -1000;
-  minPrice = parseFloat(minPrice) || 0;
-  maxPrice = parseFloat(maxPrice) || 1000;
+//   let page = parseInt(req.query.page) || 1;
+//   let size = parseInt(req.query.size) || 20;
+//   minLat = parseFloat(minLat) || -1000;
+//   maxLat = parseFloat(maxLat) || 1000;
+//   maxLng = parseFloat(maxLng) || 1000;
+//   minLng = parseFloat(minLng) || -1000;
+//   minPrice = parseFloat(minPrice) || 0;
+//   maxPrice = parseFloat(maxPrice) || 1000;
 
-  let limit = size;
-  let offset = (page - 1) * limit;
+//   let limit = size;
+//   let offset = (page - 1) * limit;
 
-  try {
-    const rows = await Spot.findAll({
-      include: [
-        {
-          model: Image,
-          as: "SpotImages",
-          duplicating: false,
-          attributes: ["url"],
-        },
-        {
-          model: Review,
-          as: "Reviews",
-          duplicating: false,
-          attributes: [],
-        },
-      ],
-      attributes: {
-        include: [
-          "id",
-          "ownerId",
-          "address",
-          "city",
-          "state",
-          "country",
-          "lat",
-          "lng",
-          "name",
-          "description",
-          "price",
-          "createdAt",
-          "updatedAt",
-          [sequelize.fn("COUNT", sequelize.col("Reviews.id")), "numReviews"],
-          [sequelize.fn("AVG", sequelize.col("Reviews.stars")), "avgRating"],
-        ],
-      },
-      where: {
-        lat: { [Op.between]: [minLat, maxLat] },
-        lng: { [Op.between]: [minLng, maxLng] },
-        price: { [Op.between]: [minPrice, maxPrice] },
-      },
-      group: ["Spot.id"],
-      limit,
-      offset,
-    });
+//   try {
+//     const rows = await Spot.findAll({
+//       include: [
+//         {
+//           model: Image,
+//           as: "SpotImages",
+//           duplicating: false,
+//           attributes: ["url"],
+//         },
+//         {
+//           model: Review,
+//           as: "Reviews",
+//           duplicating: false,
+//           attributes: [],
+//         },
+//       ],
+//       attributes: {
+//         include: [
+//           "id",
+//           "ownerId",
+//           "address",
+//           "city",
+//           "state",
+//           "country",
+//           "lat",
+//           "lng",
+//           "name",
+//           "description",
+//           "price",
+//           "createdAt",
+//           "updatedAt",
+//           [sequelize.fn("COUNT", sequelize.col("Reviews.id")), "numReviews"],
+//           [sequelize.fn("AVG", sequelize.col("Reviews.stars")), "avgRating"],
+//         ],
+//       },
+//       where: {
+//         lat: { [Op.between]: [minLat, maxLat] },
+//         lng: { [Op.between]: [minLng, maxLng] },
+//         price: { [Op.between]: [minPrice, maxPrice] },
+//       },
+//       group: ["Spot.id"],
+//       limit,
+//       offset,
+//     });
 
-    const filteredLocations = rows.map((spot) => ({
-      id: spot.id,
-      ownerId: spot.ownerId,
-      address: spot.address,
-      city: spot.city,
-      state: spot.state,
-      country: spot.country,
-      lat: spot.lat,
-      lng: spot.lng,
-      name: spot.name,
-      description: spot.description,
-      price: spot.price,
-      createdAt: spot.createdAt,
-      updatedAt: spot.updatedAt,
-      avgRating: spot.dataValues.avgRating,
-      previewImage: spot.SpotImages.length > 0 ? spot.SpotImages[0].url : null,
-    }));
+//     const filteredLocations = rows.map((spot) => ({
+//       id: spot.id,
+//       ownerId: spot.ownerId,
+//       address: spot.address,
+//       city: spot.city,
+//       state: spot.state,
+//       country: spot.country,
+//       lat: spot.lat,
+//       lng: spot.lng,
+//       name: spot.name,
+//       description: spot.description,
+//       price: spot.price,
+//       createdAt: spot.createdAt,
+//       updatedAt: spot.updatedAt,
+//       avgRating: spot.dataValues.avgRating,
+//       previewImage: spot.SpotImages.length > 0 ? spot.SpotImages[0].url : null,
+//     }));
 
-    return res.status(200).json({
-      Spots: filteredLocations,
-      page: parseInt(page),
-      size: parseInt(size),
-    });
-  } catch (error) {
-    // Handle any errors that occurred during the query or processing
-    console.error(error);
-    return res.status(500).json({ message: "Internal Server Error" });
-  }
-});
+//     return res.status(200).json({
+//       Spots: filteredLocations,
+//       page: parseInt(page),
+//       size: parseInt(size),
+//     });
+//   } catch (error) {
+//     // Handle any errors that occurred during the query or processing
+//     console.error(error);
+//     return res.status(500).json({ message: "Internal Server Error" });
+//   }
+// });
 
 //     res.status(200).json({ Spots: rows, page, size });
 //   } catch (error) {
@@ -247,7 +247,7 @@ router.get("/", async (req, res) => {
         required: false,
         limit: 1,
       },
-      group: ["Spot.id", "SpotImages.id"],
+      group: ["Spot.id", "MIN(SpotImages.id)"],
     });
 
     const spotsWithImage = allSpots.map((spot) => ({
