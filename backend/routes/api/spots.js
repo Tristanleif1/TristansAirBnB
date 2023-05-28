@@ -199,10 +199,6 @@ router.get("/", validQueryParameters, async (req, res) => {
       offset,
     });
 
-    // delete queryFormat.limit;
-    // delete queryFormat.offset;
-    // const count = await Spot.count(queryFormat);
-
     const filteredLocations = rows.map((spot) => ({
       id: spot.id,
       ownerId: spot.ownerId,
@@ -227,58 +223,65 @@ router.get("/", validQueryParameters, async (req, res) => {
       size: parseInt(size),
     });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Internal Server Error" });
+    // Handle any errors that occurred during the query or processing
+    console.error(error);
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 });
 
-// Get all spots -- needs to be worked on
-
-// router.get("/", async (req, res) => {
-//   try {
-//     const allSpots = await Spot.findAll({
-//       include: {
-//         model: Image,
-//         as: "SpotImages",
-//         attributes: ["url"],
-//         required: false,
-//         limit: 1,
-//       },
-//       group: ["Spot.id", "SpotImages.id"],
-//     });
-
-//     const spotsWithImage = allSpots.map((spot) => ({
-//       id: spot.id,
-//       ownerId: spot.ownerId,
-//       address: spot.address,
-//       city: spot.city,
-//       state: spot.state,
-//       country: spot.country,
-//       lat: spot.lat,
-//       lng: spot.lng,
-//       name: spot.name,
-//       description: spot.description,
-//       price: spot.price,
-//       createdAt: spot.createdAt,
-//       updatedAt: spot.updatedAt,
-//       avgRating: spot.avgRating,
-//       previewImage: spot.SpotImages.length ? spot.SpotImages[0].url : null,
-//     }));
-
-//     const properResponse = {
-//       Spots: spotsWithImage,
-//     };
-//     //   res.json(allSpots);
-//     // const properResponse = {
-//     //   Spots: allSpots,
-//     // };
-
-//     res.status(200).json(properResponse);
+//     res.status(200).json({ Spots: rows, page, size });
 //   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: "Spots could not be found" });
+//     res.status(500).json({ message: "Internal server error" });
 //   }
 // });
+
+// Get all spots -- needs to be worked on
+
+router.get("/", async (req, res) => {
+  try {
+    const allSpots = await Spot.findAll({
+      include: {
+        model: Image,
+        as: "SpotImages",
+        attributes: ["url"],
+        required: false,
+        limit: 1,
+      },
+      group: ["Spot.id", "SpotImages.id"],
+    });
+
+    const spotsWithImage = allSpots.map((spot) => ({
+      id: spot.id,
+      ownerId: spot.ownerId,
+      address: spot.address,
+      city: spot.city,
+      state: spot.state,
+      country: spot.country,
+      lat: spot.lat,
+      lng: spot.lng,
+      name: spot.name,
+      description: spot.description,
+      price: spot.price,
+      createdAt: spot.createdAt,
+      updatedAt: spot.updatedAt,
+      avgRating: spot.avgRating,
+      previewImage: spot.SpotImages.length ? spot.SpotImages[0].url : null,
+    }));
+
+    const properResponse = {
+      Spots: spotsWithImage,
+    };
+    //   res.json(allSpots);
+    // const properResponse = {
+    //   Spots: allSpots,
+    // };
+
+    res.status(200).json(properResponse);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Spots could not be found" });
+  }
+});
 
 //GET the current user's spots
 router.get("/mySpots", requireAuth, async (req, res) => {
