@@ -240,14 +240,15 @@ router.get("/", async (req, res) => {
       include: {
         model: Image,
         as: "SpotImages",
+        duplicating: false,
         attributes: ["url"],
         required: false,
         limit: 1,
       },
       attributes: {
         include: [
-          [Sequelize.fn("COUNT", Sequelize.col("Reviews.id")), "numReviews"],
-          [Sequelize.fn("AVG", Sequelize.col("Reviews.stars")), "avgRating"],
+          [sequelize.fn("COUNT", sequelize.col("Reviews.id")), "numReviews"],
+          [sequelize.fn("AVG", sequelize.col("Reviews.stars")), "avgRating"],
         ],
       },
       group: [
