@@ -244,7 +244,27 @@ router.get("/", async (req, res) => {
         required: false,
         limit: 1,
       },
-      group: ["Spot.id", "SpotImages.id"],
+      attributes: {
+        include: [
+          [Sequelize.fn("COUNT", Sequelize.col("Reviews.id")), "numReviews"],
+          [Sequelize.fn("AVG", Sequelize.col("Reviews.stars")), "avgRating"],
+        ],
+      },
+      group: [
+        "Spot.id",
+        "Spot.ownerId",
+        "Spot.address",
+        "Spot.city",
+        "Spot.state",
+        "Spot.country",
+        "Spot.lat",
+        "Spot.lng",
+        "Spot.name",
+        "Spot.description",
+        "Spot.price",
+        "Spot.createdAt",
+        "Spot.updatedAt",
+      ],
     });
 
     const spotsWithImage = allSpots.map((spot) => ({
@@ -261,17 +281,13 @@ router.get("/", async (req, res) => {
       price: spot.price,
       createdAt: spot.createdAt,
       updatedAt: spot.updatedAt,
-      avgRating: spot.avgRating,
+      avgRating: parseFloat(spot.avgRating),
       previewImage: spot.SpotImages.length ? spot.SpotImages[0].url : null,
     }));
 
     const properResponse = {
       Spots: spotsWithImage,
     };
-    //   res.json(allSpots);
-    // const properResponse = {
-    //   Spots: allSpots,
-    // };
 
     res.status(200).json(properResponse);
   } catch (error) {
@@ -279,6 +295,7 @@ router.get("/", async (req, res) => {
     res.status(500).json({ error: "Spots could not be found" });
   }
 });
+
 //GET the current user's spots
 router.get("/mySpots", requireAuth, async (req, res) => {
   const { user } = req;
