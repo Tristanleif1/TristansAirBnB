@@ -190,7 +190,7 @@ router.get("/", validQueryParameters, async (req, res) => {
           "updatedAt",
           [sequelize.fn("COUNT", sequelize.col("Reviews.id")), "numReviews"],
           [sequelize.fn("AVG", sequelize.col("Reviews.stars")), "avgRating"],
-          [sequelize.fn("COUNT", sequelize.col("Spot.id")), "numOfEntries"],
+          // [sequelize.fn("COUNT", sequelize.col("Spot.id")), "numOfEntries"],
         ],
       },
       where: {
@@ -198,7 +198,7 @@ router.get("/", validQueryParameters, async (req, res) => {
         lng: { [Op.between]: [minLng, maxLng] },
         price: { [Op.between]: [minPrice, maxPrice] },
       },
-      group: ["Spot.id"],
+      group: ["Spot.id", "SpotImages.id"],
       limit,
       offset,
     });
