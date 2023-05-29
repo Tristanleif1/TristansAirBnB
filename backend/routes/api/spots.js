@@ -140,7 +140,7 @@ const validQueryParameters = [
   handleValidationErrors,
 ];
 
-//Get all spots with query filters (when placed below get all routes, they both return all spots with no filters applied)
+//Get all spots with query filters (still not working, only works locally when group: ['spot.id'] is included)
 
 router.get("/", validQueryParameters, async (req, res) => {
   let { minLat, minLng, maxLat, maxLng, minPrice, maxPrice } = req.query;
@@ -190,7 +190,7 @@ router.get("/", validQueryParameters, async (req, res) => {
           "updatedAt",
           [sequelize.fn("COUNT", sequelize.col("Reviews.id")), "numReviews"],
           [sequelize.fn("AVG", sequelize.col("Reviews.stars")), "avgRating"],
-          [sequelize.fn("COUNT", sequelize.col("id")), "numSpots"],
+          [sequelize.fn("COUNT", sequelize.col("Spot.id")), "numOfEntries"],
         ],
       },
       where: {
@@ -198,7 +198,7 @@ router.get("/", validQueryParameters, async (req, res) => {
         lng: { [Op.between]: [minLng, maxLng] },
         price: { [Op.between]: [minPrice, maxPrice] },
       },
-      // group: ["Spot.id"],
+      group: ["Spot.id"],
       limit,
       offset,
     });
