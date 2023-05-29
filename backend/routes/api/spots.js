@@ -262,7 +262,7 @@ router.get("/", async (req, res) => {
       price: spot.price,
       createdAt: spot.createdAt,
       updatedAt: spot.updatedAt,
-      avgRating: spot.avgRating,
+      avgRating: spot.avgRating !== null ? spot.avgRating.toFixed(2) : null,
       previewImage: spot.SpotImages.length ? spot.SpotImages[0].url : null,
     }));
 
