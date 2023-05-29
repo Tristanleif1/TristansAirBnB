@@ -351,8 +351,9 @@ router.get("/:id", async (req, res) => {
         [sequelize.fn("COUNT", sequelize.col("Reviews.id")), "numReviews"],
         [sequelize.fn("AVG", sequelize.col("Reviews.stars")), "avgStarRating"],
       ],
-      group: ["Spot.id"],
+      // group: ["Spot.id"],
     },
+    group: ["Spot.id"],
   });
 
   if (!selectedSpot) {
