@@ -245,7 +245,7 @@ router.get("/", async (req, res) => {
         required: false,
         limit: 1,
       },
-      // group: ["Spot.id", "SpotImages.id"],
+       group: ["Spot.id", "SpotImages.id"],
     });
 
     const spotsWithImage = allSpots.map((spot) => ({
