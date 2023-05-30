@@ -939,7 +939,7 @@ Update and return an existing review.
 - Request
 
   - Method: ? PUT
-  - URL: ? ('/reviews/:id', async (req, res) => )
+  - URL: ? ('/reviews/:id')
   - Headers:
     - Content-Type: application/json
   - Body:
@@ -1403,8 +1403,8 @@ Delete an existing image for a Spot.
 - Require proper authorization: Spot must belong to the current user
 - Request
 
-  - Method: ? - DELETE, (Spot router)
-  - URL: ? ('images/:id')
+  - Method: ? - DELETE
+  - URL: ? ('/images/spots/:id')
   - Body: none
 
 - Successful Response
@@ -1441,8 +1441,8 @@ Delete an existing image for a Review.
 - Require proper authorization: Review must belong to the current user
 - Request
 
-  - Method: ? DELETE (Review router)
-  - URL: ? ('/images/:id')
+  - Method: ? DELETE
+  - URL: ? ('/images/reviews/:id')
   - Body: none
 
 - Successful Response
