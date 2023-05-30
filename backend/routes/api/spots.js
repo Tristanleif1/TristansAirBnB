@@ -494,14 +494,26 @@ router.put("/:id", requireAuth, validPost, async (req, res) => {
 
 router.delete("/:id", requireAuth, async (req, res) => {
   const spotId = +req.params.id;
-  const deleteSpot = await Spot.findByPk(spotId);
-  if (deleteSpot) {
-    await deleteSpot.destroy();
-    res.status(200).json({ message: "Successfully deleted" });
-  } else
-    res.status(404).json({
-      message: "Spot couldn't be found",
+  const userId = req.user.id;
+
+  try {
+    const deleteSpot = await Spot.findOne({
+      where: {
+        id: spotId,
+        ownerId: userId,
+      },
     });
+
+    if (deleteSpot) {
+      await deleteSpot.destroy();
+      res.status(200).json({ message: "Successfully deleted" });
+    } else {
+      res.status(404).json({ message: "Spot couldn't be found" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 });
 
 // Create a Review for a Spot based on Spot's id

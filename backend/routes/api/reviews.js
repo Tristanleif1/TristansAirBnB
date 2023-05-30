@@ -111,20 +111,23 @@ router.get("/myReviews", requireAuth, async (req, res) => {
 router.post("/:id/images", requireAuth, async (req, res) => {
   const reviewId = req.params.id;
   const { url } = req.body;
-  const user = req.user.id;
+  const userId = req.user.id;
 
   try {
+    //
     const review = await Review.findOne({
-      where: { id: reviewId, userId: user },
+      where: { id: reviewId, userId },
     });
+
     if (!review) {
-      return res.status(404).json({ message: "Review could not be found" });
+      return res.status(404).json({ message: "Review couldn't be found" });
     }
 
     const imageCount = await Image.count({
       where: { imageableId: reviewId, imageableType: "Review" },
     });
-    if (imageCount > 10) {
+
+    if (imageCount >= 10) {
       return res.status(403).json({
         message: "Maximum number of images for this resource was reached",
       });
@@ -135,10 +138,12 @@ router.post("/:id/images", requireAuth, async (req, res) => {
       imageableId: reviewId,
       imageableType: "Review",
     });
+
     const expectedReviewResponse = {
       id: newReviewImage.id,
       url: newReviewImage.url,
     };
+
     res.status(200).json(expectedReviewResponse);
   } catch (error) {
     console.error(error);
@@ -177,24 +182,33 @@ router.put("/:id", requireAuth, validReview, async (req, res) => {
 
 // Delete a review
 
-router.delete('/:id', requireAuth, async (req, res) => {
-    const reviewId = +req.params.id;
-    const deleteReview = await Review.findByPk(reviewId);
-    if(deleteReview){
-        await deleteReview.destroy();
-        res.status(200).json({ message: "Successfully deleted"})
-    } else {
-        res.status(404).json({
-            message: "Review couldn't be found"
-        })
+router.delete("/:id", requireAuth, async (req, res) => {
+  const reviewId = +req.params.id;
+
+  try {
+    const review = await Review.findByPk(reviewId);
+
+    if (!review) {
+      res.status(404).json({ message: "Review couldn't be found" });
+      return;
     }
-})
 
+    // Check if the Review belongs to the current user
+    if (review.userId !== req.user.id) {
+      res.status(403).json({
+        message: "Unauthorized: Review doesn't belong to the current user",
+      });
+      return;
+    }
 
+    // Delete the Review
+    await review.destroy();
 
-
-
-
-
+    res.status(200).json({ message: "Successfully deleted" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
 
 module.exports = router;
