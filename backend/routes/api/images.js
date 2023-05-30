@@ -47,6 +47,8 @@ router.delete("/spots/:id", requireAuth, async (req, res) => {
   }
 });
 
+//Deletes a review image belonging to an authenticated user
+
 router.delete("/reviews/:id", requireAuth, async (req, res) => {
   const imageId = +req.params.id;
   const userId = req.user.id;
