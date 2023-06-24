@@ -2,8 +2,8 @@
 const express = require("express");
 const { Op } = require("sequelize");
 const bcrypt = require("bcryptjs");
-const { check } = require('express-validator');
-const { handleValidationErrors } = require('../../utils/validation');
+const { check } = require("express-validator");
+const { handleValidationErrors } = require("../../utils/validation");
 
 const { setTokenCookie, restoreUser } = require("../../utils/auth");
 const { User } = require("../../db/models");
@@ -12,24 +12,21 @@ const router = express.Router();
 
 // backend/routes/api/session.js
 
-
 // ...
 
-
 const validateLogin = [
-  check('credential')
+  check("credential")
     .exists({ checkFalsy: true })
     .notEmpty()
-    .withMessage('Please provide a valid email or username.'),
-  check('password')
+    .withMessage("Please provide a valid email or username."),
+  check("password")
     .exists({ checkFalsy: true })
-    .withMessage('Please provide a password.'),
-  handleValidationErrors
+    .withMessage("Please provide a password."),
+  handleValidationErrors,
 ];
 
 // Log in
-router.post("/",
-validateLogin, async (req, res, next) => {
+router.post("/", validateLogin, async (req, res, next) => {
   const { credential, password } = req.body;
 
   const user = await User.unscoped().findOne({
@@ -53,6 +50,10 @@ validateLogin, async (req, res, next) => {
     id: user.id,
     email: user.email,
     username: user.username,
+    createdAt: user.createdAt,
+    updatedAt: user.updatedAt,
+    firstName: user.firstName,
+    lastName: user.lastName,
   };
 
   await setTokenCookie(res, safeUser);
