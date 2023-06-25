@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import * as sessionActions from "../../store/session";
+import "./SignUpForm.css";
 
 function SignupFormPage() {
   const dispatch = useDispatch();
@@ -36,12 +37,13 @@ function SignupFormPage() {
       });
     }
     return setErrors({
-      confirmPassword: "Confirm Password field must be the same as the Password field"
+      confirmPassword:
+        "Confirm Password field must be the same as the Password field",
     });
   };
 
   return (
-    <>
+    <div className="signup-form">
       <h1>Sign Up</h1>
       <form onSubmit={handleSubmit}>
         <label>
@@ -106,7 +108,7 @@ function SignupFormPage() {
         {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
         <button type="submit">Sign Up</button>
       </form>
-    </>
+    </div>
   );
 }
 
