@@ -1,4 +1,4 @@
-import { response } from "../../../backend/app";
+
 
 const LOAD = "spots/LOAD";
 const LOAD_SPOTS = "spots/LOAD_SPOTS";
@@ -82,3 +82,40 @@ export const deleteSpot = (id) => async (dispatch) => {
     dispatch(removeSpot(id));
   }
 };
+
+
+const initialState = {
+};
+
+const spotReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case LOAD_SPOTS:
+      const allSpots = {};
+      action.spots.forEach((spot) => {
+        allSpots[spot.id] = spot
+      })
+      return {
+        ...state,
+        ...allSpots
+      }
+    case REMOVE_SPOT:
+      const newState = {...state};
+      delete newState[action.spot.id];
+      return newState;
+
+    case UPDATE_SPOT:
+      return {
+        ...state,
+        [action.spot.id]: action.spot
+      };
+    case ADD_SPOT:
+      if(!state[action.spot.id]){
+        const newState = {
+          ...state,
+          [action.spot.id]: action.spot
+        }
+      };
+      default:
+      return state;
+  }
+}
