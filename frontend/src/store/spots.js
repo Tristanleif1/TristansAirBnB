@@ -34,7 +34,7 @@ export const loadAllSpots = () => async (dispatch) => {
 
   if (response.ok) {
     const loadedSpots = await response.json();
-    console.log(loadedSpots)
+    console.log(loadedSpots);
     dispatch(loadSpots(loadedSpots));
   }
 };
@@ -86,7 +86,7 @@ const initialState = {
   Spots: [],
 };
 
-const spotReducer = (state = initialState, action) => {
+export const spotReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_SPOTS:
       const allSpots = {};
@@ -97,9 +97,41 @@ const spotReducer = (state = initialState, action) => {
         ...state,
         Spots: action.spots.Spots,
       };
-    default:
+      default:
       return state;
   }
 };
 
-export default spotReducer;
+export const selectedSpotReducer = (state = {}, action) => {
+  switch (action.type) {
+    case LOAD:
+      return { ...state, ...action.spot };
+    default:
+      return state;
+  };
+};
+
+export const createSpotReducer = (state = {}, action) => {
+  switch (action.type) {
+    case ADD_SPOT:
+      const newSpot = {
+        id: action.spot.id,
+        address: action.spot.address,
+        city: action.spot.city,
+        state: action.spot.state,
+        country: action.spot.country,
+        lat: action.spot.lat,
+        lng: action.spot.lng,
+        name: action.spot.name,
+        description: action.spot.description,
+        price: action.spot.price,
+      };
+
+      return {
+        ...state,
+        [newSpot.id]: newSpot,
+      };
+    default:
+      return state;
+  }
+};

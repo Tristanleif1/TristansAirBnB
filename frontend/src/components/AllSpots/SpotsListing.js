@@ -12,7 +12,7 @@ const SpotsListing = () => {
     dispatch(loadAllSpots());
   }, []);
 
-  console.log(spots.spot);
+  // console.log(spots.spot);
 
   // console.log(spots);
 
