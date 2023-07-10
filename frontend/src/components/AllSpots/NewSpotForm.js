@@ -1,21 +1,53 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { createSpot } from '../../store/spots';
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { createSpot } from "../../store/spots";
+import { useHistory } from "react-router-dom";
+import { loadAllSpots } from "../../store/spots";
+import "./NewSpot.css";
 
 const NewSpotForm = () => {
   const dispatch = useDispatch();
-  const [country, setCountry] = useState('');
-  const [streetAddress, setStreetAddress] = useState('');
-  const [city, setCity] = useState('');
-  const [state, setState] = useState('');
-  const [description, setDescription] = useState('');
-  const [name, setName] = useState('');
+  const history = useHistory();
+  const user = useSelector((state) => state.session.user); // get the current logged-in user
+  // console.log(user);
+  // add states for new fields
+  const [streetAddress, setStreetAddress] = useState("");
+  const [previewImage, setPreviewImage] = useState("");
+  const [image1, setImage1] = useState("");
+  const [image2, setImage2] = useState("");
+  const [image3, setImage3] = useState("");
+  const [image4, setImage4] = useState("");
+  const [country, setCountry] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [description, setDescription] = useState("");
+  const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
+  const [errors, setErrors] = useState({});
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // form validation
+    let newErrors = {};
+
+    if (description.length < 30) {
+      newErrors.description = "Description needs 30 or more characters.";
+    }
+    if (!previewImage) {
+      newErrors.previewImage = "Preview Image URL is required.";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    // If we passed all checks, clear errors
+    setErrors({});
+
     const spotData = {
+      ownerId: user.id,
       address: streetAddress,
       city,
       state,
@@ -23,70 +55,132 @@ const NewSpotForm = () => {
       description,
       name,
       price,
+      images: [previewImage, image1, image2, image3, image4].filter(Boolean), // exclude empty strings
     };
 
     dispatch(createSpot(spotData))
       .then((createdSpot) => {
         if (createdSpot) {
-          // Handle successful spot creation
-          console.log('Spot created:', createdSpot);
           // Reset form fields
-          setCountry('');
-          setStreetAddress('');
-          setCity('');
-          setState('');
-          setDescription('');
-          setName('');
+          setCountry("");
+          setStreetAddress("");
+          setCity("");
+          setState("");
+          setDescription("");
+          setName("");
           setPrice(0);
-        }
+          setPreviewImage("");
+          setImage1("");
+          setImage2("");
+          setImage3("");
+          setImage4("");
+          // Navigate to the new spot's detail page
+
+          history.push(`/spots/${createdSpot.id}`);
+
+          // Load all spots
+          dispatch(loadAllSpots());
+        };
       })
       .catch((error) => {
-        // Handle spot creation error
-        console.error('Spot creation error:', error);
+        setErrors({ ...errors, api: error.toString() });
       });
   };
 
+
   return (
-    <div>
-      <h1>Create a New Spot</h1>
-      <form onSubmit={handleSubmit}>
-        {/* First Section: Place Location */}
-        <h2>Where's your place located?</h2>
-        <p>Guests will only get your exact address once they booked a reservation.</p>
+    <div className="spot-form-container">
+      <h1 className="spot-form-title">Create a New Spot</h1>
+      <form className="spot-form" onSubmit={handleSubmit}>
+        {errors.length > 0 && (
+          <div className="spot-form-errors">
+            {errors.map((error, i) => (
+              <div key={i}>{error}</div>
+            ))}
+          </div>
+        )}
+
+        <h2 className="spot-form-section-title">Where's your place located?</h2>
+        <p className="spot-form-section-description">
+          Guests will only get your exact address once they booked a
+          reservation.
+        </p>
         <label htmlFor="country">Country</label>
         <input
-          type="text"
           id="country"
+          type="text"
+          placeholder="Country"
           value={country}
           onChange={(e) => setCountry(e.target.value)}
           required
         />
-        {/* Render inputs for street address, city, and state */}
+        <label htmlFor="streetAddress">Street Address</label>
+        <input
+          id="streetAddress"
+          type="text"
+          placeholder="Street Address"
+          value={streetAddress}
+          onChange={(e) => setStreetAddress(e.target.value)}
+          required
+        />
+        <label htmlFor="city">City</label>
+        <input
+          id="city"
+          type="text"
+          placeholder="City"
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
+          required
+        />
+        <label htmlFor="state">State</label>
+        <input
+          id="state"
+          type="text"
+          placeholder="State"
+          value={state}
+          onChange={(e) => setState(e.target.value)}
+          required
+        />
 
-        {/* Second Section: Describe the Place */}
-        <h2>Describe your place to guests</h2>
-        <p>Mention the best features of your space, any special amenities like fast wifi or parking, and what you love about the neighborhood.</p>
+        <h2 className="spot-form-section-title">
+          Describe your place to guests
+        </h2>
+        <p className="spot-form-section-description">
+          Mention the best features of your space, any special amentities like
+          fast wifi or parking, and what you love about the neighborhood.
+        </p>
         <textarea
+          placeholder="Please write at least 30 characters"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           required
         />
 
-        {/* Third Section: Create a Title */}
-        <h2>Create a title for your spot</h2>
-        <p>Catch guests' attention with a spot title that highlights what makes your place special.</p>
+        <h2 className="spot-form-section-title">
+          Create a title for your spot
+        </h2>
+        <p className="spot-form-section-description">
+          Catch guests' attention with a spot title that highlights what makes
+          your place special.
+        </p>
         <input
           type="text"
+          placeholder="Name of your spot"
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
         />
 
-        {/* Fourth Section: Set Base Price */}
-        <h2>Set a base price for your spot</h2>
-        <p>Competitive pricing can help your listing stand out and rank higher in search results.</p>
+        <h2 className="spot-form-section-title">
+          Set a base price for your spot
+        </h2>
+        <p className="spot-form-section-description">
+          Competitive pricing can help your listing stand out and rank higher in
+          search results.
+        </p>
         <input
           type="number"
+          placeholder="Price per night (USD)"
           min="0"
           step="0.01"
           value={price}
@@ -94,11 +188,55 @@ const NewSpotForm = () => {
           required
         />
 
-        {/* Submit Button */}
-        <button type="submit">Create Spot</button>
+        <h2 className="spot-form-section-title">
+          Liven up your spot with photos
+        </h2>
+        <p className="spot-form-section-description">
+          Submit a link to at least one photo to publish your spot.
+        </p>
+        <input
+          className="spot-form-input"
+          type="text"
+          placeholder="Preview Image URL"
+          value={previewImage}
+          onChange={(e) => setPreviewImage(e.target.value)}
+          required
+        />
+        <input
+          className="spot-form-input"
+          type="text"
+          placeholder="Image URL"
+          value={image1}
+          onChange={(e) => setImage1(e.target.value)}
+        />
+        <input
+          className="spot-form-input"
+          type="text"
+          placeholder="Image URL"
+          value={image2}
+          onChange={(e) => setImage2(e.target.value)}
+        />
+        <input
+          className="spot-form-input"
+          type="text"
+          placeholder="Image URL"
+          value={image3}
+          onChange={(e) => setImage3(e.target.value)}
+        />
+        <input
+          className="spot-form-input"
+          type="text"
+          placeholder="Image URL"
+          value={image4}
+          onChange={(e) => setImage4(e.target.value)}
+        />
+        <button className="spot-form-button" type="submit">
+          Create Spot
+        </button>
       </form>
     </div>
   );
 };
+
 
 export default NewSpotForm;

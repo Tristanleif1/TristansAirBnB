@@ -1,3 +1,9 @@
+.logged-in-li {
+  display: flex;
+  gap: 20px;  /* this adds a 20px gap between the link and the profile button */
+}
+
+
 .nav-menu {
   display: flex;
   justify-content: space-between;

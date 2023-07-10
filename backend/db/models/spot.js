@@ -88,7 +88,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       lat: {
         type: DataTypes.DECIMAL,
-        allowNull: false,
+        allowNull: true,
         validate: {
           notEmpty: {
             msg: "Latitude is not valid",
@@ -100,7 +100,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       lng: {
         type: DataTypes.DECIMAL,
-        allowNull: false,
+        allowNull: true,
         validate: {
           notEmpty: {
             msg: "Longitude is not valid",

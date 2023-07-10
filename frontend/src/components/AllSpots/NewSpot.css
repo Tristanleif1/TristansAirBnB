@@ -1,0 +1,57 @@
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+.spot-form-container {
+  max-width: 500px;
+  margin: auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.spot-form-container h1,
+.spot-form-container h2 {
+  color: #484848;
+}
+
+.spot-form-container p {
+  color: #767676;
+}
+
+.spot-form-container label {
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.spot-form-container input[type="text"],
+.spot-form-container input[type="number"],
+.spot-form-container textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+  margin-top: 5px;
+}
+
+.spot-form-container textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.spot-form-container button {
+  margin-top: 20px;
+  background-color: #ff5a5f;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.spot-form-container button:hover {
+  background-color: #ff717e;
+}

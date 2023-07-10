@@ -1,8 +1,10 @@
+import { csrfFetch } from "./csrf";
 const LOAD = "spots/LOAD";
 const LOAD_SPOTS = "spots/LOAD_SPOTS";
 const ADD_SPOT = "spots/ADD_SPOT";
 const REMOVE_SPOT = "spots/REMOVE_SPOT";
 const UPDATE_SPOT = "spots/UPDATE_SPOT";
+
 
 const load = (spot) => ({
   type: LOAD,
@@ -36,29 +38,58 @@ export const loadAllSpots = () => async (dispatch) => {
     const loadedSpots = await response.json();
     console.log(loadedSpots);
     dispatch(loadSpots(loadedSpots));
+    return loadedSpots
   }
 };
 
 export const loadSingleSpot = (id) => async (dispatch) => {
+  dispatch(load({ spot: null, isLoading: true }));
+
   const response = await fetch(`/api/spots/${id}`);
 
   if (response.ok) {
     const spot = await response.json();
-    dispatch(load(spot));
+    dispatch(load({ spot, isLoading: false }));
+  }
+};
+
+export const loadUserSpots = () => async (dispatch) => {
+  const response = await csrfFetch(`/api/spots/mySpots`);
+
+  if (response.ok) {
+    const userSpots = await response.json();
+    dispatch(loadSpots(userSpots));
+    return userSpots
   }
 };
 
 export const createSpot = (data) => async (dispatch) => {
-  const response = await fetch(`/api/spots`, {
+  const response = await csrfFetch(`/api/spots`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(data),
   });
+
   const createdSpot = await response.json();
-  console.log(createdSpot);
-  dispatch(addSpot(createdSpot));
+
+  if (createdSpot) {
+    dispatch(addSpot(createdSpot))
+
+    // Wait for 2 seconds before reloading all spots
+    setTimeout(() => {
+      dispatch(loadAllSpots());
+    }, 2000);
+  }
+
+  return new Promise((resolve, reject) => {
+    if (createdSpot) {
+      resolve(createdSpot);
+    } else {
+      reject(new Error('Spot could not be created'));
+    }
+  });
 };
 
 export const editSpot = (spot) => async (dispatch) => {
@@ -82,11 +113,12 @@ export const deleteSpot = (id) => async (dispatch) => {
   }
 };
 
-const initialState = {
+const spotInitialState = {
   Spots: [],
+  newSpotCreated: false
 };
 
-export const spotReducer = (state = initialState, action) => {
+export const spotReducer = (state = spotInitialState, action) => {
   switch (action.type) {
     case LOAD_SPOTS:
       const allSpots = {};
@@ -96,42 +128,76 @@ export const spotReducer = (state = initialState, action) => {
       return {
         ...state,
         Spots: action.spots.Spots,
+        newSpotCreated: false,
       };
-      default:
+      case ADD_SPOT:
+      return {
+        ...state,
+        Spots: [action.spot,...state.Spots],
+        newSpotCreated: true
+      };
+    default:
       return state;
   }
 };
 
-export const selectedSpotReducer = (state = {}, action) => {
+const initialState = {
+  spot: null,
+  isLoading: true,
+}
+
+
+export const selectedSpotReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOAD:
-      return { ...state, ...action.spot };
+      return action.spot;
     default:
       return state;
   };
 };
 
-export const createSpotReducer = (state = {}, action) => {
-  switch (action.type) {
-    case ADD_SPOT:
-      const newSpot = {
-        id: action.spot.id,
-        address: action.spot.address,
-        city: action.spot.city,
-        state: action.spot.state,
-        country: action.spot.country,
-        lat: action.spot.lat,
-        lng: action.spot.lng,
-        name: action.spot.name,
-        description: action.spot.description,
-        price: action.spot.price,
-      };
 
-      return {
-        ...state,
-        [newSpot.id]: newSpot,
-      };
-    default:
-      return state;
-  }
-};
+// const spotInitialState = {
+//   Spots: [],
+// };
+
+// export const spotReducer = (state = spotInitialState, action) => {
+//   switch (action.type) {
+//     case LOAD_SPOTS:
+//       const allSpots = {};
+//       action.spots.Spots.forEach((spot) => {
+//         allSpots[spot.id] = spot;
+//       });
+//       return {
+//         ...state,
+//         Spots: action.spots.Spots,
+//       };
+//       case ADD_SPOT:
+//       return {
+//         ...state,
+//         Spots: [...state.Spots, action.spot]
+//       };
+//     default:
+//       return state;
+//   }
+// };
+
+
+// export const createSpot = (data) => async (dispatch) => {
+//   const response = await csrfFetch(`/api/spots`, {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify(data),
+//   });
+//   const createdSpot = await response.json();
+//   dispatch(addSpot(createdSpot))
+//   return new Promise(resolve => {
+//     if (createdSpot) {
+//       resolve(createdSpot);
+//     } else {
+//       throw new Error('Spot could not be created');
+//     }
+//   });
+// };

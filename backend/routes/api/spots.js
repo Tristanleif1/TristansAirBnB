@@ -40,11 +40,13 @@ const validPost = [
     .isLength({ max: 49 })
     .withMessage("Country must be less than 50 characters."),
   check("lat")
+    .optional()
     .notEmpty()
     .withMessage("Latitude is required.")
     .isDecimal()
     .withMessage("Latitude is not valid"),
   check("lng")
+    .optional()
     .notEmpty()
     .withMessage("Longitude is required.")
     .isDecimal()
@@ -287,13 +289,20 @@ router.get("/mySpots", requireAuth, async (req, res) => {
 
   const mySpots = await Spot.findAll({
     where: { ownerId: user.id },
-    include: {
+    include: [
+      {
       model: Image,
       as: "SpotImages",
       attributes: ["url"],
       required: false,
       limit: 1,
     },
+    {
+      model: User,
+      as: "Owner",
+      attributes: ["id", "firstName", "lastName"]
+    },
+  ],
   });
 
   const spotsWithpreviewImage = mySpots.map((spot) => ({
@@ -311,6 +320,7 @@ router.get("/mySpots", requireAuth, async (req, res) => {
     createdAt: spot.createdAt,
     updatedAt: spot.updatedAt,
     avgRating: spot.avgRating,
+    Owner: spot.Owner,
     previewImage: spot.SpotImages.map((image, idx) => ({
       id: image.id,
       url: image.url,
@@ -396,8 +406,18 @@ router.get("/:id", async (req, res) => {
 //Post a spot
 
 router.post("/", requireAuth, validPost, async (req, res) => {
-  const { address, city, state, country, lat, lng, name, description, price } =
-    req.body;
+  const {
+    address,
+    city,
+    state,
+    country,
+    lat,
+    lng,
+    name,
+    description,
+    price,
+    images,
+  } = req.body;
 
   const ownerId = req.user.id;
 
@@ -414,13 +434,29 @@ router.post("/", requireAuth, validPost, async (req, res) => {
       price,
       ownerId,
     });
+
+
+    if (Array.isArray(images)) {
+
+      const newImages = await Image.bulkCreate(
+        images.map((url, index) => ({
+          url,
+          imageableId: newSpot.id,
+          imageableType: "Spot",
+          preview: index === 0 ? true : false, // set the first image as the preview image
+        }))
+      );
+
+      // add images to the response
+      newSpot.dataValues.images = newImages;
+    }
+
     res.status(201).json(newSpot);
   } catch (error) {
     console.error(error);
     res.status(400).json({ message: "Bad Request" });
   }
 });
-
 //Post an image to a spot
 
 router.post("/:id/images", requireAuth, async (req, res) => {
@@ -731,22 +767,32 @@ router.post("/:id/bookings", requireAuth, validBooking, async (req, res) => {
   }
 });
 
-//Add Query Filters to Get All Spots
+//Post a spot (this one working before image implementatioon)
 
-// if (minLat && maxLat) {
-//   queryFormat.where.lat = {
-//     [Op.between]: [(minLat),(maxLat)],
-//   };
-// }
-// if (minLng && maxLng) {
-//   queryFormat.where.lng = {
-//     [Op.between]: [minLng,maxLng],
-//   };
-// }
-// if (minPrice && maxPrice) {
-//   queryFormat.where.price = {
-//     [Op.between]: [minPrice,maxPrice],
-//   };
-//
+// router.post("/", requireAuth, validPost, async (req, res) => {
+//   const { address, city, state, country, lat, lng, name, description, price } =
+//     req.body;
+
+//   const ownerId = req.user.id;
+
+//   try {
+//     const newSpot = await Spot.create({
+//       address,
+//       city,
+//       state,
+//       country,
+//       lat,
+//       lng,
+//       name,
+//       description,
+//       price,
+//       ownerId,
+//     });
+//     res.status(201).json(newSpot);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(400).json({ message: "Bad Request" });
+//   }
+// });
 
 module.exports = router;
