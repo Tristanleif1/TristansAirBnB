@@ -1,85 +1,89 @@
 .spot-detail {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
 
-  .spot-detail__name {
-    font-size: 2rem;
-    font-weight: bold;
-    margin-bottom: 15px;
-  }
+.spot-detail__name {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
 
-  .spot-detail__location {
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin-bottom: 25px;
-  }
+.spot-detail__location {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 25px;
+}
 
-  .spot-detail__images {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 25px;
-  }
+.spot-detail__images {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 25px;
+}
 
-  .spot-detail__image-large {
-    width: 100%;
-    max-width: 800px;
-    height: auto;
-  }
+.spot-detail__image-large {
+  grid-column: 1 / 2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
-  .spot-detail__image-thumbnails {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
+.spot-detail__image-thumbnails {
+  grid-column: 2 / 4;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-rows: minmax(100px, auto);
+  gap: 10px;
+}
 
-  .spot-detail__image-small {
-    width: 100px;
-    height: auto;
-  }
+.spot-detail__image-small {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
-  .spot-detail__host {
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin-bottom: 15px;
-  }
+.spot-detail__host {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
 
-  .spot-detail__description {
-    font-size: 1.1rem;
-    line-height: 1.5;
-    margin-bottom: 25px;
-  }
+.spot-detail__description {
+  font-size: 1.1rem;
+  line-height: 1.5;
+  margin-bottom: 25px;
+}
 
-  .spot-detail__booking {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+.spot-detail__booking {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-  .spot-detail__price {
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin-bottom: 15px;
-  }
+.spot-detail__price {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
 
-  .spot-detail__reserve-button {
-    font-size: 1.1rem;
-    font-weight: 600;
-    padding: 10px 20px;
-    background-color: #FF5A5F;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.2s;
-  }
+.spot-detail__reserve-button {
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 10px 20px;
+  background-color: #FF5A5F;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
 
-  .spot-detail__reserve-button:hover {
-    background-color: #FF7478;
-  }
+.spot-detail__reserve-button:hover {
+  background-color: #FF7478;
+}

@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { useEffect } from 'react';
 import { loadUserSpots } from '../../store/spots';
 import SpotComponent from './SpotComponent';
+import "./AllSpots.css"
 
 const ManageSpotsComponent = () => {
     const dispatch = useDispatch();
@@ -17,7 +18,7 @@ const ManageSpotsComponent = () => {
       <div>
         <h1>Manage Spots</h1>
         {spots.length ? (
-          <div className="ui grid container">
+          <div className="ui container center spot-list">
             {spots.map((spot) => (
               <SpotComponent key={spot.id} spot={spot} isManageSpotsComponent />
             ))}

@@ -4,32 +4,24 @@ import { useParams } from "react-router-dom";
 import { loadSingleSpot } from "../../store/spots";
 import "./SpotDetails.css";
 
-
 const SpotDetail = () => {
   const { spotId } = useParams();
-  const {spot, isLoading} = useSelector((state) => state.selectedSpot);
+  const { spot, isLoading } = useSelector((state) => state.selectedSpot);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(loadSingleSpot(spotId));
-  }, [spotId]);
-
-  // console.log(spot);
+  }, [dispatch, spotId]);
 
   if (isLoading || !spot) {
     return <div>Loading...</div>;
   }
 
-  const { name, city, state, country, SpotImages, Owner, description, price } =
-    spot;
+  const { name, city, state, country, SpotImages, Owner, description, price } = spot;
 
-  // console.log(spot.Owner.firstName)
+  const previewImage = SpotImages?.find((image) => image.preview)?.url;
 
-  const previewImage =
-    SpotImages && SpotImages.length
-      ? SpotImages.find((image) => image.preview)?.url
-      : null;
-  console.log(previewImage);
+  const otherImages = SpotImages?.filter((image) => !image.preview);
 
   const reserveSpot = () => {
     alert("Feature coming soon");
@@ -44,26 +36,24 @@ const SpotDetail = () => {
       <div className="spot-detail__images">
         <img
           src={previewImage}
-          alt="Large"
+          alt={name}
           className="spot-detail__image-large"
         />
         <div className="spot-detail__image-thumbnails">
-          {SpotImages?.map((image, index) => (
+          {otherImages?.map((image, index) => (
             <img
               key={index}
               src={image.url}
-              alt={`Small ${index}`}
+              alt={`${name} ${index}`}
               className="spot-detail__image-small"
             />
           ))}
         </div>
       </div>
-      <p className="spot-detail__host">
-      Hosted by {Owner?.firstName && Owner?.lastName ? `${Owner.firstName} ${Owner.lastName}` : 'Loading host information...'}
-      </p>
+      <p className="spot-detail__host">Hosted by {Owner.firstName} {Owner.lastName}</p>
       <p className="spot-detail__description">{description}</p>
       <div className="spot-detail__booking">
-        <p className="spot-detail__price">Price: {price} night</p>
+        <p className="spot-detail__price">Price: ${price} per night</p>
         <button onClick={reserveSpot} className="spot-detail__reserve-button">
           Reserve
         </button>
@@ -71,6 +61,5 @@ const SpotDetail = () => {
     </div>
   );
 };
-
 
 export default SpotDetail;
