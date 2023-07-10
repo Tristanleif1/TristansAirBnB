@@ -17,7 +17,7 @@ const SpotsListing = () => {
 
   useEffect(() => {
     if(newSpotCreated)
-    dispatch(loadAllSpots());
+    dispatch(loadAllSpots(newSpotCreated));
   }, [dispatch, spots, newSpotCreated]);
 
   return (

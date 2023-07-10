@@ -9,6 +9,7 @@ import Navigation from "./components/Navigation";
 import SpotDetail from "./components/AllSpots/SpotDetail";
 import NewSpotForm from "./components/AllSpots/NewSpotForm";
 import ManageSpotsComponent from "./components/AllSpots/ManageSpots";
+import EditSpotForm from "./components/AllSpots/EditSpotForm";
 
 function App() {
   const dispatch = useDispatch();
@@ -22,26 +23,29 @@ function App() {
       <Navigation isLoaded={isLoaded} />
       {isLoaded && (
         <Switch>
-        <Route exact path="/">
-          <SpotsListing />
-        </Route>
-        <Route exact path="/spots">
-          <NewSpotForm />
-        </Route>
-        <Route path="/spots/mySpots">
-          <ManageSpotsComponent />
-        </Route>
-        <Route path="/spots/:spotId">
-          <SpotDetail />
-        </Route>
-        <Route path="/login">
-          <LoginFormPage />
-        </Route>
-        <Route path="/signup">
-          <SignupFormPage />
-        </Route>
-        <Route path="">Page Not Found</Route>
-      </Switch>
+          <Route exact path="/">
+            <SpotsListing />
+          </Route>
+          <Route exact path="/spots">
+            <NewSpotForm />
+          </Route>
+          <Route path="/spots/mySpots">
+            <ManageSpotsComponent />
+          </Route>
+          <Route exact path="/spots/:spotId/update">
+            <EditSpotForm />
+          </Route>
+          <Route path="/spots/:spotId">
+            <SpotDetail />
+          </Route>
+          <Route path="/login">
+            <LoginFormPage />
+          </Route>
+          <Route path="/signup">
+            <SignupFormPage />
+          </Route>
+          <Route path="">Page Not Found</Route>
+        </Switch>
       )}
     </>
   );

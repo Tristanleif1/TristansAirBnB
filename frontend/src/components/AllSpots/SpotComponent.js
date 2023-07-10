@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import "./AllSpots.css"
+
 
 const SpotComponent = ({spot, isManageSpotsComponent}) => {
   const { price, previewImage, city, state, id } = spot;
+
+  // Event handler to stop the parent Link from triggering
+  const handleButtonClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  }
 
   return (
     <div className="four column wide">
@@ -20,8 +27,10 @@ const SpotComponent = ({spot, isManageSpotsComponent}) => {
               <div className="meta">{state}</div>
               {isManageSpotsComponent && (
                 <div>
-                  <button>Update</button>
-                  <button>Delete</button>
+                  <button onClick={handleButtonClick}>
+                    <NavLink to={`/spots/${spot.id}/update`}>Update</NavLink>
+                  </button>
+                  <button onClick={handleButtonClick}>Delete</button>
                 </div>
               )}
             </div>
@@ -33,6 +42,8 @@ const SpotComponent = ({spot, isManageSpotsComponent}) => {
 };
 
 export default SpotComponent;
+
+
 
 
 

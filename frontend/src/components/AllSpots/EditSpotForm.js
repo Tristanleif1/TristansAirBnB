@@ -1,15 +1,8 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { createSpot } from "../../store/spots";
-import { useHistory } from "react-router-dom";
-import { loadAllSpots } from "../../store/spots";
-import "./NewSpot.css";
-
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useHistory } from "react-router-dom";
 import { editSpot, loadSingleSpot } from "../../store/spots";
-import "./EditSpot.css";
+import "./AllSpots.css";
 
 const EditSpotForm = () => {
   const dispatch = useDispatch();
@@ -33,7 +26,7 @@ const EditSpotForm = () => {
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    if(spot) {
+    if (spot) {
       setStreetAddress(spot.address);
       setCountry(spot.country);
       setCity(spot.city);
@@ -41,13 +34,13 @@ const EditSpotForm = () => {
       setDescription(spot.description);
       setName(spot.name);
       setPrice(spot.price);
-      if(spot.SpotImages && spot.SpotImages.length > 0) {
+      if (spot.SpotImages && spot.SpotImages.length > 0) {
         const images = spot.SpotImages.map((image) => image.url);
         setPreviewImage(images[0]);
-        setImage1(images[1] || '');
-        setImage2(images[2] || '');
-        setImage3(images[3] || '');
-        setImage4(images[4] || '');
+        setImage1(images[1] || "");
+        setImage2(images[2] || "");
+        setImage3(images[3] || "");
+        setImage4(images[4] || "");
       }
     }
   }, [spot]);
@@ -86,14 +79,14 @@ const EditSpotForm = () => {
       description,
       name,
       price,
-      images: [previewImage, image1, image2, image3, image4].filter(Boolean), 
+      images: [previewImage, image1, image2, image3, image4].filter(Boolean),
     };
 
     dispatch(editSpot(spotData))
       .then((updatedSpot) => {
         if (updatedSpot) {
           history.push(`/spots/${updatedSpot.id}`);
-        };
+        }
       })
       .catch((error) => {
         setErrors({ ...errors, api: error.toString() });
@@ -247,7 +240,6 @@ const EditSpotForm = () => {
       </form>
     </div>
   );
-            }
-  if (!spot) {
-    return null;
-  }
+};
+
+export default EditSpotForm;

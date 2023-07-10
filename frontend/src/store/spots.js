@@ -58,6 +58,7 @@ export const loadUserSpots = () => async (dispatch) => {
 
   if (response.ok) {
     const userSpots = await response.json();
+    console.log(userSpots);
     dispatch(loadSpots(userSpots));
     return userSpots
   }
@@ -77,7 +78,6 @@ export const createSpot = (data) => async (dispatch) => {
   if (createdSpot) {
     dispatch(addSpot(createdSpot))
 
-    // Wait for 2 seconds before reloading all spots
     setTimeout(() => {
       dispatch(loadAllSpots());
     }, 2000);
