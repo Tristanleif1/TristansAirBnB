@@ -21,9 +21,9 @@ const addSpot = (spot) => ({
   spot,
 });
 
-const removeSpot = (spot) => ({
+const removeSpot = (spotId) => ({
   type: REMOVE_SPOT,
-  spot,
+  spotId,
 });
 
 const updateSpot = (spot) => ({
@@ -111,7 +111,7 @@ export const editSpot = (spot) => async (dispatch) => {
 };
 
 export const deleteSpot = (id) => async (dispatch) => {
-  const response = await fetch(`/api/spots/${id}`, {
+  const response = await csrfFetch(`/api/spots/${id}`, {
     method: "DELETE",
   });
   if (response.ok) {
@@ -149,6 +149,11 @@ export const spotReducer = (state = spotInitialState, action) => {
            return spot.id === action.spot.id ? action.spot : spot
           })
         };
+        case REMOVE_SPOT:
+          return {
+            ...state,
+            Spots: state.Spots.filter(spot => spot.id !== action.spotId)
+          }
     default:
       return state;
   }

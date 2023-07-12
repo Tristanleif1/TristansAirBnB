@@ -1,17 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
-import "./AllSpots.css"
+import ConfirmationModal from "./ConfirmationDeleteModal";
+import { deleteSpot } from "../../store/spots";
+import "./AllSpots.css";
 
-
-const SpotComponent = ({spot, isManageSpotsComponent}) => {
+const SpotComponent = ({ spot, isManageSpotsComponent }) => {
+  const dispatch = useDispatch(); // To dispatch actions
   const { price, previewImage, city, state, id } = spot;
+  const [showModal, setShowModal] = useState(false);
 
   // Event handler to stop the parent Link from triggering
   const handleButtonClick = (e) => {
     e.preventDefault();
     e.stopPropagation();
-  }
+  };
+
+  const handleDelete = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    // Dispatch deleteSpot action here
+     dispatch(deleteSpot(id));
+
+    // Close the modal
+    setShowModal(false);
+  };
 
   return (
     <div className="four column wide">
@@ -30,43 +44,32 @@ const SpotComponent = ({spot, isManageSpotsComponent}) => {
                   <button onClick={handleButtonClick}>
                     <NavLink to={`/spots/${spot.id}/update`}>Update</NavLink>
                   </button>
-                  <button onClick={handleButtonClick}>Delete</button>
+                  <button
+                    onClick={(e) => {
+                      handleButtonClick(e);
+                      setShowModal(true);
+                    }}
+                  >
+                    Delete
+                  </button>
                 </div>
               )}
             </div>
           </div>
         </div>
       </Link>
+      {showModal && (
+        <ConfirmationModal
+          message="Are you sure you want to remove this spot?"
+          onConfirm={handleDelete}
+          onCancel={() => setShowModal(false)}
+        />
+      )}
     </div>
   );
 };
 
 export default SpotComponent;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // const SpotComponent = () => {
 //   const spots = useSelector((state) => state.spot.Spots);

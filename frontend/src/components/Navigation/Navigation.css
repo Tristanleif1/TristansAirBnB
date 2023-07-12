@@ -3,7 +3,6 @@
   gap: 20px;  /* this adds a 20px gap between the link and the profile button */
 }
 
-
 .nav-menu {
   display: flex;
   justify-content: space-between;
@@ -11,6 +10,11 @@
   background-color: #f5f5f5;
   padding: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Remove list styles */
+.nav-menu ul {
+  list-style: none;
 }
 
 /* Navigation Links */
@@ -31,6 +35,11 @@
 
 .nav-menu .nav-link:hover {
   color: #4caf50;
+}
+
+.logo {
+  height: 50px;
+  width: auto;
 }
 
 /* Logged-in Links */
@@ -55,24 +64,56 @@
     padding: 10px;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
+}
 
-  .profile-dropdown.hidden {
-    display: none;
-  }
+.profile-dropdown.hidden {
+  display: none;
+}
 
-  .profile-dropdown li {
-    margin-bottom: 5px;
-  }
+.profile-dropdown li {
+  margin-bottom: 5px;
+  white-space: nowrap
+}
 
-  .profile-dropdown button {
-    background: none;
-    border: none;
-    color: #4caf50;
-    font-size: 16px;
-    cursor: pointer;
-  }
+.profile-dropdown button {
+  background: none;
+  border: none;
+  color: #4caf50;
+  font-size: 16px;
+  cursor: pointer;
+}
 
-  .profile-dropdown button:hover {
-    text-decoration: underline;
-  }
+.profile-dropdown button:hover {
+  text-decoration: underline;
+}
+
+.profile-button-container {
+  position: relative; /* this is important for positioning the dropdown */
+  display: flex;
+  align-items: center;
+}
+
+.profile-dropdown li:hover {
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
+.profile-dropdown li {
+  transition: background-color 0.3s ease;
+}
+
+.profile-button-container {
+  display: flex;
+  align-items: center;
+}
+
+.profile-button-container a {
+  margin-right: 20px; /* adjust as needed */
+  color: #555555; /* adjust as needed */
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.profile-button-container a:hover {
+  color: #4caf50; /* adjust as needed */
+}
