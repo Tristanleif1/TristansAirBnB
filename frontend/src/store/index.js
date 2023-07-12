@@ -4,13 +4,15 @@ import thunk from "redux-thunk";
 import sessionReducer from "./session";
 import {spotReducer} from "./spots";
 import  {selectedSpotReducer}  from "./spots";
+import { reviewsReducer } from "./reviews";
 
 
 const rootReducer = combineReducers({
   // add reducer functions here
   session: sessionReducer,
   spot: spotReducer,
-  selectedSpot: selectedSpotReducer
+  selectedSpot: selectedSpotReducer,
+  reviews: reviewsReducer
 });
 
 let enhancer;

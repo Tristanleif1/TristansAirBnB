@@ -7,7 +7,7 @@ import "./AllSpots.css";
 
 const SpotComponent = ({ spot, isManageSpotsComponent }) => {
   const dispatch = useDispatch(); // To dispatch actions
-  const { price, previewImage, city, state, id } = spot;
+  const { price, previewImage, city, state, id, avgRating } = spot;
   const [showModal, setShowModal] = useState(false);
 
   // Event handler to stop the parent Link from triggering
@@ -39,6 +39,10 @@ const SpotComponent = ({ spot, isManageSpotsComponent }) => {
               <div className="header">{city}</div>
               <div className="meta price">$ {price}</div>
               <div className="meta">{state}</div>
+              <div className="meta">
+              <i className="fa-solid fa-star"></i>
+                {avgRating ? ` ${avgRating.toFixed(2)}` : ' New'}
+              </div>
               {isManageSpotsComponent && (
                 <div>
                   <button onClick={handleButtonClick}>

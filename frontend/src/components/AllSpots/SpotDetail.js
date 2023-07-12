@@ -2,29 +2,75 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { loadSingleSpot } from "../../store/spots";
+import { loadSpotReviews } from "../../store/reviews";
 import "./SpotDetails.css";
 
 const SpotDetail = () => {
   const { spotId } = useParams();
   const { spot, isLoading } = useSelector((state) => state.selectedSpot);
+  const reviews = useSelector((state) => state.reviews.list);
+  const user = useSelector((state) => state.session.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(loadSingleSpot(spotId));
+    dispatch(loadSpotReviews(spotId));
   }, [dispatch, spotId]);
 
   if (isLoading || !spot) {
     return <div>Loading...</div>;
   }
 
-  const { name, city, state, country, SpotImages, Owner, description, price } = spot;
+  const {
+    name,
+    city,
+    state,
+    country,
+    SpotImages,
+    Owner,
+    description,
+    price,
+    avgStarRating,
+    numReviews,
+  } = spot;
+  const averageRating = avgStarRating.toFixed(2);
+  let reviewSummary;
+  if (numReviews === 0) {
+    reviewSummary = (
+      <>
+        <i className="fa-solid fa-star"></i> {averageRating}
+      </>
+    );
+  } else if (numReviews === 1) {
+    reviewSummary = (
+      <>
+        <i className="fa-solid fa-star"></i> {averageRating} · {numReviews}{" "}
+        Review
+      </>
+    );
+  } else {
+    reviewSummary = (
+      <>
+        <i className="fa-solid fa-star"></i> {averageRating} · {numReviews}{" "}
+        Reviews
+      </>
+    );
+  }
 
   const previewImage = SpotImages?.find((image) => image.preview)?.url;
-
   const otherImages = SpotImages?.filter((image) => !image.preview);
 
   const reserveSpot = () => {
     alert("Feature coming soon");
+  };
+
+  const sortedReviews = [...reviews].sort(
+    (x, y) => new Date(y.createdAt) - new Date(x.createdAt)
+  );
+
+  const formatDate = (dateString) => {
+    const options = { year: "numeric", month: "long" };
+    return new Date(dateString).toLocaleDateString([], options);
   };
 
   return (
@@ -50,13 +96,29 @@ const SpotDetail = () => {
           ))}
         </div>
       </div>
-      <p className="spot-detail__host">Hosted by {Owner.firstName} {Owner.lastName}</p>
+      <p className="spot-detail__host">
+        Hosted by {Owner.firstName} {Owner.lastName}
+      </p>
       <p className="spot-detail__description">{description}</p>
       <div className="spot-detail__booking">
         <p className="spot-detail__price">Price: ${price} per night</p>
+        <p className="spot-detail__rating">{reviewSummary}</p>
         <button onClick={reserveSpot} className="spot-detail__reserve-button">
           Reserve
         </button>
+      </div>
+      <div className="spot-detail__reviews">
+        <h2>Reviews ({reviewSummary})</h2>
+        {sortedReviews.length > 0
+          ? sortedReviews.map((review) => (
+              <div key={review.id} className="review">
+                <h3>{review.User.firstName}</h3>
+                <p>{formatDate(review.createdAt)}</p>
+                <p>{review.review}</p>
+              </div>
+            ))
+          : user &&
+            user.id !== Owner.id && <p>Be the first to post a review!</p>}
       </div>
     </div>
   );
