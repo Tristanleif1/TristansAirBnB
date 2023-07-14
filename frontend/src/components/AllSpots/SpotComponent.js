@@ -10,8 +10,9 @@ const SpotComponent = ({ spot, isManageSpotsComponent }) => {
   const { price, previewImage, city, state, id, avgRating } = spot;
   const [showModal, setShowModal] = useState(false);
 
+  const avgRatingNumber = Number(avgRating);
   const avgRatingDisplay =
-    avgRating && typeof avgRating === "number" ? avgRating.toFixed(2) : "New";
+    avgRating && !isNaN(avgRatingNumber) ? avgRatingNumber.toFixed(2) : "New";
 
   // Event handler to stop the parent Link from triggering
   const handleButtonClick = (e) => {
