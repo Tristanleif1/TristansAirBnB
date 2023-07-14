@@ -190,7 +190,7 @@ router.get("/", validQueryParameters, async (req, res) => {
           "price",
           "createdAt",
           "updatedAt",
-          [sequelize.fn("COUNT", sequelize.col("Reviews.id")), "numReviews"],
+          [sequelize.fn("COUNT", sequelize.cast(sequelize.col("Reviews.id"), 'float')), "numReviews"],
           [sequelize.fn("AVG", sequelize.cast(sequelize.col("Reviews.stars"), 'float')), "avgRating"],
           // [sequelize.fn("COUNT", sequelize.col("Spot.id")), "numOfEntries"],
         ],
@@ -364,7 +364,7 @@ router.get("/:id", async (req, res) => {
     ],
     attributes: {
       include: [
-        [sequelize.fn("COUNT", sequelize.col("Reviews.id")), "numReviews"],
+        [sequelize.fn("COUNT", sequelize.cast(sequelize.col("Reviews.id"), 'float')), "numReviews"],
         [sequelize.fn("AVG", sequelize.cast(sequelize.col("Reviews.stars"), 'float')), "avgStarRating"],
       ],
     },

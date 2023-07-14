@@ -46,7 +46,7 @@ const SpotDetail = () => {
     avgStarRating,
     numReviews,
   } = spot;
-  const averageRating = avgStarRating.toFixed(2);
+  const averageRating = Number(avgStarRating).toFixed(2);
   let reviewSummary;
   if (numReviews === 0) {
     reviewSummary = (
