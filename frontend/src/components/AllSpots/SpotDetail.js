@@ -30,9 +30,10 @@ const SpotDetail = () => {
     dispatch(loadSpotReviews(spotId));
   }, [dispatch, spotId]);
 
-  if (isLoading || !spot) {
+  if (isLoading || !spot || reviewsLoading || reviews.some(review => !review.User)) {
     return <div>Loading...</div>;
   }
+
 
   const {
     name,
