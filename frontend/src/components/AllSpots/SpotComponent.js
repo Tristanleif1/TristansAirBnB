@@ -5,6 +5,7 @@ import ConfirmationModal from "./ConfirmationDeleteModal";
 import { deleteSpot } from "../../store/spots";
 import "./AllSpots.css";
 
+//MAKE SURE TO CHECK AVGRATING TO FIXED(2) FOR DEPLOYMENT, THIS MIGHT NEED TO BE CHANGED.
 const SpotComponent = ({ spot, isManageSpotsComponent }) => {
   const dispatch = useDispatch(); // To dispatch actions
   const { price, previewImage, city, state, id, avgRating } = spot;

@@ -7,6 +7,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 const { Review } = require("../models/review");
+//CHANGE FIRST SEEDER FOR REVIEWS BECAUSE THAT REVIEW IS LEFT BY THE OWNER OF THE SPOT WHICH SHOULD NOT BE ALLOWED. Example, Tristan is leaving a review for a spot owned by him which doesnt make sense
 
 
 /** @type {import('sequelize-cli').Migration} */

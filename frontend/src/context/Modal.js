@@ -1,4 +1,4 @@
-import React, { useRef, useState, useContext } from "react";
+import React, { useRef, useState, useContext, } from "react";
 import ReactDOM from "react-dom";
 import "./Modal.css";
 
@@ -40,20 +40,17 @@ export function ModalProvider({ children }) {
 
 export function Modal() {
   const { modalRef, modalContent, closeModal } = useContext(ModalContext);
-  // If there is no div referenced by the modalRef or modalContent is not a
-  // truthy value, render nothing:
+
   if (!modalRef || !modalRef.current || !modalContent) return null;
 
-  // Render the following component to the div referenced by the modalRef
+
   return ReactDOM.createPortal(
     <div id="modal">
       <div id="modal-background" onClick={closeModal} />
       <div id="modal-content">
-        <div className="login-box"> {/* Or replace with the class you want */}
-          {modalContent}
-        </div>
-      </div>
-    </div>,
+    {modalContent}
+</div>
+      </div>,
     modalRef.current
   );
 }

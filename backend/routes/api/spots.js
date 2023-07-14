@@ -291,18 +291,18 @@ router.get("/mySpots", requireAuth, async (req, res) => {
     where: { ownerId: user.id },
     include: [
       {
-      model: Image,
-      as: "SpotImages",
-      attributes: ["url"],
-      required: false,
-      limit: 1,
-    },
-    {
-      model: User,
-      as: "Owner",
-      attributes: ["id", "firstName", "lastName"]
-    },
-  ],
+        model: Image,
+        as: "SpotImages",
+        attributes: ["url"],
+        required: false,
+        limit: 1,
+      },
+      {
+        model: User,
+        as: "Owner",
+        attributes: ["id", "firstName", "lastName"],
+      },
+    ],
   });
 
   const spotsWithpreviewImage = mySpots.map((spot) => ({
@@ -353,7 +353,13 @@ router.get("/:id", async (req, res) => {
       {
         model: Review,
         as: "Reviews",
-        attributes: [],
+        attributes: ["id", "review", "stars", "createdAt", "updatedAt"], // Include attributes from the Review model
+        include: [
+          {
+            model: User,
+            attributes: ["firstName", "lastName"], // Include firstName and lastName from User model
+          },
+        ],
       },
     ],
     attributes: {
@@ -361,16 +367,20 @@ router.get("/:id", async (req, res) => {
         [sequelize.fn("COUNT", sequelize.col("Reviews.id")), "numReviews"],
         [sequelize.fn("AVG", sequelize.col("Reviews.stars")), "avgStarRating"],
       ],
-      // group: ["Spot.id"],
     },
-    group: ["Spot.id", "Owner.id", "SpotImages.id"],
+    group: [
+      "Spot.id",
+      "Owner.id",
+      "SpotImages.id",
+      "Reviews.id",
+      "Reviews->User.id",
+    ],
   });
 
   if (!selectedSpot) {
     return res.status(404).json({ error: "Spot not found" });
   }
-  console.log(selectedSpot.SpotImages);
-  //   const numOfReviews = await selectedSpot.countReviews();
+
   const specificSpotDetails = {
     id: selectedSpot.id,
     ownerId: selectedSpot.ownerId,
@@ -391,18 +401,16 @@ router.get("/:id", async (req, res) => {
       id: image.id,
       url: image.url,
       preview: idx === 0 ? true : false,
-      //   preview: selectedSpot.SpotImages[0].url || null
-      //   preview: image.SpotImages?.length ? image.SpotImages[0].url : null,
     })),
     Owner: {
       id: selectedSpot.Owner.id,
       firstName: selectedSpot.Owner.firstName,
       lastName: selectedSpot.Owner.lastName,
     },
+    Reviews: selectedSpot.Reviews, // Include the Reviews object in the response
   };
   res.status(200).json(specificSpotDetails);
 });
-
 //Post a spot
 
 router.post("/", requireAuth, validPost, async (req, res) => {
@@ -435,9 +443,7 @@ router.post("/", requireAuth, validPost, async (req, res) => {
       ownerId,
     });
 
-
     if (Array.isArray(images)) {
-
       const newImages = await Image.bulkCreate(
         images.map((url, index) => ({
           url,
@@ -552,6 +558,7 @@ router.delete("/:id", requireAuth, async (req, res) => {
   }
 });
 
+
 // Create a Review for a Spot based on Spot's id
 router.post("/:id/reviews", requireAuth, validReview, async (req, res) => {
   const spotId = req.params.id;
@@ -575,11 +582,17 @@ router.post("/:id/reviews", requireAuth, validReview, async (req, res) => {
         .json({ message: "User already has a review for this spot " });
     }
 
-    const newReview = await Review.create({
+    await Review.create({
       userId: userId,
       spotId: spotId,
       review: review,
       stars: stars,
+    });
+
+    // Find the newly created review with User included
+    const newReview = await Review.findOne({
+      where: { userId: userId, spotId: spotId },
+      include: { model: User, attributes: ["firstName"] },
     });
 
     return res.status(201).json(newReview);
@@ -767,31 +780,119 @@ router.post("/:id/bookings", requireAuth, validBooking, async (req, res) => {
   }
 });
 
-//Post a spot (this one working before image implementatioon)
+//Get details about a spot (how to add preview: true key value pair in response?)
+// router.get("/:id", async (req, res) => {
+//   const id = +req.params.id;
 
-// router.post("/", requireAuth, validPost, async (req, res) => {
-//   const { address, city, state, country, lat, lng, name, description, price } =
-//     req.body;
+//   const selectedSpot = await Spot.findByPk(id, {
+//     include: [
+//       {
+//         model: User,
+//         as: "Owner",
+//         attributes: ["id", "firstName", "lastName"],
+//       },
+//       {
+//         model: Image,
+//         as: "SpotImages",
+//         attributes: ["id", "url"],
+//       },
+//       {
+//         model: Review,
+//         as: "Reviews",
+//         attributes: [],
+//       },
+//     ],
+//     attributes: {
+//       include: [
+//         [sequelize.fn("COUNT", sequelize.col("Reviews.id")), "numReviews"],
+//         [sequelize.fn("AVG", sequelize.col("Reviews.stars")), "avgStarRating"],
+//       ],
+//       // group: ["Spot.id"],
+//     },
+//     group: ["Spot.id", "Owner.id", "SpotImages.id"],
+//   });
 
-//   const ownerId = req.user.id;
+//   if (!selectedSpot) {
+//     return res.status(404).json({ error: "Spot not found" });
+//   }
+//   console.log(selectedSpot.SpotImages);
+//   //   const numOfReviews = await selectedSpot.countReviews();
+//   const specificSpotDetails = {
+//     id: selectedSpot.id,
+//     ownerId: selectedSpot.ownerId,
+//     address: selectedSpot.address,
+//     city: selectedSpot.city,
+//     state: selectedSpot.state,
+//     country: selectedSpot.country,
+//     lat: selectedSpot.lat,
+//     lng: selectedSpot.lng,
+//     name: selectedSpot.name,
+//     description: selectedSpot.description,
+//     price: selectedSpot.price,
+//     createdAt: selectedSpot.createdAt,
+//     updatedAt: selectedSpot.updatedAt,
+//     numReviews: selectedSpot.dataValues.numReviews,
+//     avgStarRating: selectedSpot.dataValues.avgStarRating,
+//     SpotImages: selectedSpot.SpotImages.map((image, idx) => ({
+//       id: image.id,
+//       url: image.url,
+//       preview: idx === 0 ? true : false,
+//       //   preview: selectedSpot.SpotImages[0].url || null
+//       //   preview: image.SpotImages?.length ? image.SpotImages[0].url : null,
+//     })),
+//     Owner: {
+//       id: selectedSpot.Owner.id,
+//       firstName: selectedSpot.Owner.firstName,
+//       lastName: selectedSpot.Owner.lastName,
+//     },
+//   };
+//   res.status(200).json(specificSpotDetails);
+// });
+
+// Create a Review for a Spot based on Spot's id
+// router.post("/:id/reviews", requireAuth, validReview, async (req, res) => {
+//   const spotId = req.params.id;
+//   const { review, stars } = req.body;
+//   const userId = req.user.id;
 
 //   try {
-//     const newSpot = await Spot.create({
-//       address,
-//       city,
-//       state,
-//       country,
-//       lat,
-//       lng,
-//       name,
-//       description,
-//       price,
-//       ownerId,
+//     const selectedSpot = await Spot.findByPk(spotId);
+//     if (!selectedSpot) {
+//       return res.status(404).json({ message: "Spot couldn't be found" });
+//     }
+//     const reviewExists = await Review.findOne({
+//       where: {
+//         userId: userId,
+//         spotId: spotId,
+//       },
 //     });
-//     res.status(201).json(newSpot);
+//     if (reviewExists) {
+//       return res
+//         .status(500)
+//         .json({ message: "User already has a review for this spot " });
+//     }
+
+//     const newReview = await Review.create(
+//       {
+//         userId: userId,
+//         spotId: spotId,
+//         review: review,
+//         stars: stars,
+//       },
+//       {
+//         include: [
+//           {
+//             model: User,
+//             as: "User",
+//             attributes: ["firstName"],
+//           },
+//         ],
+//       }
+//     );
+
+//     return res.status(201).json(newReview);
 //   } catch (error) {
-//     console.error(error);
-//     res.status(400).json({ message: "Bad Request" });
+//     return res.status(500).json({ message: "Internal Server Error" });
 //   }
 // });
 

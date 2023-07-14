@@ -1,16 +1,22 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { loadSingleSpot } from "../../store/spots";
 import { loadSpotReviews } from "../../store/reviews";
+import ReviewForm from "../Reviews/ReviewFormComponent";
+import { useModal } from "../../context/Modal";
 import "./SpotDetails.css";
 
 const SpotDetail = () => {
   const { spotId } = useParams();
+  const history = useHistory();
   const { spot, isLoading } = useSelector((state) => state.selectedSpot);
-  const reviews = useSelector((state) => state.reviews.list);
+  const { list: reviews, loading: reviewsLoading } = useSelector(
+    (state) => state.reviews
+  );
   const user = useSelector((state) => state.session.user);
   const dispatch = useDispatch();
+  const { setModalContent, closeModal } = useModal();
 
   useEffect(() => {
     dispatch(loadSingleSpot(spotId));
@@ -73,6 +79,10 @@ const SpotDetail = () => {
     return new Date(dateString).toLocaleDateString([], options);
   };
 
+  const openReviewForm = () => {
+    setModalContent(<ReviewForm spotId={spotId} closeModal={closeModal} />);
+  };
+
   return (
     <div className="spot-detail">
       <h1 className="spot-detail__name">{name}</h1>
@@ -109,19 +119,35 @@ const SpotDetail = () => {
       </div>
       <div className="spot-detail__reviews">
         <h2>Reviews ({reviewSummary})</h2>
-        {sortedReviews.length > 0
-          ? sortedReviews.map((review) => (
-              <div key={review.id} className="review">
-                <h3>{review.User.firstName}</h3>
-                <p>{formatDate(review.createdAt)}</p>
-                <p>{review.review}</p>
-              </div>
-            ))
-          : user &&
-            user.id !== Owner.id && <p>Be the first to post a review!</p>}
+        {user &&
+          user.id !== Owner.id &&
+          !reviews.some((review) => review.userId === user.id) && (
+            <button onClick={openReviewForm}>Post Your Review</button>
+          )}
+        {reviewsLoading ? (
+          <p>Loading reviews...</p>
+        ) : sortedReviews.length > 0 ? (
+          sortedReviews.map((review) => (
+            <div key={review.id} className="review">
+              {review.User ? (
+                <>
+                  <h3>{review.User.firstName}</h3>
+                  <p>{formatDate(review.createdAt)}</p>
+                  <p>{review.review}</p>
+                </>
+              ) : (
+                <p>Review from unknown user</p>
+              )}
+            </div>
+          ))
+        ) : (
+          user && user.id !== Owner.id && <p>Be the first to post a review!</p>
+        )}
       </div>
     </div>
   );
 };
+
+
 
 export default SpotDetail;
