@@ -2,6 +2,7 @@ import { csrfFetch } from "./csrf";
 const LOAD_REVIEWS = "reviews/LOAD_REVIEWS";
 const ADD_REVIEW = "reviews/ADD_REVIEW";
 const SET_LOADING = "reviews/SET_LOADING";
+const DELETE_REVIEW = "reviews/DELETE_REVIEW";
 
 const loadReviews = (reviews) => ({
   type: LOAD_REVIEWS,
@@ -17,6 +18,23 @@ const setLoading = (loading) => ({
   type: SET_LOADING,
   loading,
 });
+
+const removeReview = (reviewId) => ({
+  type: DELETE_REVIEW,
+  reviewId,
+});
+
+export const deleteReview = (reviewId) => async (dispatch) => {
+  const response = await csrfFetch(`/api/reviews/${reviewId}`, {
+    method: "DELETE",
+  });
+  if (response.ok) {
+    await response.json();
+    dispatch(removeReview(reviewId));
+    return;
+  }
+  throw new Error("Could not delete review");
+};
 
 export const loadSpotReviews = (spotId) => async (dispatch) => {
   dispatch(setLoading(true));
@@ -90,6 +108,12 @@ export const reviewsReducer = (state = initialState, action) => {
         [action.review.id]: action.review,
         list: [action.review, ...state.list],
       };
+    }
+    case DELETE_REVIEW: {
+      const newState = {...state};
+      const reviewList = newState.list.filter(review => review.id !== action.reviewId);
+      newState.list = reviewList;
+      return newState;
     }
     case SET_LOADING: {
       return {

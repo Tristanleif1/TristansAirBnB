@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useParams, useHistory } from "react-router-dom";
 import { loadSingleSpot } from "../../store/spots";
 import { loadSpotReviews } from "../../store/reviews";
+import DeleteReview from "../Reviews/DeleteReviewModal.js";
 import ReviewForm from "../Reviews/ReviewFormComponent";
 import { useModal } from "../../context/Modal";
 import "./SpotDetails.css";
@@ -17,6 +18,12 @@ const SpotDetail = () => {
   const user = useSelector((state) => state.session.user);
   const dispatch = useDispatch();
   const { setModalContent, closeModal } = useModal();
+
+  const openDeleteReviewForm = (reviewId) => {
+    setModalContent(
+      <DeleteReview reviewId={reviewId} closeModal={closeModal} />
+    );
+  };
 
   useEffect(() => {
     dispatch(loadSingleSpot(spotId));
@@ -134,6 +141,11 @@ const SpotDetail = () => {
                   <h3>{review.User.firstName}</h3>
                   <p>{formatDate(review.createdAt)}</p>
                   <p>{review.review}</p>
+                  {user.id === review.userId && (
+                    <button onClick={() => openDeleteReviewForm(review.id)}>
+                      Delete
+                    </button>
+                  )}
                 </>
               ) : (
                 <p>Review from unknown user</p>
@@ -147,7 +159,5 @@ const SpotDetail = () => {
     </div>
   );
 };
-
-
 
 export default SpotDetail;
