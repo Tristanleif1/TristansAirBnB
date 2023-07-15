@@ -155,14 +155,17 @@ export const spotReducer = (state = spotInitialState, action) => {
         allSpots[spot.id] = spot;
       });
       return {
-         Spots: allSpots,
+        Spots: allSpots,
         newSpotCreated: false,
       };
     case ADD_SPOT:
       return {
         ...state,
-        Spots: [...state.Spots, action.spot],
-        newSpotCreated: !state.newSpotCreated,
+        Spots: {
+          ...state.Spots,
+          [action.spot.id]: action.spot,
+        },
+        newSpotCreated: true,
       };
     case UPDATE_SPOT:
       return {

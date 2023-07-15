@@ -1,4 +1,5 @@
 import { csrfFetch } from "./csrf";
+import { loadSingleSpot } from "./spots";
 const LOAD_REVIEWS = "reviews/LOAD_REVIEWS";
 const ADD_REVIEW = "reviews/ADD_REVIEW";
 const SET_LOADING = "reviews/SET_LOADING";
@@ -29,8 +30,9 @@ export const deleteReview = (reviewId) => async (dispatch) => {
     method: "DELETE",
   });
   if (response.ok) {
-    await response.json();
+    const review = await response.json();
     dispatch(removeReview(reviewId));
+    dispatch(loadSingleSpot(review.spotId));
     return;
   }
   throw new Error("Could not delete review");
@@ -48,7 +50,7 @@ export const loadSpotReviews = (spotId) => async (dispatch) => {
     dispatch(loadReviews(reviews));
     dispatch(setLoading(false));
   } else {
-    console.error('Failed to load reviews for spot', spotId);
+    console.error("Failed to load reviews for spot", spotId);
     dispatch(setLoading(false));
   }
 };
@@ -76,6 +78,7 @@ export const createReview = (review, spotId) => async (dispatch) => {
 
     const newReview = await response.json();
     dispatch(addReview(newReview));
+    dispatch(loadSingleSpot(newReview.spotId));
     return newReview;
   } catch (error) {
     console.error("Error during review creation:", error);
@@ -113,8 +116,10 @@ export const reviewsReducer = (state = initialState, action) => {
       };
     }
     case DELETE_REVIEW: {
-      const newState = {...state};
-      const reviewList = newState.list.filter(review => review.id !== action.reviewId);
+      const newState = { ...state };
+      const reviewList = newState.list.filter(
+        (review) => review.id !== action.reviewId
+      );
       newState.list = reviewList;
       return newState;
     }
