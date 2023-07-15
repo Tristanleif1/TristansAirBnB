@@ -5,7 +5,6 @@ const ADD_SPOT = "spots/ADD_SPOT";
 const REMOVE_SPOT = "spots/REMOVE_SPOT";
 const UPDATE_SPOT = "spots/UPDATE_SPOT";
 
-
 const load = (spot) => ({
   type: LOAD,
   spot,
@@ -38,7 +37,7 @@ export const loadAllSpots = () => async (dispatch) => {
     const loadedSpots = await response.json();
     console.log(loadedSpots);
     dispatch(loadSpots(loadedSpots));
-    return loadedSpots
+    return loadedSpots;
   }
 };
 
@@ -51,7 +50,7 @@ export const loadSingleSpot = (id) => async (dispatch) => {
     const spot = await response.json();
     dispatch(load({ spot, isLoading: false }));
   } else {
-    console.error('Failed to load spot', id);
+    console.error("Failed to load spot", id);
     dispatch(load({ spot: null, isLoading: false }));
   }
 };
@@ -63,7 +62,7 @@ export const loadUserSpots = () => async (dispatch) => {
     const userSpots = await response.json();
     console.log(userSpots);
     dispatch(loadSpots(userSpots));
-    return userSpots
+    return userSpots;
   }
 };
 
@@ -78,9 +77,13 @@ export const createSpot = (data) => async (dispatch) => {
 
   if (response.ok) {
     const createdSpot = await response.json();
+    console.log("Created", createdSpot);
     dispatch(addSpot(createdSpot));
-    dispatch(loadAllSpots());
+    // dispatch(loadAllSpots());
     return createdSpot; // Return the created spot
+  } else {
+    console.log(response, "Failed");
+    return response;
   }
 };
 
@@ -120,13 +123,13 @@ export const editSpot = (spot) => async (dispatch) => {
     },
     body: JSON.stringify(spot),
   });
-  if(response.ok){
+  if (response.ok) {
     const editedSpot = await response.json();
     dispatch(updateSpot(editedSpot));
     return editedSpot;
   } else {
     const error = await response.json();
-    return { errors: error }
+    return { errors: error };
   }
 };
 
@@ -141,7 +144,7 @@ export const deleteSpot = (id) => async (dispatch) => {
 
 const spotInitialState = {
   Spots: [],
-  newSpotCreated: false
+  newSpotCreated: false,
 };
 
 export const spotReducer = (state = spotInitialState, action) => {
@@ -152,28 +155,27 @@ export const spotReducer = (state = spotInitialState, action) => {
         allSpots[spot.id] = spot;
       });
       return {
-        ...state,
-        Spots: action.spots.Spots,
+         Spots: allSpots,
         newSpotCreated: false,
       };
-      case ADD_SPOT:
+    case ADD_SPOT:
       return {
         ...state,
-        Spots: [action.spot,...state.Spots],
-        newSpotCreated: true
+        Spots: [...state.Spots, action.spot],
+        newSpotCreated: !state.newSpotCreated,
       };
-      case UPDATE_SPOT:
-        return {
-          ...state,
-          Spots: state.Spots.map((spot) => {
-           return spot.id === action.spot.id ? action.spot : spot
-          })
-        };
-        case REMOVE_SPOT:
-          return {
-            ...state,
-            Spots: state.Spots.filter(spot => spot.id !== action.spotId)
-          }
+    case UPDATE_SPOT:
+      return {
+        ...state,
+        Spots: state.Spots.map((spot) => {
+          return spot.id === action.spot.id ? action.spot : spot;
+        }),
+      };
+    case REMOVE_SPOT:
+      return {
+        ...state,
+        Spots: state.Spots.filter((spot) => spot.id !== action.spotId),
+      };
     default:
       return state;
   }
@@ -182,8 +184,7 @@ export const spotReducer = (state = spotInitialState, action) => {
 const initialState = {
   spot: null,
   isLoading: true,
-}
-
+};
 
 export const selectedSpotReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -191,9 +192,8 @@ export const selectedSpotReducer = (state = initialState, action) => {
       return action.spot;
     default:
       return state;
-  };
+  }
 };
-
 
 // const spotInitialState = {
 //   Spots: [],
@@ -219,7 +219,6 @@ export const selectedSpotReducer = (state = initialState, action) => {
 //       return state;
 //   }
 // };
-
 
 // export const createSpot = (data) => async (dispatch) => {
 //   const response = await csrfFetch(`/api/spots`, {

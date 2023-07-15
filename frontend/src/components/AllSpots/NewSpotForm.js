@@ -104,8 +104,10 @@ const NewSpotForm = () => {
   return (
     <div className="spot-form-container">
       <h1 className="spot-form-title">Create a New Spot</h1>
+
       <form className="spot-form" onSubmit={handleSubmit}>
-        <label htmlFor="country">Country</label>
+        <h2>Where's your place located?</h2>
+        <p>Guests will only get your exact address once they booked a reservation.</p>
         <input
           id="country"
           type="text"
@@ -114,7 +116,6 @@ const NewSpotForm = () => {
           onChange={(e) => setCountry(e.target.value)}
         />
         {renderError("country")}
-        <label htmlFor="streetAddress">Street Address</label>
         <input
           id="streetAddress"
           type="text"
@@ -123,7 +124,6 @@ const NewSpotForm = () => {
           onChange={(e) => setStreetAddress(e.target.value)}
         />
         {renderError("streetAddress")}
-        <label htmlFor="city">City</label>
         <input
           id="city"
           type="text"
@@ -132,7 +132,6 @@ const NewSpotForm = () => {
           onChange={(e) => setCity(e.target.value)}
         />
         {renderError("city")}
-        <label htmlFor="state">State</label>
         <input
           id="state"
           type="text"
@@ -141,12 +140,18 @@ const NewSpotForm = () => {
           onChange={(e) => setState(e.target.value)}
         />
         {renderError("state")}
+
+        <h2>Describe your place to guests</h2>
+        <p>Mention the best features of your space, any special amenities like fast wifi or parking, and what you love about the neighborhood.</p>
         <textarea
           placeholder="Please write at least 30 characters"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
         {renderError("description")}
+
+        <h2>Create a title for your spot</h2>
+        <p>Catch guests' attention with a spot title that highlights what makes your place special.</p>
         <input
           type="text"
           placeholder="Name of your spot"
@@ -154,6 +159,9 @@ const NewSpotForm = () => {
           onChange={(e) => setName(e.target.value)}
         />
         {renderError("name")}
+
+        <h2>Set a base price for your spot</h2>
+        <p>Competitive pricing can help your listing stand out and rank higher in search results.</p>
         <input
           type="number"
           placeholder="Price per night (USD)"
@@ -163,6 +171,9 @@ const NewSpotForm = () => {
           onChange={(e) => setPrice(parseFloat(e.target.value))}
         />
         {renderError("price")}
+
+        <h2>Liven up your spot with photos</h2>
+        <p>Submit a link to at least one photo to publish your spot.</p>
         <input
           className="spot-form-input"
           type="text"

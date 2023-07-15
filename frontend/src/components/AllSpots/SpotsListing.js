@@ -7,11 +7,11 @@ import "./AllSpots.css";
 const SpotsListing = () => {
   const dispatch = useDispatch();
   const spots = useSelector((state) => Object.values(state.spot.Spots));
-  // const newSpotCreated = useSelector((state) => state.spot.newSpotCreated);
+   const newSpotCreated = useSelector((state) => state.spot.newSpotCreated);
 
   useEffect(() => {
     dispatch(loadAllSpots());
-  }, [dispatch]);
+  }, [dispatch, newSpotCreated]);
 
   return (
     <div className="ui fixed menu">
