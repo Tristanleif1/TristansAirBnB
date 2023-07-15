@@ -32,7 +32,7 @@ const SpotDetail = () => {
   useEffect(() => {
     dispatch(loadSingleSpot(spotId));
     dispatch(loadSpotReviews(spotId));
-  }, [dispatch, spotId]);
+  }, [dispatch, spotId, reviews.length]);
 
   useEffect(() => {
     // If previously there was a user, and now there is none, redirect to home page
