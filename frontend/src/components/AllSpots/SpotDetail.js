@@ -32,7 +32,7 @@ const SpotDetail = () => {
   useEffect(() => {
     dispatch(loadSingleSpot(spotId));
     dispatch(loadSpotReviews(spotId));
-  }, [dispatch, spotId, reviews.length]);
+  }, [dispatch, spotId, reviews.length, history.location.key]);
 
   useEffect(() => {
     // If previously there was a user, and now there is none, redirect to home page
@@ -92,7 +92,8 @@ const SpotDetail = () => {
   }
 
   const previewImage = SpotImages?.find((image) => image.preview)?.url;
-  const otherImages = SpotImages?.filter((image) => !image.preview);
+  const otherImages = SpotImages?.filter((image) => !image.preview)?.url;
+  console.log(otherImages);
 
   const reserveSpot = () => {
     alert("Feature coming soon");

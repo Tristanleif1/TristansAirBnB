@@ -2,15 +2,23 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loadAllSpots } from "../../store/spots";
 import SpotComponent from "./SpotComponent";
+import { addSpot } from "../../store/spots";
 import "./AllSpots.css";
 
 const SpotsListing = () => {
   const dispatch = useDispatch();
   const spots = useSelector((state) => Object.values(state.spot.Spots));
-   const newSpotCreated = useSelector((state) => state.spot.newSpotCreated);
+  const newSpotCreated = useSelector((state) => state.spot.newSpotCreated);
 
   useEffect(() => {
-    dispatch(loadAllSpots());
+    dispatch(loadAllSpots()).then((loadedSpots) => {
+      if (
+        newSpotCreated &&
+        !loadedSpots.some((spot) => spot.id === newSpotCreated.id)
+      ) {
+        dispatch(addSpot(newSpotCreated)); 
+      }
+    });
   }, [dispatch, newSpotCreated]);
 
   return (
