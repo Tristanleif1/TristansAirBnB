@@ -190,8 +190,20 @@ router.get("/", validQueryParameters, async (req, res) => {
           "price",
           "createdAt",
           "updatedAt",
-          [sequelize.fn("COUNT", sequelize.cast(sequelize.col("Reviews.id"), 'float')), "numReviews"],
-          [sequelize.fn("AVG", sequelize.cast(sequelize.col("Reviews.stars"), 'float')), "avgRating"],
+          [
+            sequelize.fn(
+              "COUNT",
+              sequelize.cast(sequelize.col("Reviews.id"), "float")
+            ),
+            "numReviews",
+          ],
+          [
+            sequelize.fn(
+              "AVG",
+              sequelize.cast(sequelize.col("Reviews.stars"), "float")
+            ),
+            "avgRating",
+          ],
           // [sequelize.fn("COUNT", sequelize.col("Spot.id")), "numOfEntries"],
         ],
       },
@@ -353,28 +365,27 @@ router.get("/:id", async (req, res) => {
       {
         model: Review,
         as: "Reviews",
-        attributes: ["id", "review", "stars", "createdAt", "updatedAt"], // Include attributes from the Review model
+        attributes: ["id", "review", "stars", "createdAt", "updatedAt"],
         include: [
           {
             model: User,
-            attributes: ["firstName", "lastName"], // Include firstName and lastName from User model
+            attributes: ["firstName", "lastName"],
           },
         ],
       },
     ],
     attributes: {
       include: [
-        [sequelize.fn("COUNT", sequelize.cast(sequelize.col("Reviews.id"), 'float')), "numReviews"],
-        [sequelize.fn("AVG", sequelize.cast(sequelize.col("Reviews.stars"), 'float')), "avgStarRating"],
+        [sequelize.fn("COUNT", sequelize.col("Reviews.id")), "numReviews"],
+        [
+          sequelize.fn(
+            "AVG",
+            sequelize.cast(sequelize.col("Reviews.stars"), "float")
+          ),
+          "avgStarRating",
+        ],
       ],
     },
-    group: [
-      "Spot.id",
-      "Owner.id",
-      "SpotImages.id",
-      "Reviews.id",
-      "Reviews->User.id",
-    ],
   });
 
   if (!selectedSpot) {
