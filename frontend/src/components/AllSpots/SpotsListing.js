@@ -2,59 +2,28 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loadAllSpots } from "../../store/spots";
 import SpotComponent from "./SpotComponent";
-import "./AllSpots.css"
+import "./AllSpots.css";
 
 const SpotsListing = () => {
   const dispatch = useDispatch();
   const spots = useSelector((state) => Object.values(state.spot.Spots));
-  const newSpotCreated = useSelector((state) => state.spot.newSpotCreated);
-
-
- useEffect(() => {
-  dispatch(loadAllSpots())
- }, [dispatch])
-
+  // const newSpotCreated = useSelector((state) => state.spot.newSpotCreated);
 
   useEffect(() => {
-    if(newSpotCreated)
-    dispatch(loadAllSpots(newSpotCreated));
-  }, [dispatch, spots, newSpotCreated]);
+    dispatch(loadAllSpots());
+  }, [dispatch]);
 
   return (
     <div className="ui fixed menu">
       <div className="ui container center spot-list">
-        {spots && spots.map((spot) => (
-          <SpotComponent key={spot.id} spot={spot} />
-        ))}
+        {spots &&
+          spots.map((spot) => <SpotComponent key={spot.id} spot={spot} />)}
       </div>
     </div>
   );
 };
 
 export default SpotsListing;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // const SpotsListing = () => {
 //   const dispatch = useDispatch();
@@ -79,19 +48,6 @@ export default SpotsListing;
 // };
 
 // export default SpotsListing;
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // import React, { useEffect, useState } from "react";
 // import { useDispatch, useSelector } from "react-redux";

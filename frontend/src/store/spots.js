@@ -76,24 +76,41 @@ export const createSpot = (data) => async (dispatch) => {
     body: JSON.stringify(data),
   });
 
-  const createdSpot = await response.json();
-
-  if (createdSpot) {
-    dispatch(addSpot(createdSpot))
-
-    setTimeout(() => {
-      dispatch(loadAllSpots());
-    }, 2000);
+  if (response.ok) {
+    const createdSpot = await response.json();
+    dispatch(addSpot(createdSpot));
+    dispatch(loadAllSpots());
+    return createdSpot; // Return the created spot
   }
-
-  return new Promise((resolve, reject) => {
-    if (createdSpot) {
-      resolve(createdSpot);
-    } else {
-      reject(new Error('Spot could not be created'));
-    }
-  });
 };
+
+// export const createSpot = (data) => async (dispatch) => {
+//   const response = await csrfFetch(`/api/spots`, {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify(data),
+//   });
+
+//   const createdSpot = await response.json();
+
+//   if (createdSpot) {
+//     dispatch(addSpot(createdSpot))
+
+//     setTimeout(() => {
+//       dispatch(loadAllSpots());
+//     }, 2000);
+//   }
+
+//   return new Promise((resolve, reject) => {
+//     if (createdSpot) {
+//       resolve(createdSpot);
+//     } else {
+//       reject(new Error('Spot could not be created'));
+//     }
+//   });
+// };
 
 export const editSpot = (spot) => async (dispatch) => {
   const response = await csrfFetch(`/api/spots/${spot.id}`, {
