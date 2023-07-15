@@ -10,7 +10,6 @@ const EditSpotForm = () => {
   const { spotId } = useParams();
   const spot = useSelector((state) => state.selectedSpot.spot);
 
-  
   const [streetAddress, setStreetAddress] = useState("");
   const [previewImage, setPreviewImage] = useState("");
   const [image1, setImage1] = useState("");
@@ -46,10 +45,12 @@ const EditSpotForm = () => {
   }, [spot]);
 
   useEffect(() => {
+    console.log("Effect : Dispatching loadSingleSpot()");
     dispatch(loadSingleSpot(spotId));
   }, [dispatch, spotId]);
 
   const handleSubmit = (e) => {
+    console.log("handleSubmit called");
     e.preventDefault();
 
     // form validation
@@ -57,13 +58,16 @@ const EditSpotForm = () => {
 
     if (description.length < 30) {
       newErrors.description = "Description needs 30 or more characters.";
+      console.log("Validation failed: description too short.");
     }
     if (!previewImage) {
       newErrors.previewImage = "Preview Image URL is required.";
+      console.log("Validation failed: no preview image URL.");
     }
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
+      console.log("Form validation failed, not dispatching editSpot.");
       return;
     }
 
@@ -81,17 +85,25 @@ const EditSpotForm = () => {
       price,
       images: [previewImage, image1, image2, image3, image4].filter(Boolean),
     };
-
+    console.log("spotData:", spotData);
+    console.log("Attempting to dispatch editSpot.");
     dispatch(editSpot(spotData))
       .then((updatedSpot) => {
-        if (updatedSpot) {
-          history.push(`/spots/${updatedSpot.id}`);
+        console.log("editSpot returned successfully.");
+        if (updatedSpot && !updatedSpot.errors) {
+          history.push(`/spots/${updatedSpot.id}`, {
+            key: new Date().toISOString(),
+          }); // Pass a unique key in the location state
+        } else if (updatedSpot.errors) {
+          setErrors({ ...errors, api: updatedSpot.errors });
         }
       })
       .catch((error) => {
+        console.log("editSpot returned with an error.");
         setErrors({ ...errors, api: error.toString() });
       });
   };
+
   return (
     <div className="spot-form-container">
       <h1 className="spot-form-title">Create a New Spot</h1>
@@ -234,7 +246,11 @@ const EditSpotForm = () => {
           value={image4}
           onChange={(e) => setImage4(e.target.value)}
         />
-        <button className="spot-form-button" type="submit">
+        <button
+          className="spot-form-button"
+          type="submit"
+          onClick={() => console.log("Update Spot button clicked")}
+        >
           Update your Spot
         </button>
       </form>

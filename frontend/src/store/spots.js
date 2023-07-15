@@ -15,7 +15,7 @@ const loadSpots = (spots) => ({
   spots,
 });
 
-const addSpot = (spot) => ({
+export const addSpot = (spot) => ({
   type: ADD_SPOT,
   spot,
 });
@@ -37,7 +37,7 @@ export const loadAllSpots = () => async (dispatch) => {
     const loadedSpots = await response.json();
     console.log(loadedSpots);
     dispatch(loadSpots(loadedSpots));
-    return loadedSpots;
+    return loadedSpots.Spots;
   }
 };
 
@@ -116,20 +116,30 @@ export const createSpot = (data) => async (dispatch) => {
 // };
 
 export const editSpot = (spot) => async (dispatch) => {
-  const response = await csrfFetch(`/api/spots/${spot.id}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(spot),
-  });
-  if (response.ok) {
-    const editedSpot = await response.json();
-    dispatch(updateSpot(editedSpot));
-    return editedSpot;
-  } else {
-    const error = await response.json();
-    return { errors: error };
+  try {
+    const response = await csrfFetch(`/api/spots/${spot.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(spot),
+    });
+
+    console.log("received response from editSpot fetch", response);
+
+    if (response.ok) {
+      const editedSpot = await response.json();
+      console.log(editedSpot);
+      dispatch(updateSpot(editedSpot));
+      dispatch(loadSingleSpot(editedSpot.id));
+      return editedSpot;
+    } else {
+      const error = await response.json();
+      return { errors: error };
+    }
+  } catch (error) {
+    console.error("Failed to edit spot", error);
+    return { errors: error.toString() };
   }
 };
 
@@ -137,8 +147,12 @@ export const deleteSpot = (id) => async (dispatch) => {
   const response = await csrfFetch(`/api/spots/${id}`, {
     method: "DELETE",
   });
+
   if (response.ok) {
     dispatch(removeSpot(id));
+  } else {
+    const error = await response.json();
+    console.error(error.message);
   }
 };
 
@@ -155,21 +169,25 @@ export const spotReducer = (state = spotInitialState, action) => {
         allSpots[spot.id] = spot;
       });
       return {
-         Spots: allSpots,
+        ...state,
+        Spots: allSpots,
         newSpotCreated: false,
       };
     case ADD_SPOT:
       return {
         ...state,
-        Spots: [...state.Spots, action.spot],
+        Spots: {
+          ...state.Spots,
+          [action.spot.id]: action.spot,
+        },
         newSpotCreated: !state.newSpotCreated,
       };
     case UPDATE_SPOT:
       return {
         ...state,
-        Spots: state.Spots.map((spot) => {
-          return spot.id === action.spot.id ? action.spot : spot;
-        }),
+        Spots: state.Spots.map((spot) =>
+          spot.id === action.spot.id ? action.spot : spot
+        ),
       };
     case REMOVE_SPOT:
       return {

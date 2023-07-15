@@ -23,28 +23,24 @@
 
 .spot-detail__images {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 2fr 1fr;
   gap: 10px;
   margin-bottom: 25px;
 }
 
 .spot-detail__image-large {
-  grid-column: 1 / 2;
+  grid-row: span 2;
   width: 100%;
-  height: 100%;
+  height: 500px;
   object-fit: cover;
 }
-
 .spot-detail__image-thumbnails {
-  grid-column: 2 / 4;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-auto-rows: minmax(100px, auto);
   gap: 10px;
 }
 
 .spot-detail__image-small {
-  width: 100%;
   height: 100%;
   object-fit: cover;
 }
@@ -83,7 +79,7 @@
   font-size: 1.1rem;
   font-weight: 600;
   padding: 10px 20px;
-  background-color: #FF5A5F;
+  background-color: #ff5a5f;
   color: white;
   border: none;
   cursor: pointer;
@@ -92,7 +88,7 @@
 }
 
 .spot-detail__reserve-button:hover {
-  background-color: #FF7478;
+  background-color: #ff7478;
 }
 
 .spot-detail__reviews {
