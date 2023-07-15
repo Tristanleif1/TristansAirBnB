@@ -10,7 +10,7 @@ const EditSpotForm = () => {
   const { spotId } = useParams();
   const spot = useSelector((state) => state.selectedSpot.spot);
 
-  // add states for new fields
+  
   const [streetAddress, setStreetAddress] = useState("");
   const [previewImage, setPreviewImage] = useState("");
   const [image1, setImage1] = useState("");

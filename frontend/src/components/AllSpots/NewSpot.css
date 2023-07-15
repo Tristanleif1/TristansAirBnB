@@ -1,6 +1,5 @@
-
 body {
-    font-family: Arial, sans-serif;
+  font-family: Arial, sans-serif;
 }
 
 .spot-form-container {
@@ -54,4 +53,9 @@ body {
 
 .spot-form-container button:hover {
   background-color: #ff717e;
+}
+
+p.spot-form-error {
+  color: red;
+  font-size: 14px;
 }

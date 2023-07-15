@@ -1,5 +1,5 @@
 // frontend/src/components/LoginFormPage/index.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import * as sessionActions from "../../store/session";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
@@ -12,23 +12,29 @@ function LoginFormModal() {
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setErrors({});
-
+  // Run this useEffect whenever `credential` or `password` state changes
+  useEffect(() => {
     if (credential.length < 4 || password.length < 6) {
       setErrors({ credential: "The provided credentials were invalid." });
-      return;
+    } else {
+      setErrors({});
     }
+  }, [credential, password]); // Dependency array
 
-    return dispatch(sessionActions.login({ credential, password }))
-      .then(closeModal)
-      .catch(() => {
-        setErrors({ credential: "The provided credentials were invalid." });
-      });
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (credential.length >= 4 && password.length >= 6) {
+      return dispatch(sessionActions.login({ credential, password }))
+        .then(closeModal)
+        .catch(() => {
+          setErrors({ credential: "The provided credentials were invalid." });
+        });
+    }
   };
 
-  const InvalidForm = credential.length < 4 || password.length < 6;
+  // Determine whether form is invalid
+  const invalidForm = errors.credential ? true : false;
 
   return (
     <>
@@ -39,7 +45,7 @@ function LoginFormModal() {
             Username or Email
             <input
               type="text"
-              value={credential || ""}
+              value={credential}
               onChange={(e) => setCredential(e.target.value)}
               required
             />
@@ -48,13 +54,13 @@ function LoginFormModal() {
             Password
             <input
               type="password"
-              value={password || ""}
+              value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
           </label>
           {errors.credential && <p>{errors.credential}</p>}
-          <button type="submit" disabled={InvalidForm}>
+          <button type="submit" disabled={invalidForm}>
             Log In
           </button>
         </form>

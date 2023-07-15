@@ -8,9 +8,7 @@ import "./NewSpot.css";
 const NewSpotForm = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const user = useSelector((state) => state.session.user); // get the current logged-in user
-  // console.log(user);
-  // add states for new fields
+  const user = useSelector((state) => state.session.user);
   const [streetAddress, setStreetAddress] = useState("");
   const [previewImage, setPreviewImage] = useState("");
   const [image1, setImage1] = useState("");
@@ -28,23 +26,40 @@ const NewSpotForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // form validation
     let newErrors = {};
 
-    if (description.length < 30) {
-      newErrors.description = "Description needs 30 or more characters.";
-    }
     if (!previewImage) {
       newErrors.previewImage = "Preview Image URL is required.";
     }
-
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return;
+    if (!name) {
+      newErrors.name = "Name is required.";
+    }
+    if (!description) {
+      newErrors.description = "Description is required.";
+    } else if (description.length < 30) {
+      newErrors.description = "Description needs 30 or more characters.";
+    }
+    if (!streetAddress) {
+      newErrors.streetAddress = "Street Address is required.";
+    }
+    if (!city) {
+      newErrors.city = "City is required.";
+    }
+    if (!state) {
+      newErrors.state = "State is required.";
+    }
+    if (!country) {
+      newErrors.country = "Country is required.";
+    }
+    if (!price || price === 0) {
+      newErrors.price = "Price is required.";
     }
 
-    // If we passed all checks, clear errors
-    setErrors({});
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length > 0) {
+      return;
+    }
 
     const spotData = {
       ownerId: user.id,
@@ -55,13 +70,12 @@ const NewSpotForm = () => {
       description,
       name,
       price,
-      images: [previewImage, image1, image2, image3, image4].filter(Boolean), // exclude empty strings
+      images: [previewImage, image1, image2, image3, image4].filter(Boolean),
     };
 
     dispatch(createSpot(spotData))
       .then((createdSpot) => {
         if (createdSpot) {
-          // Reset form fields
           setCountry("");
           setStreetAddress("");
           setCity("");
@@ -74,37 +88,23 @@ const NewSpotForm = () => {
           setImage2("");
           setImage3("");
           setImage4("");
-          // Navigate to the new spot's detail page
-
           history.push(`/spots/${createdSpot.id}`);
-
-          // Load all spots
           dispatch(loadAllSpots());
-        };
+        }
       })
       .catch((error) => {
         setErrors({ ...errors, api: error.toString() });
       });
   };
 
+  const renderError = (field) => {
+    return errors[field] && <p className="spot-form-error">{errors[field]}</p>;
+  };
 
   return (
     <div className="spot-form-container">
       <h1 className="spot-form-title">Create a New Spot</h1>
       <form className="spot-form" onSubmit={handleSubmit}>
-        {errors.length > 0 && (
-          <div className="spot-form-errors">
-            {errors.map((error, i) => (
-              <div key={i}>{error}</div>
-            ))}
-          </div>
-        )}
-
-        <h2 className="spot-form-section-title">Where's your place located?</h2>
-        <p className="spot-form-section-description">
-          Guests will only get your exact address once they booked a
-          reservation.
-        </p>
         <label htmlFor="country">Country</label>
         <input
           id="country"
@@ -112,8 +112,8 @@ const NewSpotForm = () => {
           placeholder="Country"
           value={country}
           onChange={(e) => setCountry(e.target.value)}
-          required
         />
+        {renderError("country")}
         <label htmlFor="streetAddress">Street Address</label>
         <input
           id="streetAddress"
@@ -121,8 +121,8 @@ const NewSpotForm = () => {
           placeholder="Street Address"
           value={streetAddress}
           onChange={(e) => setStreetAddress(e.target.value)}
-          required
         />
+        {renderError("streetAddress")}
         <label htmlFor="city">City</label>
         <input
           id="city"
@@ -130,8 +130,8 @@ const NewSpotForm = () => {
           placeholder="City"
           value={city}
           onChange={(e) => setCity(e.target.value)}
-          required
         />
+        {renderError("city")}
         <label htmlFor="state">State</label>
         <input
           id="state"
@@ -139,45 +139,21 @@ const NewSpotForm = () => {
           placeholder="State"
           value={state}
           onChange={(e) => setState(e.target.value)}
-          required
         />
-
-        <h2 className="spot-form-section-title">
-          Describe your place to guests
-        </h2>
-        <p className="spot-form-section-description">
-          Mention the best features of your space, any special amentities like
-          fast wifi or parking, and what you love about the neighborhood.
-        </p>
+        {renderError("state")}
         <textarea
           placeholder="Please write at least 30 characters"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          required
         />
-
-        <h2 className="spot-form-section-title">
-          Create a title for your spot
-        </h2>
-        <p className="spot-form-section-description">
-          Catch guests' attention with a spot title that highlights what makes
-          your place special.
-        </p>
+        {renderError("description")}
         <input
           type="text"
           placeholder="Name of your spot"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          required
         />
-
-        <h2 className="spot-form-section-title">
-          Set a base price for your spot
-        </h2>
-        <p className="spot-form-section-description">
-          Competitive pricing can help your listing stand out and rank higher in
-          search results.
-        </p>
+        {renderError("name")}
         <input
           type="number"
           placeholder="Price per night (USD)"
@@ -185,23 +161,16 @@ const NewSpotForm = () => {
           step="0.01"
           value={price}
           onChange={(e) => setPrice(parseFloat(e.target.value))}
-          required
         />
-
-        <h2 className="spot-form-section-title">
-          Liven up your spot with photos
-        </h2>
-        <p className="spot-form-section-description">
-          Submit a link to at least one photo to publish your spot.
-        </p>
+        {renderError("price")}
         <input
           className="spot-form-input"
           type="text"
           placeholder="Preview Image URL"
           value={previewImage}
           onChange={(e) => setPreviewImage(e.target.value)}
-          required
         />
+        {renderError("previewImage")}
         <input
           className="spot-form-input"
           type="text"
@@ -237,6 +206,5 @@ const NewSpotForm = () => {
     </div>
   );
 };
-
 
 export default NewSpotForm;

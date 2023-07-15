@@ -15,6 +15,17 @@ function SignupFormModal() {
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
 
+  const invalidForm =
+    !email ||
+    !username ||
+    !firstName ||
+    !lastName ||
+    !password ||
+    !confirmPassword ||
+    password !== confirmPassword ||
+    username.length < 4 ||
+    password.length < 6;
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (password === confirmPassword) {
@@ -37,7 +48,8 @@ function SignupFormModal() {
         });
     }
     return setErrors({
-      confirmPassword: "Confirm Password field must be the same as the Password field"
+      confirmPassword:
+        "Confirm Password field must be the same as the Password field",
     });
   };
 
@@ -65,6 +77,9 @@ function SignupFormModal() {
           />
         </label>
         {errors.username && <p>{errors.username}</p>}
+        {username.length < 4 && (
+          <p>Username must be at least 4 characters long.</p>
+        )}
         <label>
           First Name
           <input
@@ -95,6 +110,9 @@ function SignupFormModal() {
           />
         </label>
         {errors.password && <p>{errors.password}</p>}
+        {password.length < 6 && (
+          <p>Password must be at least 6 characters long.</p>
+        )}
         <label>
           Confirm Password
           <input
@@ -104,10 +122,10 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.confirmPassword && (
-          <p>{errors.confirmPassword}</p>
-        )}
-        <button className="signup-button" type="submit">Sign Up</button>
+        {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
+        <button className="signup-button" type="submit" disabled={invalidForm}>
+          Sign Up
+        </button>
       </form>
     </>
   );

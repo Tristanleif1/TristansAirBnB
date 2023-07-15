@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams, useHistory } from "react-router-dom";
 import { loadSingleSpot } from "../../store/spots";
 import { loadSpotReviews } from "../../store/reviews";
 import DeleteReview from "../Reviews/DeleteReviewModal.js";
 import ReviewForm from "../Reviews/ReviewFormComponent";
+import * as sessionActions from "../../store/session";
 import { useModal } from "../../context/Modal";
 import "./SpotDetails.css";
 
@@ -19,6 +20,9 @@ const SpotDetail = () => {
   const dispatch = useDispatch();
   const { setModalContent, closeModal } = useModal();
 
+  // Store the previous user before the current render
+  const previousUser = useRef(user);
+
   const openDeleteReviewForm = (reviewId) => {
     setModalContent(
       <DeleteReview reviewId={reviewId} closeModal={closeModal} />
@@ -30,10 +34,25 @@ const SpotDetail = () => {
     dispatch(loadSpotReviews(spotId));
   }, [dispatch, spotId]);
 
-  if (isLoading || !spot || reviewsLoading || reviews.some(review => !review.User)) {
-    return <div>Loading...</div>;
-  }
+  useEffect(() => {
+    // If previously there was a user, and now there is none, redirect to home page
+    if (previousUser.current && !user) {
+      history.push("/");
+    }
+    // Update the previousUser for the next render
+    previousUser.current = user;
+  }, [user, history]);
 
+  if (
+    isLoading ||
+    !spot ||
+    reviewsLoading ||
+    reviews.some((review) => !review.User)
+  ) {
+    return <div>Loading...</div>;
+  } else if (!spot) {
+    return <div>Failed to load spot details</div>;
+  }
 
   const {
     name,
@@ -47,6 +66,7 @@ const SpotDetail = () => {
     avgStarRating,
     numReviews,
   } = spot;
+
   const averageRating = Number(avgStarRating).toFixed(2);
   let reviewSummary;
   if (numReviews === 0) {
@@ -134,7 +154,7 @@ const SpotDetail = () => {
           )}
         {reviewsLoading ? (
           <p>Loading reviews...</p>
-        ) : sortedReviews.length > 0 ? (
+        ) : (
           sortedReviews.map((review) => (
             <div key={review.id} className="review">
               {review.User ? (
@@ -142,7 +162,7 @@ const SpotDetail = () => {
                   <h3>{review.User.firstName}</h3>
                   <p>{formatDate(review.createdAt)}</p>
                   <p>{review.review}</p>
-                  {user.id === review.userId && (
+                  {user && user.id === review.userId && (
                     <button onClick={() => openDeleteReviewForm(review.id)}>
                       Delete
                     </button>
@@ -153,8 +173,6 @@ const SpotDetail = () => {
               )}
             </div>
           ))
-        ) : (
-          user && user.id !== Owner.id && <p>Be the first to post a review!</p>
         )}
       </div>
     </div>

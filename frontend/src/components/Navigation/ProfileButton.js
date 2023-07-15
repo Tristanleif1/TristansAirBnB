@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
-import { NavLink } from "react-router-dom"
-import { useDispatch } from 'react-redux';
-import * as sessionActions from '../../store/session';
+import { NavLink, useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import * as sessionActions from "../../store/session";
 import OpenModalMenuItem from "./OpenModalMenu";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormPage";
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
+  const history = useHistory();
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
 
@@ -25,7 +26,7 @@ function ProfileButton({ user }) {
       }
     };
 
-    document.addEventListener('click', closeMenu);
+    document.addEventListener("click", closeMenu);
 
     return () => document.removeEventListener("click", closeMenu);
   }, [showMenu]);
@@ -49,12 +50,14 @@ function ProfileButton({ user }) {
         {user ? (
           <>
             <li>{user.username}</li>
-            <li>{user.firstName} {user.lastName}</li>
+            <li> Hello, {user.firstName} </li>
             <li>{user.email}</li>
             <li>
               <button onClick={logout}>Log Out</button>
             </li>
-            <li><NavLink to="/spots/mySpots">Manage Spots</NavLink></li>
+            <li>
+              <NavLink to="/spots/mySpots">Manage Spots</NavLink>
+            </li>
           </>
         ) : (
           <>

@@ -50,6 +50,9 @@ export const loadSingleSpot = (id) => async (dispatch) => {
   if (response.ok) {
     const spot = await response.json();
     dispatch(load({ spot, isLoading: false }));
+  } else {
+    console.error('Failed to load spot', id);
+    dispatch(load({ spot: null, isLoading: false }));
   }
 };
 

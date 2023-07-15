@@ -6,15 +6,14 @@ import { deleteSpot } from "../../store/spots";
 import "./AllSpots.css";
 
 const SpotComponent = ({ spot, isManageSpotsComponent }) => {
-  const dispatch = useDispatch(); // To dispatch actions
-  const { price, previewImage, city, state, id, avgRating } = spot;
+  const dispatch = useDispatch();
+  const { price, previewImage, city, state, id, avgRating, name } = spot; // Extract name from spot
   const [showModal, setShowModal] = useState(false);
 
   const avgRatingNumber = Number(avgRating);
   const avgRatingDisplay =
     avgRating && !isNaN(avgRatingNumber) ? avgRatingNumber.toFixed(2) : "New";
 
-  // Event handler to stop the parent Link from triggering
   const handleButtonClick = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -24,15 +23,13 @@ const SpotComponent = ({ spot, isManageSpotsComponent }) => {
     e.preventDefault();
     e.stopPropagation();
 
-    // Dispatch deleteSpot action here
     dispatch(deleteSpot(id));
 
-    // Close the modal
     setShowModal(false);
   };
 
   return (
-    <div className="four column wide">
+    <div className="four column wide" title={name}>
       <Link to={`/spots/${id}`}>
         <div className="ui link cards">
           <div className="card">
@@ -41,7 +38,7 @@ const SpotComponent = ({ spot, isManageSpotsComponent }) => {
             </div>
             <div className="content">
               <div className="header">{city}</div>
-              <div className="meta price">$ {price}</div>
+              <div className="meta price">$ {price} / night</div>
               <div className="meta">{state}</div>
               <div className="meta">
                 <i className="fa-solid fa-star"></i> {avgRatingDisplay}

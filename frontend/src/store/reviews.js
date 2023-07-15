@@ -47,6 +47,9 @@ export const loadSpotReviews = (spotId) => async (dispatch) => {
     }));
     dispatch(loadReviews(reviews));
     dispatch(setLoading(false));
+  } else {
+    console.error('Failed to load reviews for spot', spotId);
+    dispatch(setLoading(false));
   }
 };
 
