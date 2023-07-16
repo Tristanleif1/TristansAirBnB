@@ -160,7 +160,13 @@ router.get("/", validQueryParameters, async (req, res) => {
   let offset = (page - 1) * limit;
 
   try {
-    const rows = await Spot.findAll({
+    const whereClause = {
+      lat: { [Op.between]: [minLat, maxLat] },
+      lng: { [Op.between]: [minLng, maxLng] },
+      price: { [Op.between]: [minPrice, maxPrice] },
+    };
+
+    const allSpots = await Spot.findAll({
       include: [
         {
           model: Image,
@@ -204,20 +210,16 @@ router.get("/", validQueryParameters, async (req, res) => {
             ),
             "avgRating",
           ],
-          // [sequelize.fn("COUNT", sequelize.col("Spot.id")), "numOfEntries"],
         ],
       },
-      where: {
-        lat: { [Op.between]: [minLat, maxLat] },
-        lng: { [Op.between]: [minLng, maxLng] },
-        price: { [Op.between]: [minPrice, maxPrice] },
-      },
       group: ["Spot.id", "SpotImages.id"],
-      limit,
-      offset,
+      where: req.query.page ? whereClause : {}, // Only filter when there is a page query
+      limit: req.query.page ? limit : null, // Only paginate when there is a page query
+      offset: req.query.page ? offset : null, // Only paginate when there is a page query
     });
 
-    const filteredLocations = rows.map((spot) => ({
+    // Convert to response format
+    const spotsWithImage = allSpots.map((spot) => ({
       id: spot.id,
       ownerId: spot.ownerId,
       address: spot.address,
@@ -236,7 +238,7 @@ router.get("/", validQueryParameters, async (req, res) => {
     }));
 
     return res.status(200).json({
-      Spots: filteredLocations,
+      Spots: spotsWithImage,
       page: parseInt(page),
       size: parseInt(size),
     });
@@ -249,51 +251,51 @@ router.get("/", validQueryParameters, async (req, res) => {
 
 // Get all spots -- (works when placed beneath get all spots with query filters route)
 
-router.get("/", async (req, res) => {
-  try {
-    const allSpots = await Spot.findAll({
-      include: {
-        model: Image,
-        as: "SpotImages",
-        attributes: ["url"],
-        required: false,
-        limit: 1,
-      },
-      group: ["Spot.id", "SpotImages.id"],
-    });
+// router.get("/", async (req, res) => {
+//   try {
+//     const allSpots = await Spot.findAll({
+//       include: {
+//         model: Image,
+//         as: "SpotImages",
+//         attributes: ["url"],
+//         required: false,
+//         limit: 1,
+//       },
+//       group: ["Spot.id", "SpotImages.id"],
+//     });
 
-    const spotsWithImage = allSpots.map((spot) => ({
-      id: spot.id,
-      ownerId: spot.ownerId,
-      address: spot.address,
-      city: spot.city,
-      state: spot.state,
-      country: spot.country,
-      lat: spot.lat,
-      lng: spot.lng,
-      name: spot.name,
-      description: spot.description,
-      price: spot.price,
-      createdAt: spot.createdAt,
-      updatedAt: spot.updatedAt,
-      avgRating: spot.avgRating !== null ? spot.avgRating.toFixed(2) : null,
-      previewImage: spot.SpotImages.length ? spot.SpotImages[0].url : null,
-    }));
+//     const spotsWithImage = allSpots.map((spot) => ({
+//       id: spot.id,
+//       ownerId: spot.ownerId,
+//       address: spot.address,
+//       city: spot.city,
+//       state: spot.state,
+//       country: spot.country,
+//       lat: spot.lat,
+//       lng: spot.lng,
+//       name: spot.name,
+//       description: spot.description,
+//       price: spot.price,
+//       createdAt: spot.createdAt,
+//       updatedAt: spot.updatedAt,
+//       avgRating: spot.avgRating !== null ? spot.avgRating.toFixed(2) : null,
+//       previewImage: spot.SpotImages.length ? spot.SpotImages[0].url : null,
+//     }));
 
-    const properResponse = {
-      Spots: spotsWithImage,
-    };
-    //   res.json(allSpots);
-    // const properResponse = {
-    //   Spots: allSpots,
-    // };
+//     const properResponse = {
+//       Spots: spotsWithImage,
+//     };
+//     //   res.json(allSpots);
+//     // const properResponse = {
+//     //   Spots: allSpots,
+//     // };
 
-    res.status(200).json(properResponse);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Spots could not be found" });
-  }
-});
+//     res.status(200).json(properResponse);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: "Spots could not be found" });
+//   }
+// });
 
 //GET the current user's spots
 router.get("/mySpots", requireAuth, async (req, res) => {
@@ -374,18 +376,7 @@ router.get("/:id", async (req, res) => {
   // Query for reviews
   const reviews = await Review.findAll({
     where: { spotId: id },
-    attributes: [
-      "id",
-      "review",
-      "stars",
-      "createdAt",
-      "updatedAt",
-      [sequelize.fn("COUNT", sequelize.col("Review.id")), "numReviews"],
-      [
-        sequelize.fn("AVG", sequelize.cast(sequelize.col("stars"), "float")),
-        "avgStarRating",
-      ],
-    ],
+    attributes: ["id", "review", "stars", "createdAt", "updatedAt"],
     include: [
       {
         model: User,
@@ -393,6 +384,18 @@ router.get("/:id", async (req, res) => {
       },
     ],
     group: ["Review.id", "User.id"],
+  });
+
+  // Query for average rating and number of reviews
+  const reviewStats = await Review.findAll({
+    where: { spotId: id },
+    attributes: [
+      [sequelize.fn("COUNT", sequelize.col("id")), "numReviews"],
+      [
+        sequelize.fn("AVG", sequelize.cast(sequelize.col("stars"), "float")),
+        "avgStarRating",
+      ],
+    ],
   });
 
   const specificSpotDetails = {
@@ -409,8 +412,8 @@ router.get("/:id", async (req, res) => {
     price: selectedSpot.price,
     createdAt: selectedSpot.createdAt,
     updatedAt: selectedSpot.updatedAt,
-    numReviews: reviews.length > 0 ? reviews[0].dataValues.numReviews : 0,
-    avgStarRating: reviews.length > 0 ? reviews[0].dataValues.avgStarRating : 0,
+    numReviews: reviewStats[0].dataValues.numReviews,
+    avgStarRating: reviewStats[0].dataValues.avgStarRating,
     SpotImages: selectedSpot.SpotImages.map((image) => ({
       id: image.id,
       url: image.url,
@@ -421,7 +424,7 @@ router.get("/:id", async (req, res) => {
       firstName: selectedSpot.Owner.firstName,
       lastName: selectedSpot.Owner.lastName,
     },
-    Reviews: reviews, // Include the Reviews object in the response
+    Reviews: reviews,
   };
 
   res.status(200).json(specificSpotDetails);
