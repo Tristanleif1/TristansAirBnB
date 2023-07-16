@@ -360,7 +360,8 @@ router.get("/:id", async (req, res) => {
       {
         model: Image,
         as: "SpotImages",
-        attributes: ["id", "url"],
+        attributes: ["id", "url", "preview"],
+        required: false,
       },
       {
         model: Review,
@@ -385,12 +386,15 @@ router.get("/:id", async (req, res) => {
           "avgStarRating",
         ],
       ],
+      group: ["Spot.id", "SpotImages.id", "Reviews.id", "Reviews->User.id", "Owner.id"]
     },
   });
 
   if (!selectedSpot) {
     return res.status(404).json({ error: "Spot not found" });
   }
+
+  console.log(selectedSpot);
 
   const specificSpotDetails = {
     id: selectedSpot.id,
@@ -408,10 +412,10 @@ router.get("/:id", async (req, res) => {
     updatedAt: selectedSpot.updatedAt,
     numReviews: selectedSpot.dataValues.numReviews,
     avgStarRating: selectedSpot.dataValues.avgStarRating,
-    SpotImages: selectedSpot.SpotImages.map((image, idx) => ({
+    SpotImages: selectedSpot.SpotImages.map((image) => ({
       id: image.id,
       url: image.url,
-      preview: idx === 0 ? true : false,
+      preview: image.preview,
     })),
     Owner: {
       id: selectedSpot.Owner.id,

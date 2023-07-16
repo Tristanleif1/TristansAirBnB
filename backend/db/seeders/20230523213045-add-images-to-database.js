@@ -20,6 +20,24 @@ module.exports = {
         preview: true,
       },
       {
+        url: "https://res.cloudinary.com/dtp3p8axg/image/upload/v1689533239/480A0895-2-scaled_wgpywv.jpg",
+        imageableId: 1,
+        imageableType: "Spot",
+        preview: false,
+      },
+      {
+        url: "https://res.cloudinary.com/dtp3p8axg/image/upload/v1689533225/open_two_story_foyer_in_a_traditional_suburban_home_-_here_27s_how_we_updated_this_space_to_make_it_feel_fresh_u8cbpv.jpg",
+        imageableId: 1,
+        imageableType: "Spot",
+        preview: false,
+      },
+      {
+        url: "https://res.cloudinary.com/dtp3p8axg/image/upload/v1689533204/0f07df55e94a9144f476913271b5a2c4_i1fcfe.jpg",
+        imageableId: 1,
+        imageableType: "Spot",
+        preview: false,
+      },
+      {
         url: "https://res.cloudinary.com/dtp3p8axg/image/upload/v1688772383/MCH-L-BUSINESS-0130-1_xjj1aa.jpg",
         imageableId: 2,
         imageableType: "Spot",
