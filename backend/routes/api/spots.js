@@ -350,6 +350,7 @@ router.get("/mySpots", requireAuth, async (req, res) => {
 router.get("/:id", async (req, res) => {
   const id = +req.params.id;
 
+  // Query for spot and related images
   const selectedSpot = await Spot.findByPk(id, {
     include: [
       {
@@ -363,38 +364,36 @@ router.get("/:id", async (req, res) => {
         attributes: ["id", "url", "preview"],
         required: false,
       },
-      {
-        model: Review,
-        as: "Reviews",
-        attributes: ["id", "review", "stars", "createdAt", "updatedAt"],
-        include: [
-          {
-            model: User,
-            attributes: ["firstName", "lastName"],
-          },
-        ],
-      },
     ],
-    attributes: {
-      include: [
-        [sequelize.fn("COUNT", sequelize.col("Reviews.id")), "numReviews"],
-        [
-          sequelize.fn(
-            "AVG",
-            sequelize.cast(sequelize.col("Reviews.stars"), "float")
-          ),
-          "avgStarRating",
-        ],
-      ],
-      group: ["Spot.id", "SpotImages.id", "Reviews.id", "Reviews->User.id", "Owner.id"]
-    },
   });
 
   if (!selectedSpot) {
     return res.status(404).json({ error: "Spot not found" });
   }
 
-  console.log(selectedSpot);
+  // Query for reviews
+  const reviews = await Review.findAll({
+    where: { spotId: id },
+    attributes: [
+      "id",
+      "review",
+      "stars",
+      "createdAt",
+      "updatedAt",
+      [sequelize.fn("COUNT", sequelize.col("Review.id")), "numReviews"],
+      [
+        sequelize.fn("AVG", sequelize.cast(sequelize.col("stars"), "float")),
+        "avgStarRating",
+      ],
+    ],
+    include: [
+      {
+        model: User,
+        attributes: ["firstName", "lastName"],
+      },
+    ],
+    group: ["Review.id", "User.id"],
+  });
 
   const specificSpotDetails = {
     id: selectedSpot.id,
@@ -410,8 +409,8 @@ router.get("/:id", async (req, res) => {
     price: selectedSpot.price,
     createdAt: selectedSpot.createdAt,
     updatedAt: selectedSpot.updatedAt,
-    numReviews: selectedSpot.dataValues.numReviews,
-    avgStarRating: selectedSpot.dataValues.avgStarRating,
+    numReviews: reviews.length > 0 ? reviews[0].dataValues.numReviews : 0,
+    avgStarRating: reviews.length > 0 ? reviews[0].dataValues.avgStarRating : 0,
     SpotImages: selectedSpot.SpotImages.map((image) => ({
       id: image.id,
       url: image.url,
@@ -422,8 +421,9 @@ router.get("/:id", async (req, res) => {
       firstName: selectedSpot.Owner.firstName,
       lastName: selectedSpot.Owner.lastName,
     },
-    Reviews: selectedSpot.Reviews, // Include the Reviews object in the response
+    Reviews: reviews, // Include the Reviews object in the response
   };
+
   res.status(200).json(specificSpotDetails);
 });
 //Post a spot
