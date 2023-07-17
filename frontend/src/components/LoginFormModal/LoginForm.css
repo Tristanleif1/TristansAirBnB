@@ -75,3 +75,9 @@
   font-family: inherit;
   font-size: inherit;
 }
+
+.login-box button[type="submit"]:disabled,
+.login-box button[type="button"]:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
