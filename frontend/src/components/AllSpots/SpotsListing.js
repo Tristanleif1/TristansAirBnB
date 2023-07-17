@@ -16,7 +16,7 @@ const SpotsListing = () => {
         newSpotCreated &&
         !loadedSpots.some((spot) => spot.id === newSpotCreated.id)
       ) {
-        dispatch(addSpot(newSpotCreated)); 
+        dispatch(addSpot(newSpotCreated));
       }
     });
   }, [dispatch, newSpotCreated]);
@@ -25,7 +25,9 @@ const SpotsListing = () => {
     <div className="ui fixed menu">
       <div className="ui container center spot-list">
         {spots &&
-          spots.map((spot) => <SpotComponent key={spot.id} spot={spot} />)}
+          spots
+            .sort((a, b) => a.id - b.id)
+            .map((spot) => <SpotComponent key={spot.id} spot={spot} />)}
       </div>
     </div>
   );

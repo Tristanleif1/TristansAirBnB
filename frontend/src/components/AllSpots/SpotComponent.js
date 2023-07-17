@@ -34,7 +34,7 @@ const SpotComponent = ({ spot, isManageSpotsComponent }) => {
         <div className="ui link cards">
           <div className="card">
             <div className="image">
-              <img src={previewImage} alt={city} />
+              <img className="spot-image" src={previewImage} alt={city} />
             </div>
             <div className="content">
               <div className="header">{city}</div>
