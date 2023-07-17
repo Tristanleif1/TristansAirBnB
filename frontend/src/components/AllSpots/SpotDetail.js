@@ -36,7 +36,7 @@ const SpotDetail = () => {
   }, [dispatch, spotId, reviews.length, history.location.key]);
 
   useEffect(() => {
-    // If previously there was a user, and now there is none, redirect to home page
+    
     if (previousUser.current && !user) {
       history.push("/");
     }
