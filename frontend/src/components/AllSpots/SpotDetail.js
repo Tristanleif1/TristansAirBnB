@@ -13,6 +13,7 @@ const SpotDetail = () => {
   const { spotId } = useParams();
   const history = useHistory();
   const { spot, isLoading } = useSelector((state) => state.selectedSpot);
+  console.log(spot);
   const { list: reviews, loading: reviewsLoading } = useSelector(
     (state) => state.reviews
   );
@@ -67,6 +68,8 @@ const SpotDetail = () => {
     numReviews,
   } = spot;
 
+  console.log(spot);
+
   const averageRating = Number(avgStarRating).toFixed(2);
   let reviewSummary;
   if (numReviews === 0) {
@@ -92,7 +95,10 @@ const SpotDetail = () => {
   }
 
   const previewImage = SpotImages?.find((image) => image.preview)?.url;
-  const otherImages = SpotImages?.filter((image) => !image.preview)?.url;
+  console.log(previewImage);
+  const otherImages = SpotImages?.filter((image) => !image.preview).map(
+    (image) => image.url
+  );
   console.log(otherImages);
 
   const reserveSpot = () => {
@@ -128,7 +134,7 @@ const SpotDetail = () => {
           {otherImages?.map((image, index) => (
             <img
               key={index}
-              src={image.url}
+              src={image}
               alt={`${name} ${index}`}
               className="spot-detail__image-small"
             />

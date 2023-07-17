@@ -10,21 +10,31 @@ function LoginFormModal() {
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const [submitted, setSubmitted] = useState(false);
+  const [invalidForm, setInvalidForm] = useState(true);
   const { closeModal } = useModal();
 
-  // Run this useEffect whenever `credential` or `password` state changes
   useEffect(() => {
-    if (credential.length < 4 || password.length < 6) {
+    if (submitted && (credential.length < 4 || password.length < 6)) {
       setErrors({ credential: "The provided credentials were invalid." });
     } else {
       setErrors({});
     }
-  }, [credential, password]); // Dependency array
+  }, [credential, password, submitted]);
+
+  useEffect(() => {
+    if (credential.length >= 4 && password.length >= 6) {
+      setInvalidForm(false);
+    } else {
+      setInvalidForm(true);
+    }
+  }, [credential, password]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setSubmitted(true);
 
-    if (credential.length >= 4 && password.length >= 6) {
+    if (!invalidForm) {
       return dispatch(sessionActions.login({ credential, password }))
         .then(closeModal)
         .catch(() => {
@@ -33,12 +43,9 @@ function LoginFormModal() {
     }
   };
 
-  // Determine whether form is invalid
-  const invalidForm = errors.credential ? true : false;
-
   return (
     <>
-      <div>
+      <div className="login-box">
         <h1>Log In</h1>
         <form onSubmit={handleSubmit}>
           <label>
@@ -65,7 +72,6 @@ function LoginFormModal() {
           </button>
         </form>
         <button
-          type="button"
           onClick={() =>
             dispatch(
               sessionActions.login({
@@ -74,8 +80,9 @@ function LoginFormModal() {
               })
             ).then(closeModal)
           }
+          className="demo-user-link"
         >
-          Log In as Demo User
+          Demo User
         </button>
       </div>
     </>
