@@ -9,6 +9,14 @@ const SpotComponent = ({ spot, isManageSpotsComponent }) => {
   const dispatch = useDispatch();
   const { price, previewImage, city, state, id, avgRating, name } = spot;
   const [showModal, setShowModal] = useState(false);
+  // console.log(previewImage);
+  // const previewImageUrl = spot.previewImage[0]?.url;
+  let previewImageUrl;
+  if (Array.isArray(spot.previewImage)) {
+    previewImageUrl = spot.previewImage[0].url;
+  } else {
+    previewImageUrl = spot.previewImage;
+  }
 
   const avgRatingNumber = Number(avgRating);
   const avgRatingDisplay =
@@ -34,7 +42,7 @@ const SpotComponent = ({ spot, isManageSpotsComponent }) => {
         <div className="ui link cards">
           <div className="card">
             <div className="image">
-              <img className="spot-image" src={previewImage} alt={city} />
+              <img className="spot-image" src={previewImageUrl} alt={city} />
             </div>
             <div className="content">
               <div className="spot-info">

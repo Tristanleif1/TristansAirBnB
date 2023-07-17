@@ -1,3 +1,26 @@
+.sign-up-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 40px;
+}
+
+.sign-up-container h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #d72121;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+/* .signup-form h1,
+.signup-container h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333333;
+  font-size: 28px;
+  font-weight: bold;
+} */
+
 .signup-form {
   max-width: 400px;
   margin: 0 auto;

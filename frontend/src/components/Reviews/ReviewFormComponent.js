@@ -33,7 +33,7 @@ const ReviewForm = ({ spotId, closeModal }) => {
         const createdReview = await dispatch(createReview(requestBody, spotId));
 
         if (!createdReview) {
-          // In case the review is not created, log the error and stop execution
+
           console.error('Failed to create review');
           return;
         }
