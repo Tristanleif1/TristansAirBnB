@@ -36,8 +36,8 @@
   height: 60%;
   overflow: hidden;
   display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
+  justify-content: center;
+  align-items: center;
 }
 
 .image .spot-image {
@@ -67,4 +67,22 @@
 .meta {
   font-size: 14px;
   color: #777;
+}
+
+.spot-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.spot-info-left {
+  text-align: left;
+}
+
+.spot-info-right {
+  text-align: right;
+}
+
+.spot-info-right i {
+  margin-right: 5px;
 }

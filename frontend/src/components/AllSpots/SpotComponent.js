@@ -37,11 +37,20 @@ const SpotComponent = ({ spot, isManageSpotsComponent }) => {
               <img className="spot-image" src={previewImage} alt={city} />
             </div>
             <div className="content">
-              <div className="header">{city}</div>
-              <div className="meta price">$ {price} / night</div>
-              <div className="meta">{state}</div>
-              <div className="meta">
-                <i className="fa-solid fa-star"></i> {avgRatingDisplay}
+              <div className="spot-info">
+                <div className="spot-info-left">
+                  <div className="header">
+                    {city}, {state}
+                  </div>
+                  <div className="meta price">$ {price} / night</div>
+                </div>
+                <div className="spot-info-right">
+                  <div className="spot-info-right">
+                    <span>
+                      <i className="fa-solid fa-star"></i> {avgRatingDisplay}
+                    </span>
+                  </div>
+                </div>
               </div>
               {isManageSpotsComponent && (
                 <div>
