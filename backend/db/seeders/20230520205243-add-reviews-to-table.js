@@ -20,7 +20,7 @@ module.exports = {
         {
           userId: 1,
           spotId: 3,
-          review: 'House was dirty upon arrival and two lights were not working',
+          review: 'The home was not merely unkempt, it was downright filthy. It felt as though the term cleaning had been lost in translation. Dust bunnies played peekaboo from every corner, forming a gritty reception committee that would have been comical if not so unhygienic.',
           stars: 2,
           createdAt: new Date(),
           updatedAt: new Date(),
