@@ -1,6 +1,6 @@
 .logged-in-li {
   display: flex;
-  gap: 20px;  /* this adds a 20px gap between the link and the profile button */
+  gap: 20px;
 }
 
 .nav-menu {
@@ -42,12 +42,10 @@
   width: auto;
 }
 
-/* Logged-in Links */
 .logged-in-li {
   margin-left: auto;
 }
 
-/* Logged-out Links */
 .logged-out-links {
   display: flex;
 }
@@ -57,13 +55,13 @@
 }
 
 .profile-dropdown {
-    position: absolute;
-    top: 40px;
-    right: 0;
-    background-color: #ffffff;
-    padding: 10px;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  top: 40px;
+  right: 0;
+  background-color: #ffffff;
+  padding: 10px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .profile-dropdown.hidden {
@@ -72,7 +70,7 @@
 
 .profile-dropdown li {
   margin-bottom: 5px;
-  white-space: nowrap
+  white-space: nowrap;
 }
 
 .profile-dropdown button {
@@ -108,12 +106,25 @@
 }
 
 .profile-button-container a {
-  margin-right: 20px; /* adjust as needed */
-  color: #555555; /* adjust as needed */
+  margin-right: 20px;
+  color: #555555;
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
 .profile-button-container a:hover {
-  color: #4caf50; /* adjust as needed */
+  color: #4caf50;
+}
+
+.navbar-app-title {
+  font-family: "Dancing Script", cursive;
+  font-size: 32px;
+  color: #555555;
+  margin-left: 15px;
+}
+
+.navbar-logo-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }

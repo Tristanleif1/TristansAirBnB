@@ -93,7 +93,7 @@ const EditSpotForm = () => {
         if (updatedSpot && !updatedSpot.errors) {
           history.push(`/spots/${updatedSpot.id}`, {
             key: new Date().toISOString(),
-          }); // Pass a unique key in the location state
+          });
         } else if (updatedSpot.errors) {
           setErrors({ ...errors, api: updatedSpot.errors });
         }

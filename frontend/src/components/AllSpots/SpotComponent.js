@@ -7,7 +7,7 @@ import "./AllSpots.css";
 
 const SpotComponent = ({ spot, isManageSpotsComponent }) => {
   const dispatch = useDispatch();
-  const { price, previewImage, city, state, id, avgRating, name } = spot; // Extract name from spot
+  const { price, previewImage, city, state, id, avgRating, name } = spot;
   const [showModal, setShowModal] = useState(false);
 
   const avgRatingNumber = Number(avgRating);

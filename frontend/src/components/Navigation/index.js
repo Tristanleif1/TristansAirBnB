@@ -11,10 +11,13 @@ function Navigation({ isLoaded }){
   return (
     <nav className="nav-menu">
       <ul>
-        <li>
-          <NavLink exact to="/">
-            <img src={logo} alt="logo" className="logo" />
-          </NavLink>
+      <li>
+          <div className="navbar-logo-title">
+            <NavLink exact to="/">
+              <img src={logo} alt="logo" className="logo" />
+            </NavLink>
+            <h1 className="navbar-title">Tristan's AirBnB</h1>
+          </div>
         </li>
       </ul>
       {isLoaded && (
