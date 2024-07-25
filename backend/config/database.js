@@ -1,8 +1,9 @@
 const config = require("./index");
+const path = require('path');
 
 module.exports = {
   development: {
-    storage: config.dbFile,
+    storage: path.resolve(__dirname, config.dbFile),
     dialect: "sqlite",
     seederStorage: "sequelize",
     logQueryParameters: true,

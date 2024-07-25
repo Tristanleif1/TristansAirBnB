@@ -15,10 +15,10 @@ const router = express.Router();
 // ...
 
 const validateLogin = [
-  check("credential")
+  check("email")
     .exists({ checkFalsy: true })
-    .notEmpty()
-    .withMessage("Please provide a valid email or username."),
+    .isEmail()
+    .withMessage("Please provide a valid email."),
   check("password")
     .exists({ checkFalsy: true })
     .withMessage("Please provide a password."),
@@ -27,22 +27,19 @@ const validateLogin = [
 
 // Log in
 router.post("/", validateLogin, async (req, res, next) => {
-  const { credential, password } = req.body;
+  const { email, password } = req.body;
 
   const user = await User.unscoped().findOne({
     where: {
-      [Op.or]: {
-        username: credential,
-        email: credential,
-      },
-    },
-  });
+        email,
+      }
+    });
 
   if (!user || !bcrypt.compareSync(password, user.hashedPassword.toString())) {
     const err = new Error("Login failed");
     err.status = 401;
     err.title = "Login failed";
-    err.errors = { credential: "The provided credentials were invalid." };
+    err.errors = { email: "The provided credentials were invalid." };
     return next(err);
   }
 
