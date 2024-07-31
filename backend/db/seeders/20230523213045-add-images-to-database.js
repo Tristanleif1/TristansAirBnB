@@ -211,6 +211,42 @@ module.exports = {
         imageableType: "Review",
         preview: false,
       },
+      {
+        url: "https://res.cloudinary.com/dtp3p8axg/image/upload/v1722460673/4028373209fc449eacfbe505eaf6fe1d_p53w0v.jpg",
+        imageableId: 8,
+        imageableType: "Spot",
+        preview: true,
+      },
+      {
+        url: "https://res.cloudinary.com/dtp3p8axg/image/upload/v1722466460/43ef742a65c80cd2ae880a2d94022614_ouiea8.jpg",
+        imageableId: 8,
+        imageableType: "Spot",
+        preview: false,
+      },
+      {
+        url: "https://res.cloudinary.com/dtp3p8axg/image/upload/v1722466452/family-room_lbi19t.jpg",
+        imageableId: 8,
+        imageableType: "Spot",
+        preview: false,
+      },
+      {
+        url: "https://res.cloudinary.com/dtp3p8axg/image/upload/v1722463242/w800x533_dgewk1.jpg",
+        imageableId: 9,
+        imageableType: "Spot",
+        preview: true,
+      },
+      {
+        url: "https://res.cloudinary.com/dtp3p8axg/image/upload/v1722466456/25-1920x1080-ac9f653444703df3327157d8cc2fb9bf_hlhi7h.jpg",
+        imageableId: 9,
+        imageableType: "Spot",
+        preview: false,
+      },
+      {
+        url: "https://res.cloudinary.com/dtp3p8axg/image/upload/v1722466452/family-room_lbi19t.jpg",
+        imageableId: 9,
+        imageableType: "Spot",
+        preview: false,
+      },
     ];
 
     await queryInterface.bulkInsert(options, imageData);
