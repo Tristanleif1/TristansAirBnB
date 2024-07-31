@@ -8,6 +8,7 @@ import "./LoginForm.css";
 function LoginFormModal() {
   const dispatch = useDispatch();
   const [credential, setCredential] = useState("");
+  const [email, setEmail] = useState("")
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
@@ -15,30 +16,30 @@ function LoginFormModal() {
   const { closeModal } = useModal();
 
   useEffect(() => {
-    if (submitted && (credential.length < 4 || password.length < 6)) {
-      setErrors({ credential: "The provided credentials were invalid." });
+    if (submitted && (email.length < 4 || password.length < 6)) {
+      setErrors({ email: "The provided credentials were invalid." });
     } else {
       setErrors({});
     }
-  }, [credential, password, submitted]);
+  }, [email, password, submitted]);
 
   useEffect(() => {
-    if (credential.length >= 4 && password.length >= 6) {
+    if (email.length >= 4 && password.length >= 6) {
       setInvalidForm(false);
     } else {
       setInvalidForm(true);
     }
-  }, [credential, password]);
+  }, [email, password]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setSubmitted(true);
 
     if (!invalidForm) {
-      return dispatch(sessionActions.login({ credential, password }))
+      return dispatch(sessionActions.login({ email, password }))
         .then(closeModal)
         .catch(() => {
-          setErrors({ credential: "The provided credentials were invalid." });
+          setErrors({ email: "The provided credentials were invalid." });
         });
     }
   };
@@ -52,8 +53,8 @@ function LoginFormModal() {
             Username or Email
             <input
               type="text"
-              value={credential}
-              onChange={(e) => setCredential(e.target.value)}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
           </label>
@@ -66,7 +67,7 @@ function LoginFormModal() {
               required
             />
           </label>
-          {errors.credential && <p>{errors.credential}</p>}
+          {errors.email && <p>{errors.email}</p>}
           <button type="submit" disabled={invalidForm}>
             Log In
           </button>
@@ -75,7 +76,7 @@ function LoginFormModal() {
           onClick={() =>
             dispatch(
               sessionActions.login({
-                credential: "Demo-lition",
+                email: "demo@user.io",
                 password: "password",
               })
             ).then(closeModal)

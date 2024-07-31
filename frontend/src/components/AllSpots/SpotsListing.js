@@ -22,14 +22,12 @@ const SpotsListing = () => {
   }, [dispatch, newSpotCreated]);
 
   return (
-    <div className="ui fixed menu">
-      <div className="ui container center spot-list">
+      <div className="spot-list">
         {spots &&
           spots
             .sort((a, b) => a.id - b.id)
             .map((spot) => <SpotComponent key={spot.id} spot={spot} />)}
       </div>
-    </div>
   );
 };
 
