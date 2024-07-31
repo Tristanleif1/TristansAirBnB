@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
 import './Navigation.css';
-import logo from '../../tristans_airbnb_icon.png'
+import logo from '../../Tristans-Travels-Logo.png'
 
 function Navigation({ isLoaded }){
   const sessionUser = useSelector(state => state.session.user);
