@@ -37,9 +37,9 @@ const SpotComponent = ({ spot, isManageSpotsComponent }) => {
   };
 
   return (
-    <div className="four column wide" title={name}>
+    <div className="four-column-wide" title={name}>
       <Link to={`/spots/${id}`}>
-        <div className="ui link cards">
+        <div className="ui-link-cards">
           <div className="card">
             <div className="image">
               <img className="spot-image" src={previewImageUrl} alt={city} />
@@ -54,7 +54,7 @@ const SpotComponent = ({ spot, isManageSpotsComponent }) => {
                 </div>
                 <div className="spot-info-right">
                   <div className="spot-info-right">
-                    <span>
+                    <span className="spot-rating">
                       <i className="fa-solid fa-star"></i> {avgRatingDisplay}
                     </span>
                   </div>
