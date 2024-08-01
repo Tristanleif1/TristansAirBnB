@@ -1,6 +1,3 @@
-console.log("Environmental Variables:");
-console.log('JWT_SECRET:', process.env.JWT_SECRET)
-console.log("JWT_EXPIRES_IN:", process.env.JWT_EXPIRES_IN);
 
 
 module.exports = {
@@ -14,3 +11,6 @@ module.exports = {
 };
 
 
+// console.log("Environmental Variables:");
+// console.log('JWT_SECRET:', process.env.JWT_SECRET)
+// console.log("JWT_EXPIRES_IN:", process.env.JWT_EXPIRES_IN);
