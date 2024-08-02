@@ -3,6 +3,16 @@
   gap: 20px;
 }
 
+.navbar-logout-button{
+  background: #3f51b5;
+  border-radius: 10px;
+  border: none;
+  color: white;
+  font-weight: 800;
+  width: 10rem;
+  padding: 8px;
+}
+
 .nav-menu {
   display: flex;
   justify-content: space-between;
@@ -18,9 +28,9 @@
 }
 
 /* Navigation Links */
-.nav-menu li {
+/* .nav-menu li {
   margin-right: 20px;
-}
+} */
 
 .nav-menu li:last-child {
   margin-right: 0;

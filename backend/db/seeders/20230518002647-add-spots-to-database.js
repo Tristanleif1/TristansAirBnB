@@ -148,7 +148,7 @@ module.exports = {
         lng: 75.3424352,
         name: "Ocean Escape",
         description: "Enjoy a tranquil, relaxing stay at this Malibu residence perched on top of a hill overlooking the ocean",
-        price: 170.0,
+        price: 370.0,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
