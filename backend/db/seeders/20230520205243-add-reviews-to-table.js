@@ -113,6 +113,33 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        userId: 5,
+        spotId: 8,
+        review:
+          "House was beautiful, I could not have asked for a better stay!",
+        stars: 5,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        userId: 2,
+        spotId: 9,
+        review:
+          "The place was alright. Nice location but some appliances such as the washing machine and dishwasher were faulty. It was an okay experience.",
+        stars: 3,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        userId: 3,
+        spotId: 10,
+        review:
+          "Awesome location. Spectacular view of the ocean and was indeed a very peaceful stay. The only complaint is that it was bit pricey.",
+        stars: 4,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ]);
   },
   /**

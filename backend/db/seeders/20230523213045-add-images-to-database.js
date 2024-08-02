@@ -247,6 +247,24 @@ module.exports = {
         imageableType: "Spot",
         preview: false,
       },
+      {
+        url: "https://res.cloudinary.com/dtp3p8axg/image/upload/v1722616712/93533453_jwmg4b.jpg",
+        imageableId: 10,
+        imageableType: "Spot",
+        preview: true,
+      },
+      {
+        url: "https://res.cloudinary.com/dtp3p8axg/image/upload/v1722616740/Primary_Bedroom_-_Option_B_-_View_01_-_Final_-_12.07.2022_bhtfbf.jpg",
+        imageableId: 10,
+        imageableType: "Spot",
+        preview: false,
+      },
+      {
+        url: "https://res.cloudinary.com/dtp3p8axg/image/upload/v1722616741/Mobile-Home-Living-Room_m9myvj.jpg",
+        imageableId: 10,
+        imageableType: "Spot",
+        preview: false,
+      },
     ];
 
     await queryInterface.bulkInsert(options, imageData);
