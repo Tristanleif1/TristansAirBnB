@@ -54,10 +54,10 @@ function ProfileButton({ user }) {
             <li> Hello, {user.firstName} </li>
             <li>{user.email}</li>
             <li>
-              <button onClick={logout}>Log Out</button>
+              <NavLink to="/spots/mySpots">Manage Spots</NavLink>
             </li>
             <li>
-              <NavLink to="/spots/mySpots">Manage Spots</NavLink>
+              <button onClick={logout}>Log Out</button>
             </li>
           </>
         ) : (

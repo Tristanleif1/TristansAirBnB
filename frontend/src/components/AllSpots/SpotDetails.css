@@ -100,3 +100,15 @@
   width: 100%;
   order: 3;
 }
+
+.post-review-button{
+  font-size: 1.0rem;
+  font-weight: 700;
+  padding: 10px 10px 10px 10px;
+  background-color: #ff5a5f;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border: none;
+}

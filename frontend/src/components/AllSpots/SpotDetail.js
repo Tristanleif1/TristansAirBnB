@@ -157,7 +157,7 @@ const SpotDetail = () => {
         {user &&
           user.id !== Owner.id &&
           !reviews.some((review) => review.userId === user.id) && (
-            <button onClick={openReviewForm}>Post Your Review</button>
+            <button onClick={openReviewForm} className="post-review-button">Post Your Review</button>
           )}
         {reviewsLoading ? (
           <p>Loading reviews...</p>
