@@ -1,0 +1,41 @@
+.rating-modal-container{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.rating-input{
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    max-width: 800px;
+    min-width: 400px;
+}
+
+.rating-modal-form{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 20rem;
+}
+
+.review-text-area{
+    padding: 10px;
+    width: 100%;
+    border-radius: 12px;
+    margin: 10px;
+    
+}
+
+.review-submit-button{
+    color: white;
+    background-color: #ff5a5f;
+    cursor: pointer;
+    margin: 10px;
+}
+
+.cancel-review-button{
+    color: white;
+    background-color: #ff5a5f;
+    cursor: pointer;
+}
