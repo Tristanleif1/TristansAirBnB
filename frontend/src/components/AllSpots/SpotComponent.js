@@ -61,9 +61,9 @@ const SpotComponent = ({ spot, isManageSpotsComponent }) => {
                 </div>
               </div>
               {isManageSpotsComponent && (
-                <div>
+                <div className="spot-update-and-delete-container">
                   <button onClick={handleButtonClick}>
-                    <NavLink to={`/spots/${spot.id}/update`}>Update</NavLink>
+                    <NavLink to={`/spots/${spot.id}/update`} className="update-spot-navlink">Update</NavLink>
                   </button>
                   <button
                     onClick={(e) => {

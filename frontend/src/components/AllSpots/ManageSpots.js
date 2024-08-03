@@ -19,9 +19,6 @@ const ManageSpotsComponent = () => {
   return (
     <div>
       <h1>Manage Spots</h1>
-      <NavLink to="/spots" className="create-new-spot-button">
-        Create a New Spot
-      </NavLink>
       {spots.length ? (
         <div className="ui container center spot-list">
           {spots.map((spot) => (

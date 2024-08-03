@@ -125,11 +125,9 @@ export const editSpot = (spot) => async (dispatch) => {
       body: JSON.stringify(spot),
     });
 
-    console.log("received response from editSpot fetch", response);
 
     if (response.ok) {
       const editedSpot = await response.json();
-      console.log(editedSpot);
       dispatch(updateSpot(editedSpot));
       dispatch(loadSingleSpot(editedSpot.id));
       return editedSpot;
