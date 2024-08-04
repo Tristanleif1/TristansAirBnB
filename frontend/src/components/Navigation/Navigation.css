@@ -14,6 +14,37 @@
   cursor: pointer;
 }
 
+.spot-categories{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin: 1rem;
+}
+
+.spot-type-labelled-button{
+  cursor: pointer;
+}
+
+.spot-type-icon {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  font-size: .7rem;
+  justify-content: center;
+  width: 6rem;
+}
+
+.spot-type-icon:hover {
+  background: rgba(0, 0, 0, .08);
+  border-radius: 5px;
+}
+
+.spot-category-image{
+  height: 20px;
+  object-fit: cover;
+  width: 1.4rem;
+}
+
 .nav-menu {
   display: flex;
   justify-content: space-between;
