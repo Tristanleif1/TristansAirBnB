@@ -25,6 +25,27 @@
   cursor: pointer;
 }
 
+.labelled-button-label {
+  background: #ffdade;
+  border-radius: 5px;
+  display: none;
+  padding: 8px;
+  position: fixed;
+  z-index: 1000;
+}
+
+.spot-type-labelled-button {
+  cursor: pointer
+}
+
+.spot-type-labelled-button * {
+  cursor: pointer;
+}
+
+.spot-type-labelled-button:hover > .labeled-button-label {
+  display: block
+}
+
 .spot-type-icon {
   align-items: center;
   display: flex;
@@ -146,6 +167,7 @@
   color: #222;
   font-weight: 700;
   padding: 10px;
+  cursor: pointer;
 }
 
 .profile-dropdown-button:hover {

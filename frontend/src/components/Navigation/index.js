@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
 import './Navigation.css';
-import logo from '../../Tristans-Travels-Logo.png';
+import logo from '../../Tristans-Travels-Logo-removebg-preview.png';
 import boatsIcon from '../../airbnb-boats-icon-removebg-preview.png';
 import cabinIcon from '../../airbnb-cabin-icon-removebg-preview.png'
 import lakefrontIcon from '../../airbnb-lakefront-icon-removebg-preview.png';
@@ -46,7 +46,7 @@ function Navigation({ isLoaded }){
               <img className='spot-category-image' src={cabinIcon} alt='category-logo'></img>
                 <span>Cabin</span>
             </div>
-            <div className='labelled-button-label' style={{ top: '204px', left: '84px', position: 'absolute'}}>Coming soon</div>
+            <div className='labelled-button-label' style={{ top: '195px', left: '123px' }}>Coming soon</div>
           </div>
           <div className='spot-type-labelled-button'>
             <div className='spot-type-icon'>
