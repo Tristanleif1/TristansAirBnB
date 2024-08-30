@@ -55,6 +55,17 @@ export const loadSpotReviews = (spotId) => async (dispatch) => {
   }
 };
 
+
+export const loadUserReviews = () => async (dispatch) => {
+  const response = await csrfFetch(`/api/reviews/myReviews`);
+
+  if(response.ok) {
+    const userReviews = await response.json();
+    dispatch(loadReviews(userReviews));
+    return userReviews
+  }
+};
+
 export const createReview = (review, spotId) => async (dispatch) => {
   const { review: comment, stars: rating } = review;
 

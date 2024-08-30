@@ -360,6 +360,7 @@ router.get("/:id", async (req, res) => {
         as: "Owner",
         attributes: ["id", "firstName", "lastName"],
       },
+      { model: Review, attributes: [] },
       {
         model: Image,
         as: "SpotImages",

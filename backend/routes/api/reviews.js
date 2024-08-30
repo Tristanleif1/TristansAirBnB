@@ -33,34 +33,7 @@ router.get("/myReviews", requireAuth, async (req, res) => {
           as: "User",
           attributes: ["id", "firstName", "lastName"],
         },
-        {
-          model: Spot,
-          as: "Spot",
-          attributes: [
-            "id",
-            "ownerId",
-            "address",
-            "city",
-            "state",
-            "country",
-            "lat",
-            "lng",
-            "name",
-            "price",
-          ],
-          include: [
-            {
-              model: Image,
-              as: "SpotImages",
-              attributes: ["id", "url"],
-            },
-          ],
-        },
-        {
-          model: Image,
-          as: "ReviewImages",
-          attributes: ["id", "url"],
-        },
+        
       ],
     });
 
@@ -73,30 +46,6 @@ router.get("/myReviews", requireAuth, async (req, res) => {
         stars: review.stars,
         createdAt: review.createdAt,
         updatedAt: review.updatedAt,
-        User: {
-          id: review.User.id,
-          firstName: review.User.firstName,
-          lastName: review.User.lastName,
-        },
-        Spot: {
-          id: review.Spot.id,
-          ownerId: review.Spot.ownerId,
-          address: review.Spot.address,
-          city: review.Spot.city,
-          state: review.Spot.state,
-          country: review.Spot.country,
-          lat: review.Spot.lat,
-          lng: review.Spot.lng,
-          name: review.Spot.name,
-          price: review.Spot.price,
-          previewImage: review.Spot.SpotImages.length
-            ? review.Spot.SpotImages[0].url
-            : null,
-        },
-        ReviewImages: review.ReviewImages.map((image) => ({
-          id: image.id,
-          url: image.url,
-        })),
       };
     });
 
@@ -169,11 +118,21 @@ router.put("/:id", requireAuth, validReview, async (req, res) => {
     if (!editedReview) {
       return res.status(404).json({ message: "Spot couldn't be found" });
     }
-    await editedReview.update({
+    const updatedReview = await editedReview.update({
       review,
       stars,
     });
-    res.status(200).json(editedReview);
+
+    const safeUpdatedReview = {
+      id: updatedReview.id,
+      userId: updatedReview.id,
+      spotId: updatedReview.spotId,
+      review: updatedReview.review,
+      stars: updatedReview.stars,
+      createdAt: updatedReview.createdAt,
+      updatedAt: updatedReview.updatedAt
+    }
+    res.status(200).json(safeUpdatedReview);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error " });
