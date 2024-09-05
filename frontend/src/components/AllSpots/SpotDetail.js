@@ -13,7 +13,6 @@ const SpotDetail = () => {
   const { spotId } = useParams();
   const history = useHistory();
   const { spot, isLoading } = useSelector((state) => state.selectedSpot);
-  console.log(spot);
   const { list: reviews, loading: reviewsLoading } = useSelector(
     (state) => state.reviews
   );

@@ -2,14 +2,15 @@ import { useDispatch } from "react-redux";
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { loadSpotReviews } from "../../store/reviews";
+import { updatedReview } from "../../store/reviews";
 import { createReview } from "../../store/reviews";
 import "./ReviewSpotModal.css"
 
-const ReviewForm = ({ spotId, closeModal }) => {
+const ReviewForm = ({ spotId, reviewId = null, initialReview = "", initialStars = 0, closeModal }) => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const [reviewText, setReviewText] = useState("");
-  const [stars, setStars] = useState(0);
+  const [reviewText, setReviewText] = useState(initialReview);
+  const [stars, setStars] = useState(initialStars);
   // const [activeStars, setActiveStars] = useState(stars);
   const [starRating, setStarRating] = useState(0);
   const [errors, setErrors] = useState("");
@@ -33,29 +34,30 @@ const ReviewForm = ({ spotId, closeModal }) => {
     };
 
     try {
-        const createdReview = await dispatch(createReview(requestBody, spotId));
+      let response;
 
-        if (!createdReview) {
-
-          console.error('Failed to create review');
-          return;
-        }
-
-        const loadedReviews = await dispatch(loadSpotReviews(spotId));
-
-        // Log the loaded reviews to check if they contain the newly created one
-        console.log(loadedReviews);
-
-        closeModal();
-        history.push(`/spots/${spotId}`);
-      } catch (error) {
-        console.error('Failed to create review:', error);
+      if (reviewId) {
+        
+        response = await dispatch(updatedReview(requestBody, reviewId, spotId));
+      } else {
+        response = await dispatch(createReview(requestBody, spotId));
       }
-    };
 
+      if (!response) {
+        console.error("Failed to submit review");
+        return;
+      }
+
+      await dispatch(loadSpotReviews(spotId)); 
+      closeModal();
+      history.push(`/spots/${spotId}`);
+    } catch (error) {
+      console.error("Failed to submit review:", error);
+    } 
+  };
   return (
     <div className="rating-modal-container">
-      <h2>How was your stay?</h2>
+      <h2>{reviewId ? "Edit Your Review" : "How was your stay?"}</h2>
       <form className="rating-modal-form" onSubmit={handleSubmit}>
           {errors && <p>{errors}</p>}
         <textarea
@@ -122,7 +124,7 @@ const ReviewForm = ({ spotId, closeModal }) => {
           <p>Stars</p>
         </div>
         <button type="submit" className="review-submit-button" disabled={reviewText.length < 10 || stars < 1}>
-          Submit Your Review
+          {reviewId ? "Update Your Review" : "Submit Your Review"}
         </button>
         <button type="button" className="cancel-review-button" onClick={closeModal}>
           Cancel

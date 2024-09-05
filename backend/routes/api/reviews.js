@@ -124,7 +124,7 @@ router.put("/:id", requireAuth, validReview, async (req, res) => {
       },
     });
     if (!editedReview) {
-      return res.status(404).json({ message: "Spot couldn't be found" });
+      return res.status(404).json({ message: "Review couldn't be found" });
     }
     const updatedReview = await editedReview.update({
       review,
@@ -133,7 +133,7 @@ router.put("/:id", requireAuth, validReview, async (req, res) => {
 
     const safeUpdatedReview = {
       id: updatedReview.id,
-      userId: updatedReview.id,
+      userId: updatedReview.userId,
       spotId: updatedReview.spotId,
       review: updatedReview.review,
       stars: updatedReview.stars,

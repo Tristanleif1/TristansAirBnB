@@ -2,7 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { loadUserReviews } from "../../store/reviews";
 import OpenModalButton from "../OpenModalButton";
-import { NavLink, Link } from "react-router-dom"
+import { NavLink, Link } from "react-router-dom";
+import ReviewForm from "./ReviewFormComponent";
+import { useModal } from "../../context/Modal";
+import  { updatedReview } from "../../store/reviews";
 import "./MyReviews.css"
 
 const MyReviews = () => {
@@ -11,6 +14,10 @@ const MyReviews = () => {
     const reviews = useSelector((state) => state.reviews.list);
     const loading = useSelector((state) => state.reviews.loading);
     const dispatch = useDispatch();
+
+    // const [showModal, setShowModal] = useState(false)
+    const { setModalContent, closeModal } = useModal()
+    const [selectedReview, setSelectedReview] = useState(null);
 
     useEffect(() => {
         dispatch(loadUserReviews())
@@ -25,6 +32,23 @@ const MyReviews = () => {
         return <div>No reviews yet!</div>
     }
 
+    const updateClick = (review) => {
+        setModalContent(
+            <ReviewForm spotId={review.spotId}
+                initialReview={review.review}
+                initialStars={review.stars}
+                reviewId={review.id}
+                closeModal={closeModal}
+                onSubmit={(updatedReviewData) => {
+                    dispatch(updatedReview(updatedReviewData, review.id, review.spotId));
+                    closeModal()
+                }}
+            />
+        )
+        // setSelectedReview(review)
+        // setShowModal(true)
+    }
+
     return (
         <div className="my-reviews-container">
             <h1>My Reviews</h1>
@@ -34,7 +58,7 @@ const MyReviews = () => {
                     const reviewDate = new Date(review.createdAt).toLocaleDateString();
                     return (
                         <li className="individual-review" key={review.id}>
-                            <Link className="spot-review-link" exact to={`/spot/${review.spotId}`}>
+                            <Link className="spot-review-link" exact to={`/spots/${review.spotId}`}>
                                 <p>{reviewDate}</p>
                                 <h2 className="review-name">
                                     {review.Spot?.name}
@@ -43,15 +67,12 @@ const MyReviews = () => {
                             <p>{review.review}</p>
                             <p>Rating: {review.stars}</p>
                             <div className="individual-review-options">
-                                <button className="button-modal">Update</button>
+                                <button className="button-modal" onClick={() => updateClick(review)}>Update</button>
                                 <button className="button-modal">Delete</button>
                             </div>
                         </li>
                     )
                 })}
-                <div className="individual review container">
-                    <h3></h3>
-                </div>
             </div>
         </div>
     )

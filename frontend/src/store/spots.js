@@ -136,7 +136,6 @@ export const editSpot = (spot) => async (dispatch) => {
       return { errors: error };
     }
   } catch (error) {
-    console.error("Failed to edit spot", error);
     return { errors: error.toString() };
   }
 };

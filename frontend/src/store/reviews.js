@@ -4,6 +4,7 @@ const LOAD_REVIEWS = "reviews/LOAD_REVIEWS";
 const ADD_REVIEW = "reviews/ADD_REVIEW";
 const SET_LOADING = "reviews/SET_LOADING";
 const DELETE_REVIEW = "reviews/DELETE_REVIEW";
+const UPDATE_REVIEW = "reviews/UPDATE_REVIEW"
 
 const loadReviews = (reviews) => ({
   type: LOAD_REVIEWS,
@@ -24,6 +25,30 @@ const removeReview = (reviewId) => ({
   type: DELETE_REVIEW,
   reviewId,
 });
+
+const editReview = (review) => ({
+  type: UPDATE_REVIEW,
+  review
+})
+
+
+export const updatedReview = (review) => async (dispatch) => {
+    const response = await csrfFetch(`/api/reviews/${review.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(review)
+    });
+    if(response.ok){
+      const updatedReview = await response.json()
+      dispatch(editReview(updatedReview))
+      return updatedReview
+    } else {
+      const error = await response.json()
+      return {errors: error}
+    }
+}
 
 export const deleteReview = (reviewId) => async (dispatch) => {
   const response = await csrfFetch(`/api/reviews/${reviewId}`, {
@@ -119,6 +144,12 @@ export const reviewsReducer = (state = initialState, action) => {
         ...allReviews,
         list: action.reviews,
       };
+    }
+    case UPDATE_REVIEW: {
+      return {
+        ...state,
+        list: state.list.map((review) => review.id === action.review.id ? action.review : review)
+      }
     }
     case ADD_REVIEW: {
       return {
