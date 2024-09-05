@@ -175,7 +175,7 @@
 }
 
 .profile-button-container {
-  position: relative; /* this is important for positioning the dropdown */
+  position: relative; 
   display: flex;
   align-items: center;
 }
@@ -219,5 +219,9 @@
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+.my-reviews-link{
+  color: #551A8B !important;
 }
 

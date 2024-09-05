@@ -1,0 +1,45 @@
+.my-reviews-container{
+    margin: 0 10%;
+    max-width: 1000px;
+    padding: 20px 5px;
+}
+
+.my-reviews{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.individual-review {
+    display: flex;
+    flex-direction: column;
+    color: #000000 !important;
+    gap: 10px;
+    /* max-width: 400px; */
+}
+
+.individual-review-options {
+    display: flex;
+    gap: 5px;
+}
+
+.spot-review-link {
+    text-decoration: none;
+    color: #000000 !important;
+}
+
+.review-name {
+    font-size: 1.2rem;
+}
+
+.button-modal {
+    background-color: #ff5a5f;
+    border: 1px solid #000;
+    border-radius: 0;
+    color: #fffbff;
+    cursor: pointer;
+    font-weight: 700;
+    padding: 5px;
+    width: 100px;
+}

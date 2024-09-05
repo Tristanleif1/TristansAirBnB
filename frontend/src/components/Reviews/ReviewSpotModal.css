@@ -2,8 +2,10 @@
     display: flex;
     align-items: center;
     flex-direction: column;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 10px;
 }
-
 .rating-input{
     align-items: center;
     display: flex;

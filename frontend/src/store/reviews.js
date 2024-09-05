@@ -60,7 +60,8 @@ export const loadUserReviews = () => async (dispatch) => {
   const response = await csrfFetch(`/api/reviews/myReviews`);
 
   if(response.ok) {
-    const userReviews = await response.json();
+    const data = await response.json();
+    const userReviews = data.Reviews
     dispatch(loadReviews(userReviews));
     return userReviews
   }

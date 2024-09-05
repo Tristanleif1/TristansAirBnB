@@ -33,6 +33,10 @@ router.get("/myReviews", requireAuth, async (req, res) => {
           as: "User",
           attributes: ["id", "firstName", "lastName"],
         },
+        {
+          model: Spot,
+          attributes: ["id", "name"],
+        }
         
       ],
     });
@@ -46,6 +50,10 @@ router.get("/myReviews", requireAuth, async (req, res) => {
         stars: review.stars,
         createdAt: review.createdAt,
         updatedAt: review.updatedAt,
+        Spot: {
+          id: review.Spot.id,
+          name: review.Spot.name
+        }
       };
     });
 
