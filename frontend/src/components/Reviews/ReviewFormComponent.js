@@ -29,6 +29,7 @@ const ReviewForm = ({ spotId, reviewId = null, initialReview = "", initialStars 
     e.preventDefault();
 
     const requestBody = {
+      id: reviewId,
       review: reviewText,
       stars: stars,
     };

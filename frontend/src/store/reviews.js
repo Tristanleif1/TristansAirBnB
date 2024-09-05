@@ -33,6 +33,10 @@ const editReview = (review) => ({
 
 
 export const updatedReview = (review) => async (dispatch) => {
+
+  if(!review.id){
+    console.error("Review ID is missing or undefined")
+  }
     const response = await csrfFetch(`/api/reviews/${review.id}`, {
       method: "PUT",
       headers: {
