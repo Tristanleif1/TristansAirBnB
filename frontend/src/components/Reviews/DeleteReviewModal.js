@@ -1,6 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { deleteReview } from "../../store/reviews";
+import "./DeleteReviewModal.css"
 // import { closeModal } from '../../context/Modal';
 
 
@@ -13,11 +14,11 @@ const DeleteReview = ( { closeModal, reviewId} ) => {
     }
 
     return (
-        <div>
+        <div className="delete-rating-container">
             <h2>Confirm Delete</h2>
-            <p>Are you sure you want to delete this review?</p>
-            <button onClick={handleDelete} style={{backgroundColor: 'red'}}>Yes (Delete Review)</button>
-            <button onClick={{closeModal}} style={{backgroundColor: 'darkgrey'}}>No (Keep Review)</button>
+            <p className="delete-review-text">Are you sure you want to delete this review?</p>
+            <button className="delete-review-button"onClick={handleDelete}>Yes (Delete Review)</button>
+            <button className="cancel-review-button" onClick={{closeModal}}>No (Keep Review)</button>
         </div>
     )
 }

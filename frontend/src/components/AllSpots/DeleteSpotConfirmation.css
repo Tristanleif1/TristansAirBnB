@@ -1,0 +1,29 @@
+
+.delete-spot-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.delete-spot-button {
+    color: white;
+    background-color: #ff5a5f;
+    cursor: pointer;
+    margin: 10px;
+    padding: 10px;
+}
+
+.cancel-spot-button {
+    color: white;
+    background-color: #ff5a5f;
+    cursor: pointer;
+    margin: 10px;
+    padding: 10px;
+}
+
+.delete-spot-text{
+    text-align: center;
+}

@@ -113,3 +113,14 @@
   transition: background-color 0.2s;
   border: none;
 }
+
+.spot-detail-delete-review-button {
+  color: white;
+  background-color: #ff5a5f;
+  padding: 5px;
+  border-radius: 5px;
+  border-width: 1px;
+  border-style: outset;
+  cursor: pointer;
+  margin: 5px 0;
+}

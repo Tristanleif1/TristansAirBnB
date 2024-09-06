@@ -36,15 +36,12 @@ export default SpotsListing;
 // const SpotsListing = () => {
 //   const dispatch = useDispatch();
 //   const state = useSelector((state) => state);
-//   console.log(state)
+//   (state)
 
 //   useEffect(() => {
 //     dispatch(loadAllSpots());
 //   }, []);
 
-//   // console.log(spots.spot);
-
-//   // console.log(spots);
 
 //   return (
 //     <div className="ui fixed menu">
@@ -71,9 +68,8 @@ export default SpotsListing;
 //     dispatch(loadAllSpots());
 //   }, []);
 
-//   // console.log(spots.spot);
 
-//   // console.log(spots);
+
 
 //   return (
 //     <div className="ui fixed menu">

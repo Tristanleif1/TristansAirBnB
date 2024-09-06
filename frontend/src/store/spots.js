@@ -35,7 +35,6 @@ export const loadAllSpots = () => async (dispatch) => {
 
   if (response.ok) {
     const loadedSpots = await response.json();
-    console.log(loadedSpots);
     dispatch(loadSpots(loadedSpots));
     return loadedSpots.Spots;
   }
@@ -60,7 +59,6 @@ export const loadUserSpots = () => async (dispatch) => {
 
   if (response.ok) {
     const userSpots = await response.json();
-    console.log(userSpots);
     dispatch(loadSpots(userSpots));
     return userSpots;
   }
@@ -77,12 +75,10 @@ export const createSpot = (data) => async (dispatch) => {
 
   if (response.ok) {
     const createdSpot = await response.json();
-    console.log("Created", createdSpot);
     dispatch(addSpot(createdSpot));
     // dispatch(loadAllSpots());
     return createdSpot; // Return the created spot
   } else {
-    console.log(response, "Failed");
     return response;
   }
 };

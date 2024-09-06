@@ -1,0 +1,28 @@
+.delete-rating-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.delete-review-button {
+    color: white;
+    background-color: #ff5a5f;
+    cursor: pointer;
+    margin: 10px;
+    padding: 10px;
+}
+
+.cancel-review-button {
+    color: white;
+    background-color: #ff5a5f;
+    cursor: pointer;
+    margin: 10px;
+    padding: 10px;
+}
+
+.delete-review-text{
+    text-align: center;
+}

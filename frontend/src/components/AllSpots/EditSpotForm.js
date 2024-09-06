@@ -45,12 +45,10 @@ const EditSpotForm = () => {
   }, [spot]);
 
   useEffect(() => {
-    console.log("Effect : Dispatching loadSingleSpot()");
     dispatch(loadSingleSpot(spotId));
   }, [dispatch, spotId]);
 
   const handleSubmit = (e) => {
-    console.log("handleSubmit called");
     e.preventDefault();
 
     // form validation
@@ -58,16 +56,13 @@ const EditSpotForm = () => {
 
     if (description.length < 30) {
       newErrors.description = "Description needs 30 or more characters.";
-      console.log("Validation failed: description too short.");
     }
     if (!previewImage) {
       newErrors.previewImage = "Preview Image URL is required.";
-      console.log("Validation failed: no preview image URL.");
     }
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
-      console.log("Form validation failed, not dispatching editSpot.");
       return;
     }
 
@@ -85,11 +80,8 @@ const EditSpotForm = () => {
       price,
       images: [previewImage, image1, image2, image3, image4].filter(Boolean),
     };
-    console.log("spotData:", spotData);
-    console.log("Attempting to dispatch editSpot.");
     dispatch(editSpot(spotData))
       .then((updatedSpot) => {
-        console.log("editSpot returned successfully.");
         if (updatedSpot && !updatedSpot.errors) {
           history.push(`/spots/${updatedSpot.id}`, {
             key: new Date().toISOString(),
@@ -99,7 +91,6 @@ const EditSpotForm = () => {
         }
       })
       .catch((error) => {
-        console.log("editSpot returned with an error.");
         setErrors({ ...errors, api: error.toString() });
       });
   };

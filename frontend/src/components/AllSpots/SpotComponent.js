@@ -3,13 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
 import ConfirmationModal from "./ConfirmationDeleteModal";
 import { deleteSpot } from "../../store/spots";
+import { useModal } from "../../context/Modal"
 import "./AllSpots.css";
 
 const SpotComponent = ({ spot, isManageSpotsComponent }) => {
   const dispatch = useDispatch();
   const { price, previewImage, city, state, id, avgRating, name } = spot;
   const [showModal, setShowModal] = useState(false);
-  // console.log(previewImage);
+  const { setModalContent, closeModal } = useModal()
   // const previewImageUrl = spot.previewImage[0]?.url;
   let previewImageUrl;
   if (Array.isArray(spot.previewImage)) {
@@ -27,14 +28,14 @@ const SpotComponent = ({ spot, isManageSpotsComponent }) => {
     e.stopPropagation();
   };
 
-  const handleDelete = async (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+  // const handleDelete = async (e) => {
+  //   e.preventDefault();
+  //   e.stopPropagation();
 
-    dispatch(deleteSpot(id));
+  //   dispatch(deleteSpot(id));
 
-    setShowModal(false);
-  };
+  //   setShowModal(false);
+  // };
 
   return (
     <div className="four-column-wide" title={name}>
@@ -66,12 +67,14 @@ const SpotComponent = ({ spot, isManageSpotsComponent }) => {
                     <NavLink to={`/spots/${spot.id}/update`} className="update-spot-navlink">Update</NavLink>
                   </button>
                   <button
-                    onClick={(e) => {
-                      handleButtonClick(e);
-                      setShowModal(true);
-                    }}
-                  >
-                    Delete
+                    onClick={() => setModalContent(
+                      <ConfirmationModal
+                      spotId={spot.id}
+                      closeModal={closeModal}
+                      />
+                    )}
+                    type="button"
+                    >Delete
                   </button>
                 </div>
               )}
@@ -79,13 +82,13 @@ const SpotComponent = ({ spot, isManageSpotsComponent }) => {
           </div>
         </div>
       </Link>
-      {showModal && (
+      {/* {showModal && (
         <ConfirmationModal
           message="Are you sure you want to remove this spot?"
           onConfirm={handleDelete}
           onCancel={() => setShowModal(false)}
         />
-      )}
+      )} */}
     </div>
   );
 };

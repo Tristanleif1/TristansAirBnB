@@ -99,10 +99,6 @@ export const loadUserReviews = () => async (dispatch) => {
 export const createReview = (review, spotId) => async (dispatch) => {
   const { review: comment, stars: rating } = review;
 
-  console.log(
-    "Sending review:",
-    JSON.stringify({ review: comment, stars: rating })
-  );
 
   try {
     const response = await csrfFetch(`/api/spots/${spotId}/reviews`, {
@@ -110,8 +106,6 @@ export const createReview = (review, spotId) => async (dispatch) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ review: comment, stars: rating }),
     });
-
-    console.log("Server response:", response);
 
     if (!response.ok) {
       throw response;

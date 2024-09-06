@@ -10,7 +10,6 @@ const ManageSpotsComponent = () => {
   const dispatch = useDispatch();
   const spots = useSelector((state) => Object.values(state.spot.Spots));
   const user = useSelector((state) => state.session.user);
-  // console.log(spots);
 
   useEffect(() => {
     dispatch(loadUserSpots(user.id));

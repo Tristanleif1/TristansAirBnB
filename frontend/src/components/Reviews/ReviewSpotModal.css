@@ -34,10 +34,14 @@
     background-color: #ff5a5f;
     cursor: pointer;
     margin: 10px;
+    padding: 10px;
 }
 
 .cancel-review-button{
     color: white;
     background-color: #ff5a5f;
     cursor: pointer;
+    padding: 10px;
+    width: 10rem;
 }
+

@@ -67,7 +67,6 @@ const SpotDetail = () => {
     numReviews,
   } = spot;
 
-  console.log(spot);
 
   const averageRating = Number(avgStarRating).toFixed(2);
   let reviewSummary;
@@ -94,11 +93,9 @@ const SpotDetail = () => {
   }
 
   const previewImage = SpotImages?.find((image) => image.preview)?.url;
-  console.log(previewImage);
   const otherImages = SpotImages?.filter((image) => !image.preview).map(
     (image) => image.url
   );
-  console.log(otherImages);
 
   const reserveSpot = () => {
     alert("Feature coming soon");
@@ -169,7 +166,7 @@ const SpotDetail = () => {
                   <p>{formatDate(review.createdAt)}</p>
                   <p>{review.review}</p>
                   {user && user.id === review.userId && (
-                    <button onClick={() => openDeleteReviewForm(review.id)}>
+                    <button className="spot-detail-delete-review-button"onClick={() => openDeleteReviewForm(review.id)}>
                       Delete
                     </button>
                   )}

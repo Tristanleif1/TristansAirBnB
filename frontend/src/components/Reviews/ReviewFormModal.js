@@ -19,11 +19,10 @@
 
 //     const handleShowModal = (e) => {
 //       e.preventDefault();
-//       console.log("Button clicked")
+
 //       setShowModal(true);
 
 //     }
-//     console.log(spotId);
 
 //     return (
 //         <>

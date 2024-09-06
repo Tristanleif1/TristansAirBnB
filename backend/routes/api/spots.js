@@ -833,7 +833,6 @@ router.post("/:id/bookings", requireAuth, validBooking, async (req, res) => {
 //   if (!selectedSpot) {
 //     return res.status(404).json({ error: "Spot not found" });
 //   }
-//   console.log(selectedSpot.SpotImages);
 //   //   const numOfReviews = await selectedSpot.countReviews();
 //   const specificSpotDetails = {
 //     id: selectedSpot.id,

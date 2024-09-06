@@ -1,12 +1,13 @@
 import React from "react";
+import "./DeleteSpotConfirmation.css"
 
-export default function ConfirmationModal({ message, onConfirm, onCancel }) {
+export default function ConfirmationModal({ message, closeModal, onConfirm, onCancel }) {
   return (
-    <div>
+    <div className="delete-spot-container">
       <h2>Confirm Delete</h2>
-      <p>{message}</p>
-      <button onClick={onConfirm} style={{ backgroundColor: 'red' }}>Yes (Delete Spot)</button>
-      <button onClick={onCancel} style={{ backgroundColor: 'darkgrey' }}>No (Keep Spot)</button>
+      <p className="delete-spot-text">{message}</p>
+      <button className="delete-spot-button" onClick={onConfirm}>Yes (Delete Spot)</button>
+      <button className="cancel-spot-button"onClick={{closeModal}}>No (Keep Spot)</button>
     </div>
   );
 }

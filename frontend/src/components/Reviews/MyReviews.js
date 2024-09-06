@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { loadUserReviews } from "../../store/reviews";
+import { deleteReview, loadUserReviews } from "../../store/reviews";
 import OpenModalButton from "../OpenModalButton";
 import { NavLink, Link } from "react-router-dom";
 import ReviewForm from "./ReviewFormComponent";
 import { useModal } from "../../context/Modal";
 import  { updatedReview } from "../../store/reviews";
+import DeleteReview from "./DeleteReviewModal";
 import "./MyReviews.css"
 
 const MyReviews = () => {
@@ -68,7 +69,12 @@ const MyReviews = () => {
                             <p>Rating: {review.stars}</p>
                             <div className="individual-review-options">
                                 <button className="button-modal" onClick={() => updateClick(review)}>Update</button>
-                                <button className="button-modal">Delete</button>
+                                <button onClick={() => setModalContent(
+                                    <DeleteReview
+                                    reviewId={review.id}
+                                    closeModal={closeModal}
+                                    />
+                                )} className="button-modal">Delete</button>
                             </div>
                         </li>
                     )
