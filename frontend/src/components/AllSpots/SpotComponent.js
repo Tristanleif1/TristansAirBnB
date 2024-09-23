@@ -28,6 +28,14 @@ const SpotComponent = ({ spot, isManageSpotsComponent }) => {
     e.stopPropagation();
   };
 
+  const handleDeleteClick = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setModalContent(
+      <ConfirmationModal spotId={spot.id} closeModal={closeModal} />
+    )
+  }
+
   // const handleDelete = async (e) => {
   //   e.preventDefault();
   //   e.stopPropagation();
@@ -67,12 +75,7 @@ const SpotComponent = ({ spot, isManageSpotsComponent }) => {
                     <NavLink to={`/spots/${spot.id}/update`} className="update-spot-navlink">Update</NavLink>
                   </button>
                   <button
-                    onClick={() => setModalContent(
-                      <ConfirmationModal
-                      spotId={spot.id}
-                      closeModal={closeModal}
-                      />
-                    )}
+                    onClick={handleDeleteClick}
                     type="button"
                     >Delete
                   </button>
