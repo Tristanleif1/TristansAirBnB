@@ -222,9 +222,11 @@ const NewSpotForm = () => {
           value={image4}
           onChange={(e) => setImage4(e.target.value)}
         />
-        <button className="spot-form-button" type="submit">
-          Create Spot
-        </button>
+        <div className="button-center">
+          <button className="spot-form-button" type="submit">
+            Create Spot
+          </button>
+        </div>
       </form>
     </div>
   );
