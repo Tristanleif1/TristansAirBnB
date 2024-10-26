@@ -3,8 +3,8 @@ body {
 }
 
 .spot-form-container {
-  max-width: 500px;
-  margin: auto;
+  max-width: 700px;
+  margin: 2.5rem auto;
   padding: 20px;
   background-color: #ffffff;
   border-radius: 12px;
@@ -40,7 +40,7 @@ body {
   min-height: 80px;
 }
 
-.spot-form-container button {
+/* .spot-form-container button {
   margin-top: 20px;
   background-color: #ff5a5f;
   color: white;
@@ -49,7 +49,7 @@ body {
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
-}
+} */
 
 .spot-form-container button:hover {
   background-color: #ff717e;
@@ -58,4 +58,30 @@ body {
 p.spot-form-error {
   color: red;
   font-size: 14px;
+}
+
+.spot-form{
+  padding: 10px
+}
+
+.button-center{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.spot-form-button{
+  /* display: flex;
+  align-items: center;
+  justify-content: center; */
+  /* margin-top: 20px; */
+  margin: 1.5rem 0;
+  background-color: #ff5a5f;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 50px;
+  font-size: 16px;
+  cursor: pointer;
 }
