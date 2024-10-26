@@ -17,7 +17,7 @@ const ManageSpotsComponent = () => {
 
   return (
     <div>
-      <h1>Manage Spots</h1>
+      <h1 className="manage-spots-header">Manage Spots</h1>
       {spots.length ? (
         <div className="ui container center spot-list">
           {spots.map((spot) => (
